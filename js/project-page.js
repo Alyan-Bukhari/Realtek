@@ -12,7 +12,12 @@
     if (el) el.textContent = value;
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", boot);
+  if (document.readyState !== "loading") boot();
+
+  function boot() {
+    if (boot.ran) return;
+    boot.ran = true;
     if (!window.RT || !RT.getProject) return;
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id") || "1";
@@ -42,7 +47,13 @@
     const ogDesc = document.querySelector('meta[property="og:description"]');
     if (ogDesc) ogDesc.setAttribute("content", project.overview || "");
     const ogImg = document.querySelector('meta[property="og:image"]');
-    if (ogImg) ogImg.setAttribute("content", project.image);
+    if (ogImg) {
+      try {
+        ogImg.setAttribute("content", new URL(project.image, window.location.origin).href);
+      } catch (err) {
+        ogImg.setAttribute("content", project.image);
+      }
+    }
 
     const heroImg = document.getElementById("p-hero-img");
     if (heroImg) {
@@ -71,7 +82,7 @@
     const useDossier = extra && RT.mountDossier;
 
     const factsHost = document.getElementById("p-facts");
-    if (factsHost && !useDossier) {
+    if (factsHost) {
       const facts = [];
       facts.push({ label: "Location", value: project.location });
       if (project.type) facts.push({ label: "Project Type", value: project.type });
@@ -95,7 +106,7 @@
     }
 
     const overview = document.getElementById("p-overview");
-    if (overview && !useDossier) {
+    if (overview) {
       overview.innerHTML =
         "<p>" +
         escapeHtml(project.overview || "Full project details coming soon.") +
@@ -139,7 +150,7 @@
 
     renderNext(project);
     renderRelated(project);
-  });
+  }
 
   function cardHtml(p, featured) {
     const href = RT.projectHref ? RT.projectHref(p.id) : "project.html?id=" + p.id;

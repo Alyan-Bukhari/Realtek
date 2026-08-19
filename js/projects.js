@@ -4,6 +4,26 @@
  * Do not invent additional stats.
  */
 (function (global) {
+  function unitPhotos(folder, label) {
+    const out = [];
+    for (let i = 1; i <= 8; i++) {
+      const n = String(i).padStart(2, "0");
+      out.push({
+        src: "images/units/" + folder + "/photo-" + n + ".jpg",
+        alt: label + " interior " + i
+      });
+    }
+    return out;
+  }
+
+  function unitTour(folder, label, hotspots) {
+    return {
+      plan: "images/units/" + folder + "/floorplan.jpg",
+      photos: unitPhotos(folder, label),
+      hotspots: hotspots
+    };
+  }
+
   const PROJECTS = [
     {
       id: "1",
@@ -20,7 +40,7 @@
       completion: "2021",
       timeline: "Jun 2019 – Jan 2021",
       overview:
-        "La Monte Vista stands as a testament to luxury. Located in Bahria Town, it delivered exceptional returns to investors.",
+        "Delivered 2021 in 166-B Commercial — 20 apartments and three commercial halls, now fully sold.",
       facts: [
         { label: "Status", value: "SOLD OUT" },
         { label: "ROI", value: "200% increase on investment" },
@@ -45,7 +65,7 @@
       completion: "2021",
       timeline: "Feb 2020 – March 2021",
       overview:
-        "Located on Main Canal Bank Road, Madina Heights 1 offers unmatched visibility and a high-demand address.",
+        "Main Canal Bank Road — 22 apartments and two commercial halls, handed over in 2021.",
       facts: [
         { label: "Status", value: "SOLD OUT" },
         { label: "ROI", value: "200% increase on investment" },
@@ -70,7 +90,7 @@
       completion: "2023",
       timeline: "Jun 2022 – Jun 2023",
       overview:
-        "A compact yet premium development in Sector-C, offering solid returns and modern amenities.",
+        "Sector-C side commercial — 18 apartments and six halls, completed 2023.",
       facts: [
         { label: "Status", value: "SOLD OUT" },
         { label: "ROI", value: "150% increase on investment" },
@@ -95,7 +115,7 @@
       completion: "2025",
       timeline: "Aug 2023 – Aug 2025",
       overview:
-        "Adjacent to Safari Villas, this project combines commercial convenience with high-end residential living.",
+        "Umer block, next to Safari Villas — 22 apartments and two commercial halls, sold out.",
       facts: [
         { label: "Status", value: "SOLD OUT" },
         { label: "ROI", value: "100% increase on investment" },
@@ -120,7 +140,7 @@
       completion: "2026",
       timeline: "Dec 2023 – June 2026",
       overview:
-        "A major development spanning two plots, offering larger floor plates and a prime commercial hub.",
+        "Two plots at Umer block — 54 apartments and 27 shops, still booking on a 30-month plan.",
       facts: [
         { label: "Status", value: "80% SOLD OUT" },
         { label: "ROI", value: "200% increase on investment" },
@@ -133,7 +153,7 @@
     {
       id: "6",
       name: "Madina Heights 5",
-      location: "Bahria Town LHR",
+      location: "Bahria Town, Lahore",
       address: "166B Commercial, Bahria Town.",
       status: "80% SOLD OUT",
       filter: "available",
@@ -145,7 +165,7 @@
       completion: "2026",
       timeline: "March 2024 – Dec 2026",
       overview:
-        "Our most ambitious project with an extra floor, delivering massive ROI and premium facilities.",
+        "Our largest Heights building — 84 apartments and 43 shops, still booking through 2026.",
       facts: [
         { label: "Status", value: "80% SOLD OUT" },
         { label: "ROI", value: "200% increase on investment" },
@@ -158,7 +178,7 @@
     {
       id: "7",
       name: "Madina Silver Heights",
-      location: "Bahria Town LHR",
+      location: "Bahria Town, Lahore",
       address: "166B Commercial, Bahria Town.",
       status: "SOLD OUT",
       filter: "sold",
@@ -170,7 +190,7 @@
       completion: "2025",
       timeline: "March 2024 – March 2025",
       overview:
-        "A rapid-delivery project offering quick returns and high-end mixed-use spaces.",
+        "Twelve-month plan, 35 apartments — handed over 2025 in 166B Commercial.",
       facts: [
         { label: "Status", value: "SOLD OUT" },
         { label: "ROI", value: "200% increase on investment" },
@@ -189,13 +209,13 @@
       filter: "sold",
       image: "images/project-8.jpg",
       shot: "Exterior",
-      type: "Double-Story Villas",
+      type: "Double-story villas",
       area: "3 Marla",
       floors: "G+1",
       completion: "Ongoing",
       timeline: "Dec 2024 – Ongoing",
       overview:
-        "A project of Kabir Town. Affordable yet luxurious living in a gated community.",
+        "Fifty three-bedroom villas in a gated community — sold out, possession ongoing.",
       facts: [
         { label: "Status", value: "SOLD OUT" },
         { label: "ROI", value: "200% increase on investment" },
@@ -220,7 +240,7 @@
       completion: null,
       timeline: "Launching soon",
       overview:
-        "Madina Mall & Residency is not just a building; it is a statement of elegance and grandeur. Situated in the heart of Bahria Town, Lahore, this upcoming masterpiece merges world-class retail experiences with ultra-luxury residences, offering a lifestyle reserved for the elite.",
+        "A mixed-use mall and residences in Bahria Town — studio to three-bed, premium retail, owned on a 36-month plan.",
       facts: [
         { label: "Status", value: "Coming soon" },
         { label: "Installment", value: "36 months" },
@@ -347,11 +367,13 @@
             area: 400,
             blurb: "A compact first home — living, kitchenette, and bath on one plate. The fastest plan to complete.",
             hero: "images/mmr-studio.jpg",
-            plan: "images/madina-mall-apt-studio.jpg",
-            gallery: [
-              { src: "images/mmr-studio.jpg", alt: "Studio apartment living space" },
-              { src: "images/madina-mall-apt-studio.jpg", alt: "Studio apartment blueprint and interiors" }
-            ]
+            plan: "images/units/studio/floorplan.jpg",
+            gallery: unitPhotos("studio", "Studio apartment"),
+            tour: unitTour("studio", "Studio", [
+              { id: "living", label: "Living", top: "58%", left: "38%", start: 0 },
+              { id: "kitchen", label: "Kitchen", top: "34%", left: "46%", start: 1 },
+              { id: "bath", label: "Bathroom", top: "52%", left: "18%", start: 4 }
+            ])
           },
           {
             id: "1bed",
@@ -359,11 +381,14 @@
             area: 550,
             blurb: "A private bedroom plus an open living kitchen — the most requested residential plate.",
             hero: "images/mmr-1bed.jpg",
-            plan: "images/madina-mall-apt-1bed.jpg",
-            gallery: [
-              { src: "images/mmr-1bed.jpg", alt: "One-bed apartment living and kitchen" },
-              { src: "images/madina-mall-apt-1bed.jpg", alt: "One-bed apartment blueprint and interiors" }
-            ]
+            plan: "images/units/1-bed/floorplan.jpg",
+            gallery: unitPhotos("1-bed", "One-bed apartment"),
+            tour: unitTour("1-bed", "1 Bed", [
+              { id: "living", label: "Living", top: "48%", left: "58%", start: 0 },
+              { id: "kitchen", label: "Kitchen", top: "36%", left: "28%", start: 2 },
+              { id: "bedroom", label: "Bedroom", top: "62%", left: "72%", start: 4 },
+              { id: "bath", label: "Bathroom", top: "30%", left: "72%", start: 6 }
+            ])
           },
           {
             id: "2bed",
@@ -371,11 +396,15 @@
             area: 850,
             blurb: "Two bedrooms, a family living room, and a terrace line. Built for Bahria Town living.",
             hero: "images/mmr-2bed.jpg",
-            plan: "images/madina-mall-apt-2bed.jpg",
-            gallery: [
-              { src: "images/mmr-2bed.jpg", alt: "Two-bed apartment living room" },
-              { src: "images/madina-mall-apt-2bed.jpg", alt: "Two-bed apartment blueprint and interiors" }
-            ]
+            plan: "images/units/2-bed/floorplan.jpg",
+            gallery: unitPhotos("2-bed", "Two-bed apartment"),
+            tour: unitTour("2-bed", "2 Bed", [
+              { id: "living", label: "Living", top: "52%", left: "42%", start: 0 },
+              { id: "kitchen", label: "Kitchen", top: "34%", left: "68%", start: 1 },
+              { id: "bed-1", label: "Bedroom 1", top: "68%", left: "22%", start: 3 },
+              { id: "bed-2", label: "Bedroom 2", top: "68%", left: "78%", start: 5 },
+              { id: "bath", label: "Bathroom", top: "28%", left: "22%", start: 7 }
+            ])
           }
         ],
         floors: [

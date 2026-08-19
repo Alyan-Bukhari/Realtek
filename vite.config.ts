@@ -4,6 +4,118 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
+const SITE = process.env.SITE_URL || "https://realtek.vercel.app";
+
+const PROJECT_PAGES = [
+  {
+    id: "1",
+    name: "La Monte Vista",
+    status: "Sold Out",
+    location: "Bahria Town, Lahore",
+    type: "Commercial + Apartments",
+    overview:
+      "Delivered 2021 in 166-B Commercial — 20 apartments and three commercial halls, now fully sold.",
+    image: "images/project-1.jpg",
+    address: "166-B Commercial, Bahria Town."
+  },
+  {
+    id: "2",
+    name: "Madina Heights 1",
+    status: "Sold Out",
+    location: "Canal Bank Road",
+    type: "Commercial + Apartments",
+    overview:
+      "Main Canal Bank Road — 22 apartments and two commercial halls, handed over in 2021.",
+    image: "images/project-2.jpg",
+    address: "Sector D, Main Canal Bank Road."
+  },
+  {
+    id: "3",
+    name: "Madina Heights 2",
+    status: "Sold Out",
+    location: "Sector C, Bahria Town",
+    type: "Commercial + Apartments",
+    overview:
+      "Sector-C side commercial — 18 apartments and six halls, completed 2023.",
+    image: "images/project-3.jpg",
+    address: "189 A Side Commercial, Sector-C."
+  },
+  {
+    id: "4",
+    name: "Madina Heights 3",
+    status: "Sold Out",
+    location: "Safari Villas",
+    type: "Commercial + Residential",
+    overview:
+      "Umer block, next to Safari Villas — 22 apartments and two commercial halls, sold out.",
+    image: "images/project-4.jpg",
+    address: "42, Umer block Commercial."
+  },
+  {
+    id: "5",
+    name: "Madina Heights 4",
+    status: "80% Sold",
+    location: "Safari Villas",
+    type: "Commercial + Residential",
+    overview:
+      "Two plots at Umer block — 54 apartments and 27 shops, still booking on a 30-month plan.",
+    image: "images/project-5.jpg",
+    address: "11,12 Umer block Commercial."
+  },
+  {
+    id: "6",
+    name: "Madina Heights 5",
+    status: "80% Sold",
+    location: "Bahria Town, Lahore",
+    type: "Commercial + Residential",
+    overview:
+      "Our largest Heights building — 84 apartments and 43 shops, still booking through 2026.",
+    image: "images/project-6.jpg",
+    address: "166B Commercial, Bahria Town."
+  },
+  {
+    id: "7",
+    name: "Madina Silver Heights",
+    status: "Sold Out",
+    location: "Bahria Town, Lahore",
+    type: "Mixed Use",
+    overview:
+      "Twelve-month plan, 35 apartments — handed over 2025 in 166B Commercial.",
+    image: "images/project-7.jpg",
+    address: "166B Commercial, Bahria Town."
+  },
+  {
+    id: "8",
+    name: "Madina Homes",
+    status: "Sold Out",
+    location: "Mariam Town",
+    type: "Double-story villas",
+    overview:
+      "Fifty three-bedroom villas in a gated community — sold out, possession ongoing.",
+    image: "images/project-8.jpg",
+    address: "Mariam Town (Gated Community)."
+  },
+  {
+    id: "upcoming",
+    name: "Madina Mall & Residency",
+    status: "Coming Soon",
+    location: "Bahria Town, Lahore",
+    type: "36 months instalment",
+    overview:
+      "A mixed-use mall and residences in Bahria Town — studio to three-bed, premium retail, owned on a 36-month plan.",
+    image: "images/madina-mall-featured.jpg",
+    address: "Bahria Town, Lahore"
+  }
+];
+
+function esc(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 function copyStatic() {
   return {
     name: "copy-static",
@@ -14,6 +126,67 @@ function copyStatic() {
         if (fs.existsSync(from)) {
           fs.cpSync(from, path.join(dist, dir), { recursive: true });
         }
+      }
+
+      const templatePath = path.join(dist, "project.html");
+      if (!fs.existsSync(templatePath)) return;
+      const template = fs.readFileSync(templatePath, "utf8");
+
+      for (const p of PROJECT_PAGES) {
+        const absImg = SITE.replace(/\/$/, "") + "/" + p.image;
+        const pageUrl = SITE.replace(/\/$/, "") + "/project.html?id=" + encodeURIComponent(p.id);
+        let html = template;
+        html = html.replace(/<title>[\s\S]*?<\/title>/, "<title>" + esc(p.name) + " | RealTek Developers</title>");
+        html = html.replace(
+          /<meta name="description" content="[^"]*">/,
+          '<meta name="description" content="' + esc(p.overview) + '">'
+        );
+        html = html.replace(
+          /<meta property="og:title" content="[^"]*">/,
+          '<meta property="og:title" content="' + esc(p.name) + ' | RealTek Developers">'
+        );
+        html = html.replace(
+          /<meta property="og:description" content="[^"]*">/,
+          '<meta property="og:description" content="' + esc(p.overview) + '">'
+        );
+        html = html.replace(
+          /<meta property="og:image" content="[^"]*">/,
+          '<meta property="og:image" content="' + absImg + '">'
+        );
+        if (!html.includes('property="og:url"')) {
+          html = html.replace(
+            '<meta property="og:type" content="website">',
+            '<meta property="og:type" content="website">\n  <meta property="og:url" content="' +
+              pageUrl +
+              '">'
+          );
+        }
+        html = html.replace(/id="p-crumb">[^<]*/, 'id="p-crumb">' + esc(p.name));
+        html = html.replace(/id="p-status">[^<]*/, 'id="p-status">' + esc(p.status));
+        html = html.replace(/id="p-title">[^<]*/, 'id="p-title">' + esc(p.name));
+        html = html.replace(/id="p-location">[^<]*/, 'id="p-location">' + esc(p.address || p.location));
+        html = html.replace(
+          /<img id="p-hero-img"[^>]*>/,
+          '<img id="p-hero-img" src="' + p.image + '" alt="' + esc(p.name + ", " + p.location) + '">'
+        );
+        html = html.replace(
+          /<div id="p-overview">[\s\S]*?<\/div>/,
+          '<div id="p-overview"><p>' + esc(p.overview) + "</p></div>"
+        );
+        html = html.replace(
+          /<section class="key-facts" id="p-facts"[^>]*>[\s\S]*?<\/section>/,
+          '<section class="key-facts" id="p-facts" aria-label="Project facts">' +
+            '<div class="key-fact"><strong>' +
+            esc(p.location) +
+            "</strong><span>Location</span></div>" +
+            '<div class="key-fact"><strong>' +
+            esc(p.type) +
+            "</strong><span>Project Type</span></div>" +
+            '<div class="key-fact"><strong>' +
+            esc(p.status) +
+            "</strong><span>Status</span></div></section>"
+        );
+        fs.writeFileSync(path.join(dist, "project-" + p.id + ".html"), html);
       }
     }
   };

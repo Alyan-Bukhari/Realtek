@@ -1,5 +1,16 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "framework": "vite"
+  "framework": "vite",
+  "rewrites": [
+    { "source": "/project.html", "has": [{ "type": "query", "key": "id", "value": "1" }], "destination": "/project-1.html" },
+    { "source": "/project.html", "has": [{ "type": "query", "key": "id", "value": "2" }], "destination": "/project-2.html" },
+    { "source": "/project.html", "has": [{ "type": "query", "key": "id", "value": "3" }], "destination": "/project-3.html" },
+    { "source": "/project.html", "has": [{ "type": "query", "key": "id", "value": "4" }], "destination": "/project-4.html" },
+    { "source": "/project.html", "has": [{ "type": "query", "key": "id", "value": "5" }], "destination": "/project-5.html" },
+    { "source": "/project.html", "has": [{ "type": "query", "key": "id", "value": "6" }], "destination": "/project-6.html" },
+    { "source": "/project.html", "has": [{ "type": "query", "key": "id", "value": "7" }], "destination": "/project-7.html" },
+    { "source": "/project.html", "has": [{ "type": "query", "key": "id", "value": "8" }], "destination": "/project-8.html" },
+    { "source": "/project.html", "has": [{ "type": "query", "key": "id", "value": "upcoming" }], "destination": "/project-upcoming.html" }
+  ]
 }

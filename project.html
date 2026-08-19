@@ -138,13 +138,16 @@
         <p>Bahria Town, Lahore</p>
       </div>
       <div class="footer-col">
-        <h3>Newsletter</h3>
-        <form id="newsletter-form" class="newsletter">
-          <label for="newsletter-email" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Email</label>
+        <h3>Write to us</h3>
+        <form id="newsletter-form" class="newsletter" action="https://formsubmit.co/info@realtek.pk" method="POST">
+          <input type="hidden" name="_subject" value="RealTek website enquiry">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="text" name="_honey" class="visually-hidden" tabindex="-1" autocomplete="off">
+          <label class="visually-hidden" for="newsletter-email">Email</label>
           <input id="newsletter-email" type="email" name="email" placeholder="Your email" required>
           <button type="submit">Send</button>
         </form>
-        <p class="newsletter-note">Opens your email app to write info@realtek.pk — no account is created automatically.</p>
+        <p class="newsletter-note">Goes to info@realtek.pk. The first send asks FormSubmit to confirm that inbox.</p>
       </div>
     </div>
     <div class="wrap footer-bottom">
@@ -192,6 +195,7 @@
   <script src="js/projects.js"></script>
   <script src="js/main.js"></script>
   <script src="js/dossier.js"></script>
+  <script src="js/tour.js"></script>
   <script src="js/project-page.js"></script>
 </body>
 </html>

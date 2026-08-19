@@ -56,6 +56,8 @@ function FlipCard({ item, index, target, reducedMotion }: FlipCardProps) {
         marginTop: -IMG_HEIGHT / 2,
         transformStyle: "preserve-3d",
         perspective: "1000px",
+        zIndex: Math.round(400 + target.y),
+        pointerEvents: "auto",
       }}
       className="group cursor-pointer"
     >
@@ -84,6 +86,9 @@ function FlipCard({ item, index, target, reducedMotion }: FlipCardProps) {
             decoding="async"
           />
           <div className="absolute inset-0 bg-black/15 transition-colors group-hover:bg-transparent" />
+          <p className="absolute bottom-0 left-0 right-0 bg-[#372522]/80 px-2 py-1.5 text-center text-[10px] font-medium uppercase tracking-wide text-[#f2e6d6]">
+            {item.title}
+          </p>
         </div>
 
         <div
@@ -128,11 +133,13 @@ function arcLayout(
   const boundedRotation = -scrollProgressClamped * spreadAngle * 0.55;
   const currentArcAngle = startAngle + i * step + boundedRotation;
   const arcRad = (currentArcAngle * Math.PI) / 180;
+  const rawRotation = currentArcAngle + 90;
+  const rotation = Math.max(-18, Math.min(18, rawRotation));
 
   return {
     x: Math.cos(arcRad) * arcRadius + parallaxValue,
     y: Math.sin(arcRad) * arcRadius + arcCenterY,
-    rotation: currentArcAngle + 90,
+    rotation,
     scale: isMobile ? 0.92 : 1.12,
     opacity: 1,
   };

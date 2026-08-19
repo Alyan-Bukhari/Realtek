@@ -240,14 +240,19 @@
       "</p></div>" +
       '<div class="unit-card-acts">' +
       galBtns +
-      '<button type="button" class="unit-act" data-lightbox data-lightbox-group="plan-' +
-      esc(unit.id) +
-      '" data-src="' +
-      esc(unit.plan) +
-      '" data-alt="' +
-      esc(unit.name) +
-      ' floor plan">' +
-      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v4h-7zM13 10h7v10h-7zM4 13h7v7H4z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Floor plan</button>' +
+      (unit.tour
+        ? '<button type="button" class="unit-act" data-tour-open="' +
+          esc(unit.id) +
+          '">' +
+          '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v4h-7zM13 10h7v10h-7zM4 13h7v7H4z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Tour</button>'
+        : '<button type="button" class="unit-act" data-lightbox data-lightbox-group="plan-' +
+          esc(unit.id) +
+          '" data-src="' +
+          esc(unit.plan) +
+          '" data-alt="' +
+          esc(unit.name) +
+          ' floor plan">' +
+          '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v4h-7zM13 10h7v10h-7zM4 13h7v7H4z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Floor plan</button>') +
       '<a class="unit-act" href="#plans">' +
       '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7 10h10M7 14h6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Payment plan</a>' +
       "</div></article>"
@@ -642,7 +647,7 @@
     }
   }
 
-  function bind(root) {
+  function bind(root, project) {
     const tabs = root.querySelectorAll("[data-floor]");
     const panels = root.querySelectorAll("[data-floor-panel]");
     tabs.forEach(function (btn) {
@@ -693,6 +698,20 @@
       });
     });
 
+    root.querySelectorAll("[data-tour-open]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const uid = btn.getAttribute("data-tour-open");
+        const d =
+          project && project.dossier ? project.dossier : dummyDossier(project || {});
+        const unit = (d.units || []).find(function (u) {
+          return u.id === uid;
+        });
+        if (unit && unit.tour && global.RT && typeof RT.openTour === "function") {
+          RT.openTour(unit.tour, unit.name);
+        }
+      });
+    });
+
     const links = root.querySelectorAll(".dossier-nav a");
     const sections = [];
     links.forEach(function (a) {
@@ -722,7 +741,7 @@
     if (!host || !project) return;
     document.body.classList.add("is-dossier");
     host.innerHTML = render(project);
-    bind(host);
+    bind(host, project);
     if (global.RT && typeof RT.initLightbox === "function") RT.initLightbox();
   }
 

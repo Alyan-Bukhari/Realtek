@@ -482,6 +482,15 @@
     const next = $("[data-gallery-next]", gallery);
     if (!track || !slides.length) return;
 
+    const ui = $(".gallery-ui", gallery);
+    if (slides.length < 2) {
+      if (prev) prev.hidden = true;
+      if (next) next.hidden = true;
+      if (ui) ui.hidden = true;
+      if (count) count.textContent = "1 / 1";
+      return;
+    }
+
     let i = 0;
     const render = () => {
       track.style.transform = "translateX(" + -i * 100 + "%)";
@@ -545,14 +554,18 @@
   function initNewsletter() {
     const form = $("#newsletter-form");
     if (!form) return;
+    const action = (form.getAttribute("action") || "").toLowerCase();
+    if (form.method && form.method.toLowerCase() === "post" && action.indexOf("http") === 0) {
+      return;
+    }
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       const email = (form.querySelector('input[type="email"]') || {}).value || "";
       const note = form.parentElement.querySelector(".newsletter-note");
-      const subject = encodeURIComponent("Newsletter signup");
+      const subject = encodeURIComponent("Website enquiry");
       const body = encodeURIComponent("Please add this address to the RealTek list: " + email);
       window.location.href = "mailto:info@realtek.pk?subject=" + subject + "&body=" + body;
-      if (note) note.textContent = "Your email app will open to complete signup with info@realtek.pk.";
+      if (note) note.textContent = "Your email app will open to complete this with info@realtek.pk.";
     });
   }
 
