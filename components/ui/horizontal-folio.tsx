@@ -203,21 +203,86 @@ export default function HorizontalFolio({
           ))}
 
           <article className="hf-slide hf-slide-end">
-            <div>
-              <p className="hf-kicker">Next</p>
-              <h2 className="hf-title">
-                Start the <em>conversation.</em>
-              </h2>
-              <p className="hf-lede">Booking, site visits, and payment plans — WhatsApp or call.</p>
+            <div className="hf-end-copy">
+              <div>
+                <p className="hf-kicker">Next</p>
+                <h2 className="hf-title">
+                  Start the <em>conversation.</em>
+                </h2>
+                <p className="hf-lede">
+                  Booking, site visits, and payment plans — WhatsApp or call. The office is in Bahria Town.
+                </p>
+              </div>
+              <ul className="hf-end-stats">
+                <li>
+                  <b>PKR 3 Bn</b>
+                  <span>delivered in Lahore</span>
+                </li>
+                <li>
+                  <b>255</b>
+                  <span>apartments</span>
+                </li>
+                <li>
+                  <b>85+</b>
+                  <span>commercial plots</span>
+                </li>
+              </ul>
+              <div className="hf-actions">
+                <a className="btn" href="#contact">
+                  Get in Touch
+                </a>
+                <a className="btn btn-outline" href="projects.html">
+                  All projects
+                </a>
+              </div>
             </div>
-            <div className="hf-actions">
-              <a className="btn" href="#contact">
-                Get in Touch
-              </a>
-              <a className="btn btn-outline" href="projects.html">
-                All projects
-              </a>
-            </div>
+            <aside className="hf-end-aside">
+              <img
+                className="hf-end-hero"
+                src="/images/mmr-lounge.jpg"
+                alt="Rooftop lounge at Madina Mall & Residency, Bahria Town Lahore"
+                loading="lazy"
+                decoding="async"
+              />
+              <img
+                className="hf-end-inset"
+                src="/images/madina-mall-featured.jpg"
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+                decoding="async"
+              />
+              <div className="hf-end-card">
+                <p className="hf-kicker">Coming soon</p>
+                <h3>Madina Mall &amp; Residency</h3>
+                <dl>
+                  <div>
+                    <dt>Phone</dt>
+                    <dd>
+                      <a href="tel:03124455477">0312 4455477</a>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Email</dt>
+                    <dd>
+                      <a href="mailto:info@realtek.pk">info@realtek.pk</a>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Office</dt>
+                    <dd>Bahria Town, Lahore</dd>
+                  </div>
+                </dl>
+                <a
+                  className="hf-end-wa"
+                  href="https://wa.me/923124455477?text=Hi%2C%20I%27m%20interested%20in%20a%20RealTek%20project."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  WhatsApp the office <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </aside>
           </article>
         </div>
       </div>
