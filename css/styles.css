@@ -820,7 +820,7 @@ body.is-radial-pinned .float-contact {
   flex: 1 1 auto;
   min-height: 0;
   width: 100%;
-  height: auto;
+  height: 0;
   object-fit: contain;
   object-position: center center;
   background: var(--ink);
@@ -828,7 +828,7 @@ body.is-radial-pinned .float-contact {
 }
 
 .work.is-native-scroll .work-card img {
-  height: calc(100% - 4.5rem);
+  height: 0;
   flex: 1 1 auto;
 }
 
