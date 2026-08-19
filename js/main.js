@@ -200,11 +200,30 @@
 
   function initWorkGrid() {
     const section = $(".work");
-    if (!section || typeof gsap === "undefined") return;
+    if (!section) return;
 
     const intro = $(".work-intro", section);
+    const track = $(".work-track", section);
+    const scroller = $(".work-scroller", section);
     const cards = $$(".work-card", section);
-    if (!motionOk()) return;
+
+    const nativeScroll = () => {
+      section.classList.add("is-native-scroll");
+      section.classList.remove("is-pinned-scroll");
+    };
+
+    if (!track || !scroller || !cards.length) {
+      nativeScroll();
+      return;
+    }
+
+    if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined" || !motionOk() || isMobile()) {
+      nativeScroll();
+      return;
+    }
+
+    section.classList.add("is-pinned-scroll");
+    section.classList.remove("is-native-scroll");
 
     if (intro) {
       gsap.from(intro.children, {
@@ -213,21 +232,31 @@
         duration: 0.7,
         stagger: 0.06,
         ease: "power2.out",
-        scrollTrigger: { trigger: intro, start: "top 82%" }
+        scrollTrigger: { trigger: intro, start: "top 82%", once: true }
       });
     }
 
-    if (cards.length) {
-      gsap.from(cards, {
-        y: 28,
-        opacity: 0,
-        duration: 0.55,
-        stagger: { each: 0.07, from: "start" },
-        ease: "power2.out",
-        clearProps: "transform",
-        scrollTrigger: { trigger: ".work-grid", start: "top 88%", once: true }
-      });
+    const getX = () => Math.min(0, scroller.clientWidth - track.scrollWidth);
+
+    if (Math.abs(getX()) < 48) {
+      nativeScroll();
+      return;
     }
+
+    gsap.set(track, { x: 0, force3D: true });
+    gsap.to(track, {
+      x: getX,
+      ease: "none",
+      scrollTrigger: {
+        trigger: section,
+        start: "top top",
+        end: () => "+=" + Math.max(window.innerHeight * 0.85, Math.abs(getX())),
+        pin: true,
+        scrub: 0.65,
+        invalidateOnRefresh: true,
+        anticipatePin: 1
+      }
+    });
   }
 
   function initSurfer() {
@@ -336,13 +365,13 @@
 
   function initRail() {
     const rail = $("#rail");
-    const work = $("#work");
-    if (!rail || !work || typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") return;
+    const startAt = $("#stats") || $("#work");
+    if (!rail || !startAt || typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") return;
     if (isMobile() || !motionOk()) return;
 
     gsap.set(rail, { x: 90, yPercent: -50 });
     ScrollTrigger.create({
-      trigger: work,
+      trigger: startAt,
       start: "top 40%",
       onEnter() {
         rail.classList.add("is-in");
@@ -682,6 +711,13 @@
     initParallax();
     initTicker();
     initCounters();
+    window.addEventListener(
+      "load",
+      () => {
+        if (typeof ScrollTrigger !== "undefined") ScrollTrigger.refresh();
+      },
+      { once: true }
+    );
     renderHomeProjects();
     initFilters();
     initGallery();

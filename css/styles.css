@@ -679,15 +679,15 @@ body.is-radial-pinned .float-contact {
   }
 }
 
-/* Delivered work — real project stills */
+/* Landmark highlights — vertical scroll drives a horizontal strip */
 .work {
   background: var(--espresso-deep);
   color: var(--cream);
-  padding: clamp(3.5rem, 9vw, 6.5rem) 0 var(--section);
+  padding: 0 0 2.5rem;
 }
 
 .work-intro {
-  margin-bottom: clamp(1.75rem, 4vw, 2.75rem);
+  padding: clamp(3.5rem, 9vw, 6.5rem) 0 1.75rem;
 }
 
 .work .eyebrow {
@@ -718,19 +718,46 @@ body.is-radial-pinned .float-contact {
   color: var(--terracotta);
 }
 
-.work-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem 1.1rem;
+.work-scroller {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.work-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.work.is-pinned-scroll .work-scroller {
+  overflow: hidden;
+}
+
+.work.is-native-scroll .work-scroller {
+  scroll-snap-type: x mandatory;
+  padding-bottom: 0.35rem;
+}
+
+.work-track {
+  display: flex;
+  gap: 1rem;
+  width: max-content;
+  padding: 0 var(--gutter);
+  will-change: transform;
 }
 
 .work-card {
   position: relative;
   display: block;
+  flex: 0 0 clamp(17.5rem, 38vw, 30rem);
   overflow: hidden;
   color: inherit;
   background: #1c1211;
   min-height: 0;
+}
+
+.work.is-native-scroll .work-card {
+  scroll-snap-align: start;
 }
 
 .work-card img {
@@ -2537,7 +2564,6 @@ th {
 @media (max-width: 1100px) {
   .feature-grid,
   .project-grid,
-  .work-grid,
   .stats-grid,
   .key-facts {
     grid-template-columns: repeat(2, 1fr);
@@ -2632,8 +2658,8 @@ th {
     height: auto;
   }
 
-  .work-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .work-card {
+    flex-basis: min(78vw, 22rem);
   }
 
   .surfer-pin {
