@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@source "../components/**/*.{ts,tsx}";
+@source "./**/*.{ts,tsx}";
+
+@theme {
+  --font-sans: Inter, system-ui, sans-serif;
+  --color-background: #f2e6d6;
+  --color-foreground: #452d2a;
+  --color-card: #1c1211;
+  --color-card-foreground: #f2e6d6;
+  --color-primary: #af522a;
+  --color-primary-foreground: #fcf0e0;
+  --color-secondary: #452d2a;
+  --color-secondary-foreground: #f2e6d6;
+  --color-muted: #cdc2b0;
+  --color-muted-foreground: #6e5c55;
+  --color-border: rgba(69, 45, 42, 0.12);
+  --color-ring: #af522a;
+  --radius-xl: 0.75rem;
+}
+
+#radial-root {
+  display: block;
+  background: #f2e6d6;
+  color: #452d2a;
+  overflow: visible;
+}

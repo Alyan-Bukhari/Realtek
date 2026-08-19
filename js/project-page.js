@@ -1,0 +1,311 @@
+(function () {
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function setText(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    if (!window.RT || !RT.getProject) return;
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id") || "1";
+    const project = RT.getProject(id);
+
+    if (!project) {
+      setText("p-title", "Project not found");
+      setText("p-location", "The requested project could not be located.");
+      return;
+    }
+
+    document.title = project.name + " | RealTek Developers";
+    const desc = document.querySelector('meta[name="description"]');
+    if (desc) {
+      desc.setAttribute(
+        "content",
+        project.name +
+          " in " +
+          project.location +
+          " — " +
+          project.status +
+          ". RealTek Developers, Lahore."
+      );
+    }
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute("content", project.name + " | RealTek Developers");
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute("content", project.overview || "");
+    const ogImg = document.querySelector('meta[property="og:image"]');
+    if (ogImg) ogImg.setAttribute("content", project.image);
+
+    const heroImg = document.getElementById("p-hero-img");
+    if (heroImg) {
+      heroImg.src = project.image;
+      heroImg.alt = project.name + ", " + project.location;
+    }
+
+    setText("p-status", project.status);
+    setText("p-title", project.name);
+    setText("p-location", project.address || project.location);
+    setText("p-crumb", project.name);
+
+    const waMessage =
+      "Hi, I'm interested in " +
+      project.name +
+      " (" +
+      project.status +
+      "). Please share availability and the schedule.";
+    const wa = RT.whatsappHref ? RT.whatsappHref(waMessage) : "https://wa.me/923124455477";
+    const waLink = document.getElementById("p-wa");
+    if (waLink) waLink.href = wa;
+    const floatWa = document.getElementById("p-float-wa");
+    if (floatWa) floatWa.href = wa;
+
+    const extra = document.getElementById("p-extra");
+    const useDossier = extra && RT.mountDossier;
+
+    const factsHost = document.getElementById("p-facts");
+    if (factsHost && !useDossier) {
+      const facts = [];
+      facts.push({ label: "Location", value: project.location });
+      if (project.type) facts.push({ label: "Project Type", value: project.type });
+      if (project.area) facts.push({ label: "Area", value: project.area });
+      if (project.floors) facts.push({ label: "Floors", value: project.floors });
+      if (project.completion) facts.push({ label: "Completion", value: project.completion });
+      if (facts.length < 3) {
+        facts.push({ label: "Status", value: project.status });
+        if (project.address) facts.push({ label: "Address", value: project.address });
+      }
+      factsHost.innerHTML = facts
+        .map(
+          (f) =>
+            '<div class="key-fact"><strong>' +
+            escapeHtml(f.value) +
+            "</strong><span>" +
+            escapeHtml(f.label) +
+            "</span></div>"
+        )
+        .join("");
+    }
+
+    const overview = document.getElementById("p-overview");
+    if (overview && !useDossier) {
+      overview.innerHTML =
+        "<p>" +
+        escapeHtml(project.overview || "Full project details coming soon.") +
+        "</p>";
+    }
+
+    const factList = document.getElementById("p-fact-list");
+    if (factList && !useDossier && project.facts && project.facts.length) {
+      factList.innerHTML = project.facts
+        .map(
+          (f) =>
+            '<li><span class="k">' +
+            escapeHtml(f.label) +
+            '</span><span>' +
+            escapeHtml(f.value) +
+            "</span></li>"
+        )
+        .join("");
+    }
+
+    const galleryTrack = document.getElementById("p-gallery-track");
+    if (galleryTrack && !useDossier && project.gallery) {
+      galleryTrack.innerHTML = project.gallery
+        .map(
+          (img, i) =>
+            '<img src="' +
+            img.src +
+            '" alt="' +
+            escapeHtml(img.alt) +
+            '"' +
+            (i === 0 ? "" : ' loading="lazy"') +
+            ">"
+        )
+        .join("");
+      if (window.RT.initGallery) RT.initGallery(document.querySelector(".gallery"));
+    }
+
+    if (useDossier) {
+      RT.mountDossier(project, extra);
+    }
+
+    renderNext(project);
+    renderRelated(project);
+  });
+
+  function cardHtml(p, featured) {
+    const href = RT.projectHref ? RT.projectHref(p.id) : "project.html?id=" + p.id;
+    const live = p.filter === "upcoming" ? ' is-live"><i></i>' : '">';
+    return (
+      '<a class="folio-card' +
+      (featured ? " is-featured" : "") +
+      '" href="' +
+      href +
+      '"><div class="folio-card-media"><img src="' +
+      escapeHtml(p.image) +
+      '" alt="' +
+      escapeHtml(p.name) +
+      '" loading="lazy"><span class="folio-badge' +
+      live +
+      escapeHtml(p.status) +
+      '</span></div><div class="folio-card-body"><div class="folio-card-top"><h2>' +
+      escapeHtml(p.name) +
+      '</h2><p class="folio-card-meta">' +
+      escapeHtml((p.type ? p.type + " · " : "") + (p.location || "")) +
+      "</p></div><p>" +
+      escapeHtml((p.overview || "").split(". ")[0] + ".") +
+      '</p><span class="folio-card-cta">See project <span aria-hidden="true">→</span></span></div></a>'
+    );
+  }
+
+  function renderNext(project) {
+    const host = document.getElementById("p-next");
+    if (!host || !RT.PROJECTS) return;
+    if (project.filter === "upcoming") {
+      host.hidden = true;
+      host.innerHTML = "";
+      return;
+    }
+    const next = RT.getProject("upcoming");
+    if (!next) {
+      host.hidden = true;
+      return;
+    }
+    host.hidden = false;
+    const sold = project.filter === "sold";
+    host.innerHTML =
+      "<h2>" +
+      (sold ? "This one’s sold. The next one is open." : "The next one is booking now.") +
+      "</h2><p>" +
+      escapeHtml(next.overview.split(". ")[0] + ".") +
+      '</p><a class="btn btn-light" href="' +
+      (RT.projectHref ? RT.projectHref(next.id) : "project.html?id=upcoming") +
+      '">See Madina Mall &amp; Residency</a>';
+  }
+
+  function renderRelated(project) {
+    const grid = document.getElementById("p-related-grid");
+    if (!grid || !RT.PROJECTS) return;
+    const others = RT.PROJECTS.filter((p) => p.id !== project.id).sort((a, b) => {
+      const rank = (p) => (p.filter === "upcoming" ? 0 : p.filter === "available" ? 1 : 2);
+      return rank(a) - rank(b);
+    });
+    grid.innerHTML = others.slice(0, 4).map((p) => cardHtml(p, false)).join("");
+  }
+
+  function renderUpcoming(project) {
+    const groups = project.amenityGroups || [];
+    const tabs = groups
+      .map(
+        (g, i) =>
+          '<button class="tab' +
+          (i === 0 ? " is-active" : "") +
+          '" type="button" data-tab="' +
+          g.id +
+          '">' +
+          escapeHtml(g.label) +
+          "</button>"
+      )
+      .join("");
+    const panels = groups
+      .map(
+        (g, i) =>
+          '<div class="tab-panel' +
+          (i === 0 ? " is-active" : "") +
+          '" data-panel="' +
+          g.id +
+          '"><ul class="amenity-list">' +
+          g.items.map((item) => "<li>" + escapeHtml(item) + "</li>").join("") +
+          "</ul></div>"
+      )
+      .join("");
+
+    const floors = (project.floorProgram || [])
+      .map(
+        (f) =>
+          '<div class="floor-item"><h3>' +
+          escapeHtml(f.name) +
+          "</h3><p>" +
+          escapeHtml(f.use) +
+          "</p></div>"
+      )
+      .join("");
+
+    const plans = (project.paymentPlans || [])
+      .map((plan) => {
+        const rows = plan.rows
+          .map(
+            (r) =>
+              "<tr>" +
+              r.map((c) => "<td>" + escapeHtml(c) + "</td>").join("") +
+              "</tr>"
+          )
+          .join("");
+        return (
+          '<div class="plan-block"><p class="eyebrow">' +
+          escapeHtml(plan.note) +
+          "</p><h3 class=\"display\" style=\"font-size: var(--fs-h3)\">" +
+          escapeHtml(plan.title) +
+          '</h3><div class="table-wrap"><table><thead><tr>' +
+          "<th>Property Type</th><th>Per Sq. Ft Price</th><th>Booking</th><th>Confirmation</th>" +
+          "<th>Instalment / Month</th><th>Half Yearly</th><th>Possession</th>" +
+          "</tr></thead><tbody>" +
+          rows +
+          "</tbody></table></div></div>"
+        );
+      })
+      .join("");
+
+    const notes = (project.paymentNotes || [])
+      .map((n) => "<li>" + escapeHtml(n) + "</li>")
+      .join("");
+
+    const planImgs = (project.floorPlanImages || [])
+      .map(
+        (img) =>
+          '<button type="button" class="plan-thumb" data-lightbox data-lightbox-group="plans" data-src="' +
+          escapeHtml(img.src) +
+          '" data-alt="' +
+          escapeHtml(img.alt) +
+          '">' +
+          '<img src="' +
+          img.src +
+          '" alt="' +
+          escapeHtml(img.alt) +
+          '" loading="lazy">' +
+          '<span class="plan-thumb-hint">Click to enlarge</span>' +
+          "</button>"
+      )
+      .join("");
+
+    return (
+      '<section class="wrap" style="padding-bottom: var(--section)" data-tabs>' +
+      '<p class="eyebrow">Amenities</p>' +
+      '<h2 class="display" style="font-size: var(--fs-h2); margin-bottom: 0.5rem">World-class amenities</h2>' +
+      '<p style="color: var(--muted); max-width: 48ch">Designed to provide unparalleled convenience and luxury, Madina Mall & Residency features a comprehensive list of amenities.</p>' +
+      '<div class="tabs">' +
+      tabs +
+      "</div>" +
+      panels +
+      '<div class="floor-program">' +
+      floors +
+      "</div>" +
+      '<div class="plans">' +
+      plans +
+      '<ul class="plan-notes">' +
+      notes +
+      "</ul>" +
+      '<div class="plan-gallery">' +
+      planImgs +
+      "</div></div></section>"
+    );
+  }
+})();
