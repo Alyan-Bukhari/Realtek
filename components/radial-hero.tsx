@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect } from "react";
-import CssImageStacking, { type StackItem } from "@/components/ui/css-image-stacking";
+import HorizontalFolio, { type StackItem } from "@/components/ui/horizontal-folio";
 
 const projects: StackItem[] = [
   { src: "/images/project-1.jpg", title: "La Monte Vista", caption: "Sold Out", href: "project.html?id=1" },
@@ -30,7 +30,7 @@ export function RadialHero() {
   }, []);
 
   return (
-    <CssImageStacking
+    <HorizontalFolio
       items={projects}
       eyebrow="Our Projects"
       body="Every development we have delivered in Lahore — plus the upcoming mall."
