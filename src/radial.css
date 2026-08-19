@@ -4,18 +4,20 @@
 @source "./**/*.{ts,tsx}";
 
 @theme {
-  --font-sans: Inter, system-ui, sans-serif;
+  --font-sans: "General Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Fraunces", "Iowan Old Style", Palatino, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --color-background: #f2e6d6;
-  --color-foreground: #452d2a;
-  --color-card: #1c1211;
-  --color-card-foreground: #f2e6d6;
+  --color-foreground: #1c1512;
+  --color-card: #1c1512;
+  --color-card-foreground: #fbf6ee;
   --color-primary: #af522a;
-  --color-primary-foreground: #fcf0e0;
+  --color-primary-foreground: #fbf6ee;
   --color-secondary: #452d2a;
-  --color-secondary-foreground: #f2e6d6;
-  --color-muted: #cdc2b0;
+  --color-secondary-foreground: #fbf6ee;
+  --color-muted: #d4c4b0;
   --color-muted-foreground: #6e5c55;
-  --color-border: rgba(69, 45, 42, 0.12);
+  --color-border: #8c6239;
   --color-ring: #af522a;
   --radius-xl: 0.75rem;
 }
@@ -23,6 +25,19 @@
 #radial-root {
   display: block;
   background: #f2e6d6;
-  color: #452d2a;
+  color: #1c1512;
   overflow: visible;
+  isolation: isolate;
+}
+
+.rt-stack-frame {
+  height: 80%;
+  width: 90%;
+  max-width: 1100px;
+}
+
+@media (min-width: 640px) {
+  .rt-stack-frame {
+    width: var(--stack-w);
+  }
 }

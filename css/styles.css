@@ -1,43 +1,51 @@
-/* Display font: Archivo Black substitutes for licensed halvar-breitschrift (Masters reference). */
+/* Type: Fraunces (display) · General Sans (UI) · JetBrains Mono (data).
+   Color: one accent (terracotta). Brass outlines only. Perfect Fourth 1.333. */
 
 :root {
+  --ink: #1c1512;
   --espresso: #452d2a;
-  --espresso-deep: #372522;
-  --cream: #f2e6d6;
-  --cream-hot: #fcf0e0;
+  --stone: #f2e6d6;
+  --paper: #fbf6ee;
   --terracotta: #af522a;
-  --ochre: #c06d30;
-  --sand: #cdc2b0;
-  --greige: #d1bca1;
+  --brass: #8c6239;
   --olive: #6b6a44;
-  --olive-mid: #707442;
-  --olive-deep: #484b1f;
-  --black: #000;
-  --white: #fff;
 
-  --text: var(--espresso);
-  --bg: var(--cream);
-  --muted: #6e5c55;
-  --line: var(--sand);
+  --espresso-deep: var(--ink);
+  --cream: var(--stone);
+  --cream-hot: var(--paper);
+  --sand: color-mix(in srgb, var(--brass) 38%, var(--stone));
+  --greige: color-mix(in srgb, var(--brass) 48%, var(--stone));
+  --olive-mid: var(--olive);
+  --olive-deep: var(--olive);
+  --black: var(--ink);
+  --white: var(--paper);
 
-  /* Display: Archivo Black substitutes for licensed halvar-breitschrift */
-  --font-display: "Archivo Black", "Arial Black", sans-serif;
-  --font-italic: "Cormorant Garamond", Georgia, "Times New Roman", serif;
-  --font-body: Inter, system-ui, sans-serif;
+  --text: var(--ink);
+  --bg: var(--stone);
+  --muted: color-mix(in srgb, var(--ink) 58%, var(--stone));
+  --line: color-mix(in srgb, var(--brass) 40%, var(--stone));
 
-  --fs-label: 0.6875rem;
+  --font-display: "Fraunces", "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+  --font-italic: "Fraunces", "Iowan Old Style", Palatino, serif;
+  --font-body: "General Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --type-ratio: 1.333;
   --fs-body: 1.0625rem;
-  --fs-body-sm: 0.9375rem;
-  --fs-ui: 0.625rem;
-  --fs-h3: clamp(1.5rem, 2.4vw, 1.875rem);
-  --fs-h2: clamp(2rem, 5.2vw, 3.125rem);
-  --fs-h1: clamp(2.75rem, 8vw, 6.35rem);
-  --fs-stat: clamp(2.25rem, 5.5vw, 4.25rem);
+  --fs-caption: calc(var(--fs-body) / var(--type-ratio));
+  --fs-label: var(--fs-caption);
+  --fs-body-sm: var(--fs-caption);
+  --fs-ui: calc(var(--fs-caption) / 1.12);
+  --fs-h3: clamp(1.333rem, 2.2vw, 1.777rem);
+  --fs-h2: clamp(1.777rem, 4.4vw, 2.369rem);
+  --fs-h1: clamp(2.369rem, 6.8vw, 4.209rem);
+  --fs-hero: clamp(3.157rem, 8vw, 5.611rem);
+  --fs-stat: clamp(2.369rem, 5.2vw, 4.209rem);
 
-  --ls-display: -0.04em;
+  --ls-display: -0.02em;
   --ls-label: 0.16em;
   --lh-body: 1.55;
-  --lh-display: 0.95;
+  --lh-display: 1.02;
 
   --max: 1200px;
   --gutter: clamp(1.25rem, 4vw, 2.5rem);
@@ -74,6 +82,7 @@ body {
   font-size: var(--fs-body);
   font-weight: 400;
   line-height: var(--lh-body);
+  font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -146,24 +155,46 @@ ul {
   font-weight: 500;
   letter-spacing: var(--ls-label);
   text-transform: uppercase;
-  color: var(--terracotta);
+  color: var(--brass);
 }
 
 .display {
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 300;
+  font-optical-sizing: auto;
   letter-spacing: var(--ls-display);
   line-height: var(--lh-display);
   text-transform: uppercase;
+}
+
+h2.display {
+  font-weight: 500;
+}
+
+h1.display,
+.manifesto .display,
+.hero-logo {
+  font-weight: 300;
+}
+
+h3 {
+  font-weight: 500;
 }
 
 .display-emphasis em,
 .display-emphasis em .split-char {
   font-family: var(--font-italic);
   font-style: italic;
-  font-weight: 500;
+  font-weight: 300;
   letter-spacing: -0.02em;
   text-transform: none;
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
 }
 
 .hairline {
@@ -195,7 +226,7 @@ ul {
 }
 
 .btn:hover {
-  background: var(--ochre);
+  background: color-mix(in srgb, var(--terracotta) 82%, var(--ink));
   transform: scale(1.03);
 }
 
@@ -313,6 +344,8 @@ body.is-radial-pinned .float-contact {
 .wordmark-main {
   font-family: var(--font-display);
   font-size: 1.05rem;
+  font-weight: 500;
+  font-optical-sizing: auto;
   letter-spacing: -0.03em;
   text-transform: uppercase;
   line-height: 1;
@@ -414,9 +447,9 @@ body.is-radial-pinned .float-contact {
 }
 
 .site-header:not(.is-scrolled):not(.is-light) .header-cta:hover {
-  background: var(--ochre);
+  background: color-mix(in srgb, var(--terracotta) 82%, var(--ink));
   color: #fff;
-  border-color: var(--ochre);
+  border-color: color-mix(in srgb, var(--terracotta) 82%, var(--ink));
 }
 
 .loadbar {
@@ -466,13 +499,14 @@ body.is-radial-pinned .float-contact {
   height: 2.15rem;
   padding: 0;
   flex: none;
+  font-family: var(--font-mono);
   font-size: 0.5625rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  font-weight: 500;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--cream-hot);
-  background: rgba(55, 37, 34, 0.88);
-  border: 1px solid rgba(242, 230, 214, 0.22);
+  color: var(--terracotta);
+  background: var(--espresso);
+  border: 1px solid var(--brass);
 }
 
 .rail a span {
@@ -576,10 +610,12 @@ body.is-radial-pinned .float-contact {
 
 .hero-logo {
   font-family: var(--font-display);
-  font-size: clamp(3rem, 8vw, 6rem);
-  letter-spacing: -0.04em;
+  font-size: var(--fs-hero);
+  font-weight: 300;
+  font-optical-sizing: auto;
+  letter-spacing: -0.03em;
   text-transform: uppercase;
-  line-height: 0.9;
+  line-height: 0.92;
   color: #fff;
   text-shadow: 0 2px 28px rgba(0, 0, 0, 0.4);
 }
@@ -792,10 +828,11 @@ body.is-radial-pinned .float-contact {
   z-index: 2;
   top: 0.85rem;
   left: 0.85rem;
+  font-family: var(--font-mono);
   font-size: 0.625rem;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  color: var(--cream-hot);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--terracotta);
 }
 
 .work-card .badge {
@@ -823,6 +860,8 @@ body.is-radial-pinned .float-contact {
   margin: 0;
   font-family: var(--font-display);
   font-size: clamp(1rem, 1.6vw, 1.25rem);
+  font-weight: 500;
+  font-optical-sizing: auto;
   letter-spacing: var(--ls-display);
   text-transform: uppercase;
   line-height: 1.1;
@@ -1017,6 +1056,8 @@ body.is-radial-pinned .float-contact {
   padding: 0 2.25rem;
   font-family: var(--font-display);
   font-size: clamp(1.15rem, 2.4vw, 1.7rem);
+  font-weight: 500;
+  font-optical-sizing: auto;
   letter-spacing: var(--ls-display);
   text-transform: uppercase;
   line-height: 1;
@@ -1028,7 +1069,7 @@ body.is-radial-pinned .float-contact {
   content: "·";
   position: absolute;
   right: -0.15em;
-  color: var(--terracotta);
+  color: var(--brass);
 }
 
 /* Stats */
@@ -1054,12 +1095,14 @@ body.is-radial-pinned .float-contact {
 
 .stat-value {
   display: block;
-  font-family: var(--font-display);
+  font-family: var(--font-mono);
   font-size: var(--fs-stat);
-  letter-spacing: var(--ls-display);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
   line-height: 0.95;
-  text-transform: uppercase;
-  color: var(--espresso);
+  text-transform: none;
+  color: var(--terracotta);
 }
 
 .stat-value .unit {
@@ -1117,16 +1160,20 @@ body.is-radial-pinned .float-contact {
 .feature-index {
   display: block;
   margin-bottom: 2.25rem;
+  font-family: var(--font-mono);
   font-size: var(--fs-label);
-  letter-spacing: var(--ls-label);
+  font-weight: 500;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--olive);
+  color: var(--terracotta);
 }
 
 .feature h3 {
   font-family: var(--font-display);
-  font-size: 1.35rem;
-  letter-spacing: -0.03em;
+  font-size: var(--fs-h3);
+  font-weight: 500;
+  font-optical-sizing: auto;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
   line-height: 1.1;
   margin-bottom: 1rem;
@@ -1382,17 +1429,32 @@ body.is-radial-pinned .float-contact {
   right: 0.85rem;
   padding: 8px 12px;
   border-radius: var(--radius-pill);
-  background: var(--cream);
-  color: var(--espresso);
+  border: 1px solid transparent;
+  background: var(--espresso);
+  color: var(--paper);
+  font-family: var(--font-mono);
   font-size: 0.5625rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  font-weight: 500;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+}
+
+.badge-reserved {
+  background: transparent;
+  color: var(--paper);
+  border-color: var(--brass);
+}
+
+.badge-available {
+  background: transparent;
+  color: var(--olive);
+  border-color: var(--olive);
 }
 
 .badge-soon {
   background: var(--terracotta);
-  color: var(--cream-hot);
+  color: var(--paper);
+  border-color: var(--terracotta);
 }
 
 .project-card-loc {
@@ -1544,14 +1606,33 @@ body.is-radial-pinned .float-contact {
   gap: 0.55rem;
   padding: 8px 14px;
   border-radius: var(--radius-pill);
-  border: 1px solid rgba(252, 240, 224, 0.25);
-  background: rgba(28, 18, 17, 0.55);
-  color: var(--cream-hot);
+  border: 1px solid transparent;
+  background: var(--espresso);
+  color: var(--paper);
+  font-family: var(--font-mono);
   font-size: 0.6rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   backdrop-filter: blur(8px);
+}
+
+.folio-badge.is-reserved {
+  background: transparent;
+  border-color: var(--brass);
+  color: var(--paper);
+}
+
+.folio-badge.is-live {
+  background: var(--terracotta);
+  border-color: var(--terracotta);
+  color: var(--paper);
+}
+
+.folio-badge.is-available {
+  background: transparent;
+  border-color: var(--olive);
+  color: var(--olive);
 }
 
 .folio-badge i,
@@ -1559,7 +1640,7 @@ body.is-radial-pinned .float-contact {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #e8c07a;
+  background: var(--paper);
   animation: folio-pulse 2.2s ease-out infinite;
 }
 
@@ -2019,10 +2100,12 @@ body.is-radial-pinned .float-contact {
 
 .key-fact strong {
   display: block;
-  font-family: var(--font-display);
+  font-family: var(--font-mono);
   font-size: 1.05rem;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  text-transform: none;
   line-height: 1.2;
 }
 
@@ -2148,9 +2231,11 @@ body.is-radial-pinned .float-contact {
 }
 
 .gallery-count {
-  font-family: var(--font-display);
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  text-transform: none;
 }
 
 .gallery-nav {

@@ -1,15 +1,9 @@
 "use client";
 
-import React, { useCallback, useEffect } from "react";
-import IntroAnimation, { type MorphHeroItem } from "@/components/ui/scroll-morph-hero";
+import { useCallback, useEffect } from "react";
+import CssImageStacking, { type StackItem } from "@/components/ui/css-image-stacking";
 
-const projects: MorphHeroItem[] = [
-  {
-    src: "/images/madina-mall-featured.jpg",
-    title: "Madina Mall & Residency",
-    caption: "Coming Soon",
-    href: "project.html?id=upcoming",
-  },
+const projects: StackItem[] = [
   { src: "/images/project-1.jpg", title: "La Monte Vista", caption: "Sold Out", href: "project.html?id=1" },
   { src: "/images/project-2.jpg", title: "Madina Heights 1", caption: "Sold Out", href: "project.html?id=2" },
   { src: "/images/project-3.jpg", title: "Madina Heights 2", caption: "Sold Out", href: "project.html?id=3" },
@@ -18,6 +12,12 @@ const projects: MorphHeroItem[] = [
   { src: "/images/project-6.jpg", title: "Madina Heights 5", caption: "80% Sold", href: "project.html?id=6" },
   { src: "/images/project-7.jpg", title: "Madina Silver Heights", caption: "Sold Out", href: "project.html?id=7" },
   { src: "/images/project-8.jpg", title: "Madina Homes", caption: "Sold Out", href: "project.html?id=8" },
+  {
+    src: "/images/madina-mall-featured.jpg",
+    title: "Madina Mall & Residency",
+    caption: "Coming Soon",
+    href: "project.html?id=upcoming",
+  },
 ];
 
 export function RadialHero() {
@@ -30,13 +30,11 @@ export function RadialHero() {
   }, []);
 
   return (
-    <IntroAnimation
+    <CssImageStacking
       items={projects}
-      onActiveChange={onActiveChange}
-      introTitle="Lahore, built by RealTek."
-      introEyebrow="Scroll to explore"
       eyebrow="Our Projects"
-      activeBody="Every development we have delivered in Lahore — plus the upcoming mall."
+      body="Every development we have delivered in Lahore — plus the upcoming mall."
+      onActiveChange={onActiveChange}
     />
   );
 }

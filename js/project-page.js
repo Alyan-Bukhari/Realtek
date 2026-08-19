@@ -62,6 +62,13 @@
     }
 
     setText("p-status", project.status);
+    const statusEl = document.getElementById("p-status");
+    if (statusEl) {
+      statusEl.classList.remove("badge-soon", "badge-reserved", "badge-available");
+      const s = String(project.status || "");
+      if (/coming/i.test(s)) statusEl.classList.add("badge-soon");
+      else if (/80%|reserv/i.test(s)) statusEl.classList.add("badge-reserved");
+    }
     setText("p-title", project.name);
     setText("p-location", project.address || project.location);
     setText("p-crumb", project.name);

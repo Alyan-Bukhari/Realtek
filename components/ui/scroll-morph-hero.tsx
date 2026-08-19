@@ -403,7 +403,7 @@ export default function IntroAnimation({
               <em
                 className="font-medium"
                 style={{
-                  fontFamily: "Cormorant Garamond, Georgia, serif",
+                  fontFamily: "Fraunces, Iowan Old Style, Palatino, serif",
                   fontStyle: "italic",
                   textTransform: "none",
                 }}

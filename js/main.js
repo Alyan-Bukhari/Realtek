@@ -608,7 +608,13 @@
     });
     grid.innerHTML = ordered
       .map((p) => {
-        const badgeClass = p.filter === "upcoming" ? " badge-soon" : "";
+        const badgeClass = p.filter === "upcoming"
+            ? " badge-soon"
+            : /80%|reserv/i.test(p.status)
+              ? " badge-reserved"
+              : p.filter === "available"
+                ? " badge-available"
+                : "";
         return (
           '<a class="project-card" href="project.html?id=' +
           encodeURIComponent(p.id) +
