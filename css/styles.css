@@ -754,6 +754,19 @@ body.is-radial-pinned .float-contact {
   color: var(--terracotta);
 }
 
+.work.is-pinned-scroll {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 0 0 1.25rem;
+  box-sizing: border-box;
+}
+
+.work.is-pinned-scroll .work-intro {
+  flex: none;
+  padding: calc(var(--header-h) + 1.1rem) 0 1rem;
+}
+
 .work-scroller {
   overflow-x: auto;
   overflow-y: hidden;
@@ -761,12 +774,14 @@ body.is-radial-pinned .float-contact {
   scrollbar-width: none;
 }
 
-.work-scroller::-webkit-scrollbar {
-  display: none;
+.work.is-pinned-scroll .work-scroller {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
 }
 
-.work.is-pinned-scroll .work-scroller {
-  overflow: hidden;
+.work-scroller::-webkit-scrollbar {
+  display: none;
 }
 
 .work.is-native-scroll .work-scroller {
@@ -776,51 +791,55 @@ body.is-radial-pinned .float-contact {
 
 .work-track {
   display: flex;
-  gap: 1rem;
+  gap: 1.15rem;
   width: max-content;
-  padding: 0 var(--gutter);
+  height: 100%;
+  padding: 0 calc(var(--gutter) + 3.75rem) 0 var(--gutter);
   will-change: transform;
+  align-items: stretch;
 }
 
 .work-card {
   position: relative;
-  display: block;
-  flex: 0 0 clamp(17.5rem, 38vw, 30rem);
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 clamp(16.5rem, 32vw, 26rem);
   overflow: hidden;
   color: inherit;
-  background: #1c1211;
+  background: var(--ink);
   min-height: 0;
 }
 
 .work.is-native-scroll .work-card {
   scroll-snap-align: start;
+  height: min(70vh, 36rem);
 }
 
 .work-card img {
   display: block;
+  flex: 1 1 auto;
+  min-height: 0;
   width: 100%;
-  aspect-ratio: 3 / 4;
-  object-fit: cover;
-  object-position: center 20%;
+  height: auto;
+  object-fit: contain;
+  object-position: center center;
+  background: var(--ink);
   transition: transform 0.8s var(--ease);
+}
+
+.work.is-native-scroll .work-card img {
+  height: calc(100% - 4.5rem);
+  flex: 1 1 auto;
 }
 
 .work-card:hover img,
 .work-card:focus-visible img {
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 
 .work-card:focus-visible {
   outline: 2px solid var(--terracotta);
   outline-offset: 3px;
-}
-
-.work-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(28, 18, 17, 0.08) 35%, rgba(28, 18, 17, 0.82) 100%);
-  pointer-events: none;
 }
 
 .work-index {
@@ -840,11 +859,11 @@ body.is-radial-pinned .float-contact {
 }
 
 .work-copy {
-  position: absolute;
+  position: relative;
   z-index: 2;
-  left: 0.9rem;
-  right: 0.9rem;
-  bottom: 0.95rem;
+  flex: none;
+  padding: 0.85rem 0.95rem 1rem;
+  background: var(--ink);
 }
 
 .work-copy p {
@@ -859,12 +878,12 @@ body.is-radial-pinned .float-contact {
 .work-copy h3 {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  font-size: clamp(1.05rem, 1.7vw, 1.35rem);
   font-weight: 500;
   font-optical-sizing: auto;
   letter-spacing: var(--ls-display);
   text-transform: uppercase;
-  line-height: 1.1;
+  line-height: 1.15;
   color: #fff;
 }
 

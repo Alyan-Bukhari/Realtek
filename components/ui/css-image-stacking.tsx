@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type CSSProperties } from "react";
+import { FloatingPathsBackground } from "@/components/ui/floating-paths";
 
 export type StackItem = {
   src: string;
@@ -85,9 +86,9 @@ export default function CssImageStacking({
         <p className="mx-auto mt-4 max-w-md text-center text-sm text-muted-foreground">{body}</p>
         <div className="mx-auto mt-10 grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item) => (
-            <a key={item.href} href={item.href} className="overflow-hidden rounded-md bg-[#372522]">
-              <img src={item.src} alt={item.title} className="aspect-3/4 w-full object-cover" />
-              <span className="block px-4 py-3 text-center text-xs font-semibold uppercase tracking-[0.14em] text-[#fcf0e0]">
+            <a key={item.href} href={item.href} className="overflow-hidden rounded-md bg-[#1c1512]">
+              <img src={item.src} alt={item.title} className="aspect-3/4 w-full object-contain bg-[#1c1512]" />
+              <span className="block px-4 py-3 text-center text-xs font-semibold uppercase tracking-[0.14em] text-[#fbf6ee]">
                 {item.title}
               </span>
             </a>
@@ -98,72 +99,78 @@ export default function CssImageStacking({
   }
 
   return (
-    <section ref={rootRef} className="bg-background text-foreground">
-      <div className="wrapper">
-        <section className="sticky top-0 grid h-screen w-full place-content-center bg-background">
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#452d2a14_1px,transparent_1px),linear-gradient(to_bottom,#452d2a14_1px,transparent_1px)] bg-size-[54px_54px] mask-[radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
-          <p className="relative z-10 text-center text-[10px] font-semibold uppercase tracking-[0.22em] text-[#8c6239]">
-            {eyebrow}
-          </p>
-          <h2 className="relative z-10 mt-4 max-w-5xl px-8 text-center font-serif text-5xl font-light uppercase leading-[0.95] tracking-tight 2xl:text-7xl">
-            {heading}
-          </h2>
-          <p className="relative z-10 mt-5 max-w-lg px-8 text-center text-sm tracking-wide text-muted-foreground">
-            {body}
-          </p>
-        </section>
+    <section ref={rootRef} className="relative bg-background text-foreground">
+      <div className="pointer-events-none sticky top-0 z-0 h-screen w-full overflow-hidden">
+        <FloatingPathsBackground position={-1} className="h-full w-full bg-background" />
       </div>
 
-      <section className="w-full bg-background">
-        {items.map((item, i) => {
-          const width = Math.min(55 + i * 3.5, 86);
-          return (
-            <div
-              key={item.href}
-              className="sticky w-full"
-              style={{ top: i * 8, zIndex: i + 1 }}
-            >
-              <figure className="flex h-screen w-full items-center justify-center">
-                <a
-                  href={item.href}
-                  aria-label={`${item.title}${item.caption ? ` — ${item.caption}` : ""}`}
-                  className="rt-stack-frame relative block overflow-hidden rounded-md bg-[#372522] transition-all duration-300"
-                  style={
-                    {
-                      "--stack-w": `${width}%`,
-                      boxShadow:
-                        i === 0
-                          ? "none"
-                          : "0 -5px 16px 4px rgba(0,0,0,0.55), 0 2px 4px -1px rgba(0,0,0,0.06)",
-                    } as CSSProperties
-                  }
-                >
-                  <img
-                    src={item.src}
-                    alt={`${item.title}${item.caption ? `, ${item.caption}` : ""}`}
-                    className="h-full w-full object-cover object-center align-bottom"
-                    loading={i < 2 ? "eager" : "lazy"}
-                    decoding="async"
-                  />
-                  <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 bg-linear-to-t from-[#1c1211]/90 via-[#1c1211]/45 to-transparent px-5 pb-4 pt-16 text-[#fcf0e0]">
-                    <span
-                      className="text-xs font-medium uppercase tracking-[0.12em] sm:text-sm"
-                      style={{ fontFamily: "General Sans, ui-sans-serif, system-ui, sans-serif" }}
-                    >
-                      {item.title}
-                    </span>
-                    {item.caption ? (
-                      <span className="text-[10px] uppercase tracking-[0.16em] text-[#d1bca1]">
-                        {item.caption}
+      <div className="relative z-10 -mt-[100vh]">
+        <div className="wrapper">
+          <section className="sticky top-0 grid h-screen w-full place-content-center bg-transparent">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(251,246,238,0.78)_0%,rgba(242,230,214,0.18)_55%,transparent_72%)]" />
+            <p className="relative z-10 text-center text-[10px] font-semibold uppercase tracking-[0.22em] text-[#8c6239]">
+              {eyebrow}
+            </p>
+            <h2 className="relative z-10 mt-4 max-w-5xl px-8 text-center font-serif text-5xl font-light uppercase leading-[0.95] tracking-tight 2xl:text-7xl">
+              {heading}
+            </h2>
+            <p className="relative z-10 mt-5 max-w-lg px-8 text-center text-sm tracking-wide text-muted-foreground">
+              {body}
+            </p>
+          </section>
+        </div>
+
+        <section className="w-full bg-transparent">
+          {items.map((item, i) => {
+            const width = Math.min(55 + i * 3.5, 86);
+            return (
+              <div
+                key={item.href}
+                className="sticky w-full"
+                style={{ top: i * 8, zIndex: i + 1 }}
+              >
+                <figure className="flex h-screen w-full items-center justify-center">
+                  <a
+                    href={item.href}
+                    aria-label={`${item.title}${item.caption ? ` — ${item.caption}` : ""}`}
+                    className="rt-stack-frame relative flex flex-col overflow-hidden rounded-md bg-[#1c1512] transition-all duration-300"
+                    style={
+                      {
+                        "--stack-w": `${width}%`,
+                        boxShadow:
+                          i === 0
+                            ? "none"
+                            : "0 -5px 16px 4px rgba(28, 21, 18, 0.45), 0 2px 4px -1px rgba(28, 21, 18, 0.06)",
+                      } as CSSProperties
+                    }
+                  >
+                    <img
+                      src={item.src}
+                      alt={`${item.title}${item.caption ? `, ${item.caption}` : ""}`}
+                      className="min-h-0 w-full flex-1 object-contain object-center"
+                      loading={i < 2 ? "eager" : "lazy"}
+                      decoding="async"
+                    />
+                    <span className="flex shrink-0 items-center justify-between gap-3 bg-[#1c1512] px-5 py-3.5 text-[#fbf6ee]">
+                      <span
+                        className="text-xs font-medium uppercase tracking-[0.12em] sm:text-sm"
+                        style={{ fontFamily: "General Sans, ui-sans-serif, system-ui, sans-serif" }}
+                      >
+                        {item.title}
                       </span>
-                    ) : null}
-                  </span>
-                </a>
-              </figure>
-            </div>
-          );
-        })}
-      </section>
+                      {item.caption ? (
+                        <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#8c6239]">
+                          {item.caption}
+                        </span>
+                      ) : null}
+                    </span>
+                  </a>
+                </figure>
+              </div>
+            );
+          })}
+        </section>
+      </div>
     </section>
   );
 }
