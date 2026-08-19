@@ -49,6 +49,8 @@ export default function HorizontalFolio({
   const [reduce] = useState(prefersReduce);
   const [index, setIndex] = useState(0);
   const total = items.length + 2;
+  const bookingCount = items.filter((item) => /80%|reserv/i.test(item.caption || "")).length;
+  const soonCount = items.filter((item) => /coming/i.test(item.caption || "")).length;
 
   useEffect(() => {
     const el = rootRef.current;
@@ -156,14 +158,67 @@ export default function HorizontalFolio({
       <div className="hf-scroller">
         <div className="hf-track" ref={trackRef}>
           <article className="hf-slide hf-slide-intro">
-            <div>
-              <p className="hf-kicker">{eyebrow}</p>
-              <h2 className="hf-title">
-                The full <em>collection.</em>
-              </h2>
-              <p className="hf-lede">{body}</p>
+            <div className="hf-end-copy">
+              <div>
+                <p className="hf-kicker">{eyebrow}</p>
+                <h2 className="hf-title">
+                  The full <em>collection.</em>
+                </h2>
+                <p className="hf-lede">{body}</p>
+              </div>
+              <ul className="hf-end-stats">
+                <li>
+                  <b>{pad(items.length)}</b>
+                  <span>developments</span>
+                </li>
+                <li>
+                  <b>{pad(bookingCount)}</b>
+                  <span>still booking</span>
+                </li>
+                <li>
+                  <b>{pad(soonCount)}</b>
+                  <span>coming soon</span>
+                </li>
+              </ul>
+              <p className="hf-hint">Scroll to move through each development</p>
             </div>
-            <p className="hf-hint">Scroll to move through each development</p>
+            <aside className="hf-end-aside">
+              <img
+                className="hf-end-hero"
+                src="/images/mmr-pool.jpg"
+                alt="Indoor pool at Madina Mall & Residency, Bahria Town Lahore"
+                loading="eager"
+                decoding="async"
+              />
+              <img
+                className="hf-end-inset"
+                src="/images/project-6.jpg"
+                alt=""
+                aria-hidden="true"
+                loading="eager"
+                decoding="async"
+              />
+              <div className="hf-end-card">
+                <p className="hf-kicker">In this reel</p>
+                <h3>
+                  {items.length} developments
+                </h3>
+                <dl>
+                  <div>
+                    <dt>Open</dt>
+                    <dd>Madina Heights 4 &amp; 5</dd>
+                  </div>
+                  <div>
+                    <dt>Soon</dt>
+                    <dd>Madina Mall &amp; Residency</dd>
+                  </div>
+                  <div>
+                    <dt>City</dt>
+                    <dd>Lahore</dd>
+                  </div>
+                </dl>
+              </div>
+            </aside>
           </article>
 
           {items.map((item, i) => (

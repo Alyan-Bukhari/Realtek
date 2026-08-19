@@ -113,12 +113,7 @@
   scroll-snap-stop: always;
 }
 
-.hf-slide-intro {
-  justify-content: space-between;
-  padding: 22vh clamp(1.5rem, 6vw, 5rem) 10vh;
-  background: #f2e6d6;
-}
-
+.hf-slide-intro,
 .hf-slide-end {
   display: grid;
   grid-template-columns: minmax(22rem, 1fr) minmax(22rem, 1.08fr);
@@ -489,6 +484,7 @@
     padding-right: 1.25rem;
   }
 
+  .hf-slide-intro,
   .hf-slide-end {
     grid-template-columns: 1fr;
     grid-template-rows: minmax(0, auto) minmax(0, 1fr);
