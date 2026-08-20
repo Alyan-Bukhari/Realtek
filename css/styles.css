@@ -504,9 +504,15 @@ body.is-radial-pinned .float-contact {
   font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--terracotta);
+  color: var(--paper);
   background: var(--espresso);
   border: 1px solid var(--brass);
+}
+
+.rail a:hover,
+.rail a:focus-visible {
+  color: var(--paper);
+  background: var(--terracotta);
 }
 
 .rail a span {
