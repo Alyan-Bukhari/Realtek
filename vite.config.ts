@@ -2,7 +2,47 @@ import fs from "node:fs";
 import path from "node:path";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
+import { FALLBACK, answerChat, clientIp, readJsonBody } from "./lib/realtek-chat.js";
+
+function groqChatPlugin() {
+  return {
+    name: "realtek-groq-chat",
+    configureServer(server) {
+      const env = loadEnv(server.config.mode, process.cwd(), "");
+      server.middlewares.use(async (req, res, next) => {
+        const url = (req.url || "").split("?")[0];
+        if (url !== "/api/chat") {
+          next();
+          return;
+        }
+
+        res.setHeader("Content-Type", "application/json; charset=utf-8");
+        res.setHeader("Cache-Control", "no-store");
+
+        if (req.method !== "POST") {
+          res.statusCode = 200;
+          res.end(JSON.stringify({ reply: FALLBACK }));
+          return;
+        }
+
+        try {
+          const body = await readJsonBody(req);
+          const { reply } = await answerChat({
+            message: body.message,
+            ip: clientIp(req),
+            apiKey: env.GROQ_API_KEY || process.env.GROQ_API_KEY
+          });
+          res.statusCode = 200;
+          res.end(JSON.stringify({ reply }));
+        } catch {
+          res.statusCode = 200;
+          res.end(JSON.stringify({ reply: FALLBACK }));
+        }
+      });
+    }
+  };
+}
 
 const SITE = process.env.SITE_URL || "https://realtek.vercel.app";
 
@@ -193,7 +233,7 @@ function copyStatic() {
 }
 
 export default defineConfig({
-  plugins: [react(), tailwindcss(), copyStatic()],
+  plugins: [react(), tailwindcss(), copyStatic(), groqChatPlugin()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, ".")

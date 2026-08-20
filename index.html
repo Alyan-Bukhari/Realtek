@@ -368,15 +368,36 @@
     </div>
   </footer>
 
-  <aside class="float-contact is-min" aria-label="Contact RealTek">
-    <button class="float-toggle" type="button" data-float-toggle aria-expanded="false">Contact Us Now <span aria-hidden="true">+</span></button>
-    <div class="float-body">
-      <p>Call or WhatsApp to book a unit.</p>
-      <a class="float-phone" href="tel:03124455477">0312 4455477</a>
-      <div class="float-actions">
-        <a class="btn" href="https://wa.me/923124455477?text=Hi%2C%20I%27m%20interested%20in%20a%20RealTek%20project." target="_blank" rel="noopener noreferrer">WhatsApp</a>
-        <a class="btn btn-outline" href="tel:03124455477">Call Now</a>
+  <aside class="float-contact float-dock" data-float-dock aria-label="Contact RealTek">
+    <div class="chat-panel" id="chat-panel" hidden role="dialog" aria-labelledby="chat-title">
+      <header class="chat-head">
+        <div>
+          <p class="chat-kicker">Assistant</p>
+          <h2 id="chat-title">RealTek</h2>
+        </div>
+        <button class="chat-close" type="button" data-chat-close aria-label="Close chat">×</button>
+      </header>
+      <div class="chat-log" data-chat-log></div>
+      <div class="chat-chips" role="group" aria-label="Suggested questions">
+        <button type="button" data-chat-chip="Which projects are available?">Which projects are available?</button>
+        <button type="button" data-chat-chip="Is this Sharia-compliant?">Is this Sharia-compliant?</button>
+        <button type="button" data-chat-chip="How do I contact you?">How do I contact you?</button>
+        <button type="button" data-chat-chip="Tell me about Madina Mall">Tell me about Madina Mall</button>
+        <button type="button" data-chat-chip="Who founded RealTek?">Who founded RealTek?</button>
       </div>
+      <form class="chat-form" data-chat-form>
+        <label class="visually-hidden" for="chat-input">Message</label>
+        <input id="chat-input" data-chat-input type="text" maxlength="500" autocomplete="off" placeholder="Ask about a project">
+        <button type="submit">Send</button>
+      </form>
+    </div>
+    <button class="float-more" type="button" data-float-more aria-expanded="false" aria-label="Open contact options">
+      Contact <span aria-hidden="true">+</span>
+    </button>
+    <div class="float-fabs">
+      <a class="float-fab is-call" href="tel:03124455477">Call</a>
+      <a class="float-fab is-wa" href="https://wa.me/923124455477?text=Hi%2C%20I%27m%20interested%20in%20a%20RealTek%20project." target="_blank" rel="noopener noreferrer">WhatsApp</a>
+      <button class="float-fab is-chat" type="button" data-chat-open aria-expanded="false" aria-controls="chat-panel">Chat</button>
     </div>
   </aside>
 
@@ -386,6 +407,7 @@
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
   <script src="js/projects.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/chat.js"></script>
   <script type="module" src="/src/radial-mount.tsx"></script>
 </body>
 </html>

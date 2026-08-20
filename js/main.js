@@ -568,18 +568,6 @@
     });
   }
 
-  function initFloat() {
-    const box = $(".float-contact");
-    const toggle = $("[data-float-toggle]");
-    if (!box || !toggle) return;
-    toggle.addEventListener("click", () => {
-      const min = box.classList.toggle("is-min");
-      toggle.setAttribute("aria-expanded", String(!min));
-      const mark = toggle.querySelector("span");
-      if (mark) mark.textContent = min ? "+" : "×";
-    });
-  }
-
   function initNewsletter() {
     const form = $("#newsletter-form");
     if (!form) return;
@@ -729,7 +717,6 @@
     initGallery();
     initTabs();
     initLightbox();
-    initFloat();
     initNewsletter();
   });
 
