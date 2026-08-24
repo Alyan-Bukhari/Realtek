@@ -230,19 +230,19 @@
       name: "Madina Mall & Residency",
       location: "Bahria Town, Lahore",
       address: "Bahria Town, Lahore",
-      status: "COMING SOON",
-      filter: "upcoming",
+      status: "LIVE",
+      filter: "available",
       image: "images/madina-mall-featured.jpg",
       shot: "Evening elevation",
       type: "Luxury Mixed Use",
       area: null,
       floors: null,
       completion: null,
-      timeline: "Launching soon",
+      timeline: "Now live",
       overview:
         "A mixed-use mall and residences in Bahria Town — studio to three-bed, premium retail, owned on a 36-month plan.",
       facts: [
-        { label: "Status", value: "Coming soon" },
+        { label: "Status", value: "Live" },
         { label: "Installment", value: "36 months" },
         { label: "Residences", value: "Studio, 1 bed, 2 bed, 3 bed" }
       ],
@@ -471,9 +471,9 @@
         ],
         updates: [
           {
-            title: "Coming soon",
-            note: "Launching soon",
-            body: "Madina Mall & Residency is on the book. WhatsApp for the current schedule, unit list, and a site visit."
+            title: "Now live",
+            note: "Booking open",
+            body: "Madina Mall & Residency is live. WhatsApp for the current schedule, unit list, and a site visit."
           }
         ],
         faqs: [

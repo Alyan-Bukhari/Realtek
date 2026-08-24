@@ -41,7 +41,7 @@ function isMobile() {
 export default function HorizontalFolio({
   items,
   eyebrow = "Our Projects",
-  body = "Every development we have delivered in Lahore — plus the upcoming mall.",
+  body = "Every development we have delivered in Lahore — plus Madina Mall & Residency, now live.",
   onActiveChange,
 }: HorizontalFolioProps) {
   const rootRef = useRef<HTMLElement>(null);
@@ -49,7 +49,9 @@ export default function HorizontalFolio({
   const [reduce] = useState(prefersReduce);
   const [index, setIndex] = useState(0);
   const total = items.length + 2;
-  const bookingCount = items.filter((item) => /80%|reserv/i.test(item.caption || "")).length;
+  const bookingCount = items.filter((item) =>
+    /80%|reserv|live/i.test(item.caption || "")
+  ).length;
   const soonCount = items.filter((item) => /coming/i.test(item.caption || "")).length;
 
   useEffect(() => {
@@ -308,7 +310,7 @@ export default function HorizontalFolio({
                 decoding="async"
               />
               <div className="hf-end-card">
-                <p className="hf-kicker">Coming soon</p>
+                <p className="hf-kicker">Live</p>
                 <h3>Madina Mall &amp; Residency</h3>
                 <dl>
                   <div>

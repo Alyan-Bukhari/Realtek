@@ -21,7 +21,7 @@ const DEFAULT_ITEMS: StackItem[] = [
   {
     src: "/images/madina-mall-featured.jpg",
     title: "Madina Mall & Residency",
-    caption: "Coming Soon",
+    caption: "Live",
     href: "project.html?id=upcoming",
   },
 ];
@@ -36,7 +36,7 @@ type CssImageStackingProps = {
 export default function CssImageStacking({
   items = DEFAULT_ITEMS,
   eyebrow = "Our Projects",
-  body = "Every development we have delivered in Lahore — plus the upcoming mall.",
+  body = "Every development we have delivered in Lahore — plus Madina Mall & Residency, now live.",
   onActiveChange,
 }: CssImageStackingProps) {
   const rootRef = useRef<HTMLElement>(null);

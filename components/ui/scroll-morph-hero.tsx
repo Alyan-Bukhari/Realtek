@@ -203,7 +203,7 @@ export default function IntroAnimation({
   introTitle = "The full collection.",
   introEyebrow = "Scroll to explore",
   eyebrow = "Our Projects",
-  activeBody = "Every development we have delivered in Lahore — plus the upcoming mall.",
+  activeBody = "Every development we have delivered in Lahore — plus Madina Mall & Residency, now live.",
   onActiveChange,
 }: IntroAnimationProps) {
   const trackRef = useRef<HTMLDivElement>(null);

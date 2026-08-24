@@ -12,6 +12,59 @@
     if (el) el.textContent = value;
   }
 
+  /** Brand lines that replace the RealTek Developers wordmark. */
+  const PROJECT_BRANDS = {
+    "1": {
+      main: "La Monte",
+      sub: "Vista",
+      href: "project.html?id=1",
+      activeMatch: (href) => /project\.html\?id=1(?:$|&)/.test(href)
+    },
+    "8": {
+      main: "Madina",
+      sub: "Homes",
+      href: "project.html?id=8",
+      activeMatch: (href) => /project\.html\?id=8(?:$|&)/.test(href)
+    }
+  };
+
+  const MADINA_HEIGHTS_IDS = new Set(["2", "3", "4", "5", "6", "7", "upcoming"]);
+
+  function applyProjectBranding(id) {
+    const key = String(id);
+    let brand = PROJECT_BRANDS[key] || null;
+
+    if (!brand && MADINA_HEIGHTS_IDS.has(key)) {
+      brand = {
+        main: "Madina",
+        sub: "Heights",
+        href: "projects.html?series=madina-heights",
+        activeMatch: (href) => href.includes("series=madina-heights")
+      };
+    }
+
+    if (!brand) return;
+
+    const wordmark = document.querySelector(".site-header .wordmark");
+    if (wordmark) {
+      const main = wordmark.querySelector(".wordmark-main");
+      const sub = wordmark.querySelector(".wordmark-sub");
+      if (main) main.textContent = brand.main;
+      if (sub) sub.textContent = brand.sub;
+      wordmark.setAttribute("aria-label", brand.main + " " + brand.sub);
+      wordmark.setAttribute("href", brand.href);
+    }
+
+    document.querySelectorAll(".nav-link").forEach((link) => {
+      const href = link.getAttribute("href") || "";
+      const isBrand = brand.activeMatch(href);
+      const isProjectsAll =
+        /projects\.html\/?$/.test(href.split("?")[0]) && !href.includes("series=");
+      link.classList.toggle("is-active", isBrand);
+      if (isProjectsAll) link.classList.remove("is-active");
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", boot);
   if (document.readyState !== "loading") boot();
 
@@ -55,6 +108,8 @@
       }
     }
 
+    applyProjectBranding(id);
+
     const heroImg = document.getElementById("p-hero-img");
     if (heroImg) {
       heroImg.src = project.image;
@@ -66,7 +121,8 @@
     if (statusEl) {
       statusEl.classList.remove("badge-soon", "badge-reserved", "badge-available");
       const s = String(project.status || "");
-      if (/coming/i.test(s)) statusEl.classList.add("badge-soon");
+      if (/live/i.test(s)) statusEl.classList.add("badge-soon");
+      else if (/coming/i.test(s)) statusEl.classList.add("badge-soon");
       else if (/80%|reserv/i.test(s)) statusEl.classList.add("badge-reserved");
     }
     setText("p-title", project.name);
@@ -161,7 +217,10 @@
 
   function cardHtml(p, featured) {
     const href = RT.projectHref ? RT.projectHref(p.id) : "project.html?id=" + p.id;
-    const live = p.filter === "upcoming" ? ' is-live"><i></i>' : '">';
+    const live =
+      /live/i.test(p.status) || p.filter === "upcoming"
+        ? ' is-live"><i></i>'
+        : '">';
     return (
       '<a class="folio-card' +
       (featured ? " is-featured" : "") +
@@ -260,12 +319,17 @@
     const plans = (project.paymentPlans || [])
       .map((plan) => {
         const rows = plan.rows
-          .map(
-            (r) =>
+          .map((r) => {
+            const cells =
+              r.length > 2 && !/%/.test(String(r[1]))
+                ? [r[0]].concat(r.slice(2))
+                : r;
+            return (
               "<tr>" +
-              r.map((c) => "<td>" + escapeHtml(c) + "</td>").join("") +
+              cells.map((c) => "<td>" + escapeHtml(c) + "</td>").join("") +
               "</tr>"
-          )
+            );
+          })
           .join("");
         return (
           '<div class="plan-block"><p class="eyebrow">' +
@@ -273,7 +337,7 @@
           "</p><h3 class=\"display\" style=\"font-size: var(--fs-h3)\">" +
           escapeHtml(plan.title) +
           '</h3><div class="table-wrap"><table><thead><tr>' +
-          "<th>Property Type</th><th>Per Sq. Ft Price</th><th>Booking</th><th>Confirmation</th>" +
+          "<th>Property Type</th><th>Booking</th><th>Confirmation</th>" +
           "<th>Instalment / Month</th><th>Half Yearly</th><th>Possession</th>" +
           "</tr></thead><tbody>" +
           rows +

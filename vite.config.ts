@@ -138,7 +138,7 @@ const PROJECT_PAGES = [
   {
     id: "upcoming",
     name: "Madina Mall & Residency",
-    status: "Coming Soon",
+    status: "Live",
     location: "Bahria Town, Lahore",
     type: "36 months instalment",
     overview:

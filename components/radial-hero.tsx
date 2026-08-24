@@ -15,7 +15,7 @@ const projects: StackItem[] = [
   {
     src: "/images/madina-mall-featured.jpg",
     title: "Madina Mall & Residency",
-    caption: "Coming Soon",
+    caption: "Live",
     href: "project.html?id=upcoming",
   },
 ];
@@ -33,7 +33,7 @@ export function RadialHero() {
     <HorizontalFolio
       items={projects}
       eyebrow="Our Projects"
-      body="Every development we have delivered in Lahore — plus the upcoming mall."
+      body="Every development we have delivered in Lahore — plus Madina Mall & Residency, now live."
       onActiveChange={onActiveChange}
     />
   );

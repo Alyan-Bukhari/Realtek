@@ -302,6 +302,80 @@
     );
   }
 
+  function defaultPaymentPlans(project, d, rate, months) {
+    const plans = project.paymentPlans;
+    if (plans && plans.length) {
+      return {
+        plans: plans,
+        notes: project.paymentNotes || []
+      };
+    }
+
+    const rows = (d.units || []).map(function (u) {
+      return [u.name, "17.5%", "17.5%", "1%", "4%", "5%"];
+    });
+    if (!rows.length) {
+      rows.push(["Unit", "17.5%", "17.5%", "1%", "4%", "5%"]);
+    }
+
+    return {
+      plans: [
+        {
+          title: "1% Payment Plan",
+          note: months + " months installment",
+          rows: rows
+        }
+      ],
+      notes: d.sample
+        ? ["Sample schedule for this page — confirm the issued plan at booking."]
+        : [
+            "All areas are approx and gross.",
+            "All category charges that may apply will be applicable."
+          ]
+    };
+  }
+
+  function paymentPlansHtml(project, d, rate, months) {
+    const data = defaultPaymentPlans(project, d, rate, months);
+    return (
+      data.plans
+        .map(function (plan) {
+          return (
+            '<div class="table-wrap pay-commercial"><p class="eyebrow">' +
+            esc(plan.title) +
+            (plan.note ? " · " + esc(plan.note) : "") +
+            "</p><table><thead><tr><th>Type</th><th>Booking</th><th>Confirm</th><th>Monthly</th><th>Half-yearly</th><th>Possession</th></tr></thead><tbody>" +
+            plan.rows
+              .map(function (r) {
+                const cells =
+                  r.length > 2 && !/%/.test(String(r[1]))
+                    ? [r[0]].concat(r.slice(2))
+                    : r;
+                return (
+                  "<tr>" +
+                  cells
+                    .map(function (c) {
+                      return "<td>" + esc(c) + "</td>";
+                    })
+                    .join("") +
+                  "</tr>"
+                );
+              })
+              .join("") +
+            "</tbody></table></div>"
+          );
+        })
+        .join("") +
+      '<ul class="plan-notes">' +
+      data.notes
+        .map(function (n) {
+          return "<li>" + esc(n) + "</li>";
+        })
+        .join("") +
+      "</ul>"
+    );
+  }
+
   function paymentTable(units, rate, months, sample, projectName) {
     const rows = [
       ["Total price", "total", true],
@@ -385,19 +459,6 @@
 
   function build(project, d, isMall, rate, months, img) {
     const sample = !!d.sample;
-    const currencies = ["PKR", "GBP", "USD", "AUD", "EUR"]
-      .map(function (c) {
-        return (
-          '<button type="button" class="fx-btn' +
-          (c === "PKR" ? " is-active" : "") +
-          '" data-fx="' +
-          c +
-          '">' +
-          c +
-          "</button>"
-        );
-      })
-      .join("");
 
     const stats = d.stats
       .map(function (s) {
@@ -528,48 +589,12 @@
           "</div></section>"
         : "") +
       '<section class="dossier-block" id="plans">' +
-      '<div class="wrap"><div class="pay-head-row">' +
-      "<div><p class=\"dossier-kicker\"><i></i>" +
+      '<div class="wrap">' +
+      "<p class=\"dossier-kicker\"><i></i>" +
       (isMall ? "04" : "03") +
       " — Payment</p>" +
-      "<h2>Payment plans, side by side</h2></div>" +
-      '<div class="pay-tools"><p>3 years · 1% plan</p><div class="fx-row" role="group" aria-label="Currency">' +
-      currencies +
-      "</div></div></div>" +
-      paymentTable(d.units, rate, months, sample, project.name) +
-      (isMall
-        ? (project.paymentPlans || [])
-            .map(function (plan) {
-              return (
-                '<div class="table-wrap pay-commercial"><p class="eyebrow">' +
-                esc(plan.title) +
-                (plan.note ? " · " + esc(plan.note) : "") +
-                "</p><table><thead><tr><th>Type</th><th>Per sq. ft.</th><th>Booking</th><th>Confirm</th><th>Monthly</th><th>Half-yearly</th><th>Possession</th></tr></thead><tbody>" +
-                plan.rows
-                  .map(function (r) {
-                    return (
-                      "<tr>" +
-                      r
-                        .map(function (c) {
-                          return "<td>" + esc(c) + "</td>";
-                        })
-                        .join("") +
-                      "</tr>"
-                    );
-                  })
-                  .join("") +
-                "</tbody></table></div>"
-              );
-            })
-            .join("") +
-          '<ul class="plan-notes">' +
-          (project.paymentNotes || [])
-            .map(function (n) {
-              return "<li>" + esc(n) + "</li>";
-            })
-            .join("") +
-          "</ul>"
-        : "") +
+      '<h2 class="display display-emphasis">Payment plans</h2>' +
+      paymentPlansHtml(project, d, rate, months) +
       "</div></section>" +
       '<section class="dossier-block" id="amenities">' +
       '<div class="wrap"><p class="dossier-kicker"><i></i>' +

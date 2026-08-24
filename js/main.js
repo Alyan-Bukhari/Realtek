@@ -596,7 +596,9 @@
     });
     grid.innerHTML = ordered
       .map((p) => {
-        const badgeClass = p.filter === "upcoming"
+        const badgeClass = /live/i.test(p.status)
+            ? " badge-soon"
+            : p.filter === "upcoming"
             ? " badge-soon"
             : /80%|reserv/i.test(p.status)
               ? " badge-reserved"
