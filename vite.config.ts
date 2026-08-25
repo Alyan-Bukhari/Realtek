@@ -55,7 +55,7 @@ const PROJECT_PAGES = [
     type: "Commercial + Apartments",
     overview:
       "Delivered 2021 in 166-B Commercial — 20 apartments and three commercial halls, now fully sold.",
-    image: "images/project-1.jpg",
+    image: "images/la-monte-vista/exterior.jpeg",
     address: "166-B Commercial, Bahria Town."
   },
   {

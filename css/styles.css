@@ -2906,18 +2906,39 @@ th {
 }
 
 @media (max-width: 1200px) {
+  .site-header {
+    overflow: visible;
+  }
+
+  .site-header.is-light,
+  .site-header.is-scrolled {
+    backdrop-filter: none;
+    background: var(--cream);
+  }
+
   .nav-toggle {
     display: block;
+    position: relative;
+    z-index: 2;
   }
 
   .nav {
     position: fixed;
-    inset: var(--header-h) 0 0 0;
+    top: var(--header-h);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 90;
+    width: 100%;
+    height: auto;
     background: var(--cream);
     color: var(--espresso);
-    padding: 2rem var(--gutter);
+    padding: 2rem var(--gutter) 3rem;
     transform: translateX(100%);
     transition: transform 0.4s var(--ease);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
   }
 
   .nav.is-open {
@@ -3202,8 +3223,9 @@ body.is-dossier .gallery {
 
 .dossier-split figure img {
   width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
   background: var(--espresso-deep);
 }
 
@@ -3284,9 +3306,11 @@ body.is-dossier .gallery {
 
 .unit-card-media img {
   width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
   display: block;
+  background: var(--espresso-deep);
 }
 
 .unit-card-count {
@@ -3656,8 +3680,10 @@ body.is-dossier .gallery {
 
 .amenity-shots img {
   width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
+  height: auto;
+  aspect-ratio: auto;
+  object-fit: contain;
+  object-position: center;
   display: block;
 }
 

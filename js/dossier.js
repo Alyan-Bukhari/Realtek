@@ -134,20 +134,14 @@
     };
   }
 
-  function navHtml(isMall) {
+  function navHtml(hasCommercial) {
     const links = [
       ["overview", "Overview"],
-      ["residences", "Residences & Plans"],
-      ["commercial", "Commercial"],
-      ["plans", "Payment"],
-      ["amenities", "Amenities"],
-      ["location", "Location"],
-      ["updates", "Updates"],
-      ["faqs", "FAQs"]
+      ["residences", "Residences & Plans"]
     ];
-    if (!isMall) {
-      links.splice(2, 1);
-    }
+    if (hasCommercial) links.push(["commercial", "Commercial"]);
+    links.push(["plans", "Payment"], ["amenities", "Amenities"]);
+    links.push(["location", "Location"], ["updates", "Updates"], ["faqs", "FAQs"]);
     return (
       '<nav class="dossier-nav" aria-label="On this page"><div class="dossier-nav-inner">' +
       links
@@ -166,8 +160,13 @@
     );
   }
 
+  function padNum(n) {
+    return n < 10 ? "0" + n : String(n);
+  }
+
   function unitCard(unit, rate, months, sample) {
-    const pay = unitSchedule(unit, rate, months);
+    const showPay = rate > 0 && unit.area > 0;
+    const pay = showPay ? unitSchedule(unit, rate, months) : null;
     const n = (unit.gallery || []).length;
     const galBtns = (unit.gallery || [])
       .map(function (img, i) {
@@ -191,6 +190,32 @@
       })
       .join("");
 
+    const priceBlock = showPay
+      ? '<p class="unit-card-price" data-pkr="' +
+        pay.total +
+        '">' +
+        formatShort(pay.total, "PKR") +
+        "</p>" +
+        '<p class="unit-card-sub">' +
+        (sample ? "sample total" : "total price") +
+        "</p>" +
+        '<dl class="unit-card-pay"><div><dt>Down</dt><dd data-pkr="' +
+        pay.down +
+        '">' +
+        FX_LABEL.PKR +
+        " " +
+        formatFull(pay.down, "PKR") +
+        "</dd></div><div><dt>Monthly</dt><dd><span data-keep>" +
+        pay.months +
+        " × </span><span data-pkr=\"" +
+        pay.monthly +
+        '">' +
+        FX_LABEL.PKR +
+        " " +
+        formatFull(pay.monthly, "PKR") +
+        "</span></dd></div></dl>"
+      : '<p class="unit-card-price">Sold out</p><p class="unit-card-sub">delivered project</p>';
+
     return (
       '<article class="unit-card" data-unit="' +
       esc(unit.id) +
@@ -203,38 +228,16 @@
       '" loading="lazy">' +
       '<span class="unit-card-count">' +
       n +
-      " render" +
+      " photo" +
       (n === 1 ? "" : "s") +
       "</span></div>" +
       '<div class="unit-card-body">' +
       '<div class="unit-card-head"><h3>' +
       esc(unit.name) +
-      "</h3><p>~" +
-      unit.area +
-      " sq. ft.</p></div>" +
-      '<p class="unit-card-price" data-pkr="' +
-      pay.total +
-      '">' +
-      formatShort(pay.total, "PKR") +
-      "</p>" +
-      '<p class="unit-card-sub">' +
-      (sample ? "sample total" : "total price") +
-      "</p>" +
-      '<dl class="unit-card-pay"><div><dt>Down</dt><dd data-pkr="' +
-      pay.down +
-      '">' +
-      FX_LABEL.PKR +
-      " " +
-      formatFull(pay.down, "PKR") +
-      "</dd></div><div><dt>Monthly</dt><dd><span data-keep>" +
-      pay.months +
-      " × </span><span data-pkr=\"" +
-      pay.monthly +
-      '">' +
-      FX_LABEL.PKR +
-      " " +
-      formatFull(pay.monthly, "PKR") +
-      "</span></dd></div></dl>" +
+      "</h3>" +
+      (unit.area > 0 ? "<p>~" + unit.area + " sq. ft.</p>" : "") +
+      "</div>" +
+      priceBlock +
       "<p>" +
       esc(unit.blurb) +
       "</p></div>" +
@@ -452,13 +455,15 @@
   }
 
   function render(project) {
-    const isMall = project.id === "upcoming" && project.dossier;
-    const d = isMall ? project.dossier : dummyDossier(project);
-    return build(project, d, isMall, d.rate, d.months, d.hero || project.image);
+    const d = project.dossier || dummyDossier(project);
+    const hasCommercial = Array.isArray(d.floors) && d.floors.length > 0;
+    const isMall = project.id === "upcoming";
+    return build(project, d, isMall, hasCommercial, d.rate, d.months, d.hero || project.image);
   }
 
-  function build(project, d, isMall, rate, months, img) {
+  function build(project, d, isMall, hasCommercial, rate, months, img) {
     const sample = !!d.sample;
+    let step = 1;
 
     const stats = d.stats
       .map(function (s) {
@@ -543,14 +548,20 @@
 
     const locSrc = d.locImage || d.hero || project.image;
 
+    function kicker(label) {
+      const n = padNum(step++);
+      return '<p class="dossier-kicker"><i></i>' + n + " — " + label + "</p>";
+    }
+
     return (
-      navHtml(isMall) +
+      navHtml(hasCommercial) +
       (sample
         ? '<p class="dossier-banner wrap">Sample figures for this page — not a published RealTek schedule. WhatsApp for issued drawings.</p>'
         : "") +
       '<section class="dossier-block" id="overview">' +
       '<div class="wrap dossier-split">' +
-      "<div><p class=\"dossier-kicker\"><i></i>01 — Overview</p>" +
+      "<div>" +
+      kicker("Overview") +
       '<p class="dossier-copy">' +
       esc(d.copy) +
       "</p></div>" +
@@ -567,20 +578,22 @@
       stats +
       "</div></section>" +
       '<section class="dossier-block" id="residences">' +
-      '<div class="wrap"><p class="dossier-kicker"><i></i>02 — Residences &amp; plans</p>' +
+      '<div class="wrap">' +
+      kicker("Residences &amp; plans") +
       "<h2 class=\"display display-emphasis\">" +
-      (isMall ? "Three ways in." : "Sample plates.") +
+      (isMall ? "Three ways in." : d.sample ? "Sample plates." : "Residences.") +
       "</h2>" +
       (sample
         ? "<p class=\"dossier-note\">Dummy layouts for this project — WhatsApp for issued drawings.</p>"
-        : "<p class=\"dossier-note\">Each plate has its own blueprint. Areas are approximate and gross. Three-bed drawings are shared at booking.</p>") +
+        : "<p class=\"dossier-note\">Photos from the delivered building. Ask RealTek for related inventory still booking.</p>") +
       '<div class="unit-grid">' +
       d.units.map(function (u) {
         return unitCard(u, rate, months, sample);
       }).join("") +
       "</div></div></section>" +
-      (isMall
-        ? '<section class="dossier-block" id="commercial"><div class="wrap"><p class="dossier-kicker"><i></i>03 — Commercial</p>' +
+      (hasCommercial
+        ? '<section class="dossier-block" id="commercial"><div class="wrap">' +
+          kicker("Commercial") +
           '<h2 class="display display-emphasis">Retail, floor by floor.</h2>' +
           '<div class="floor-tabs" role="tablist">' +
           floorTabs +
@@ -590,16 +603,13 @@
         : "") +
       '<section class="dossier-block" id="plans">' +
       '<div class="wrap">' +
-      "<p class=\"dossier-kicker\"><i></i>" +
-      (isMall ? "04" : "03") +
-      " — Payment</p>" +
+      kicker("Payment") +
       '<h2 class="display display-emphasis">Payment plans</h2>' +
       paymentPlansHtml(project, d, rate, months) +
       "</div></section>" +
       '<section class="dossier-block" id="amenities">' +
-      '<div class="wrap"><p class="dossier-kicker"><i></i>' +
-      (isMall ? "05" : "04") +
-      " — Amenities</p>" +
+      '<div class="wrap">' +
+      kicker("Amenities") +
       '<h2 class="display display-emphasis">' +
       (isMall ? "Built in, not bolted on." : "On the record.") +
       "</h2>" +
@@ -609,9 +619,8 @@
       (amenityLists ? '<div class="amenity-cols">' + amenityLists + "</div>" : "") +
       "</div></section>" +
       '<section class="dossier-block" id="location">' +
-      '<div class="wrap dossier-split"><div><p class="dossier-kicker"><i></i>' +
-      (isMall ? "06" : "05") +
-      " — Location</p>" +
+      '<div class="wrap dossier-split"><div>' +
+      kicker("Location") +
       '<h2 class="display display-emphasis">' +
       esc(project.location) +
       "</h2><p>" +
@@ -629,16 +638,14 @@
       esc(project.name) +
       "</span><span>Site</span></figcaption></figure></div></section>" +
       '<section class="dossier-block" id="updates">' +
-      '<div class="wrap"><p class="dossier-kicker"><i></i>' +
-      (isMall ? "07" : "06") +
-      " — Updates</p>" +
+      '<div class="wrap">' +
+      kicker("Updates") +
       '<div class="update-list">' +
       updates +
       "</div></div></section>" +
       '<section class="dossier-block" id="faqs">' +
-      '<div class="wrap"><p class="dossier-kicker"><i></i>' +
-      (isMall ? "08" : "07") +
-      " — FAQs</p>" +
+      '<div class="wrap">' +
+      kicker("FAQs") +
       '<div class="faq-list">' +
       faqs +
       "</div></div></section>"

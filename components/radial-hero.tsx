@@ -4,7 +4,7 @@ import { useCallback, useEffect } from "react";
 import HorizontalFolio, { type StackItem } from "@/components/ui/horizontal-folio";
 
 const projects: StackItem[] = [
-  { src: "/images/project-1.jpg", title: "La Monte Vista", caption: "Sold Out", href: "project.html?id=1" },
+  { src: "/images/la-monte-vista/exterior.jpeg", title: "La Monte Vista", caption: "Sold Out", href: "project.html?id=1" },
   { src: "/images/project-2.jpg", title: "Madina Heights 1", caption: "Sold Out", href: "project.html?id=2" },
   { src: "/images/project-3.jpg", title: "Madina Heights 2", caption: "Sold Out", href: "project.html?id=3" },
   { src: "/images/project-4.jpg", title: "Madina Heights 3", caption: "Sold Out", href: "project.html?id=4" },

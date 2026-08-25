@@ -16,6 +16,7 @@
     return out;
   }
 
+
   function unitTour(folder, label, hotspots) {
     return {
       plan: "images/units/" + folder + "/floorplan.jpg",
@@ -23,6 +24,7 @@
       hotspots: hotspots
     };
   }
+
 
   const PROJECTS = [
     {
@@ -32,7 +34,7 @@
       address: "166-B Commercial, Bahria Town.",
       status: "SOLD OUT",
       filter: "sold",
-      image: "images/project-1.jpg",
+      image: "images/la-monte-vista/exterior.jpeg",
       shot: "Exterior",
       type: "Commercial + Apartments",
       area: "08 Marla",
@@ -48,7 +50,135 @@
         { label: "Units", value: "20 apartments, 03 commercial halls" },
         { label: "Area", value: "13,600 sq. ft." }
       ],
-      gallery: [{ src: "images/project-1.jpg", alt: "La Monte Vista, Bahria Town Lahore" }]
+      gallery: [
+        { src: "images/la-monte-vista/exterior.jpeg", alt: "La Monte Vista exterior, Bahria Town Lahore" },
+        { src: "images/la-monte-vista/intro.jpeg", alt: "La Monte Vista project intro" },
+        { src: "images/la-monte-vista/location.jpeg", alt: "La Monte Vista location" },
+        { src: "images/la-monte-vista/1bedpic_2a_2b.jpeg", alt: "La Monte Vista 1-bed apartment" },
+        { src: "images/la-monte-vista/1bedpic_2a_2b_1.jpeg", alt: "La Monte Vista 1-bed apartment" },
+        { src: "images/la-monte-vista/1bedpic_2a_2b_2.jpeg", alt: "La Monte Vista 1-bed apartment" },
+        { src: "images/la-monte-vista/1bedpic_2c_3c.jpeg", alt: "La Monte Vista 1-bed apartment" },
+        { src: "images/la-monte-vista/1bedpic_2c_3c_1.jpeg", alt: "La Monte Vista 1-bed apartment" },
+        { src: "images/la-monte-vista/1bedpic_2c_3c_2.jpeg", alt: "La Monte Vista 1-bed apartment" },
+        { src: "images/la-monte-vista/1bedpic_2c_3c_3.jpeg", alt: "La Monte Vista 1-bed apartment" },
+        { src: "images/la-monte-vista/1bedpic_5b.jpeg", alt: "La Monte Vista 1-bed apartment" },
+        { src: "images/la-monte-vista/1bedpic_5b_1.jpeg", alt: "La Monte Vista 1-bed apartment" },
+        { src: "images/la-monte-vista/1bedpic_5b_2.jpeg", alt: "La Monte Vista 1-bed apartment" },
+        { src: "images/la-monte-vista/1bedpic_5c.jpeg", alt: "La Monte Vista 1-bed apartment" },
+        { src: "images/la-monte-vista/1bedpic_5c_1.jpeg", alt: "La Monte Vista 1-bed apartment" },
+        { src: "images/la-monte-vista/1bedpic_5c_2.jpeg", alt: "La Monte Vista 1-bed apartment" },
+        { src: "images/la-monte-vista/2bedpic_2b_3b.jpeg", alt: "La Monte Vista 2-bed apartment" },
+        { src: "images/la-monte-vista/2bedpic_2b_3b_1.jpeg", alt: "La Monte Vista 2-bed apartment" },
+        { src: "images/la-monte-vista/2bedpic_2b_3b_2.jpeg", alt: "La Monte Vista 2-bed apartment" },
+        { src: "images/la-monte-vista/2bedpic_4a.jpeg", alt: "La Monte Vista 2-bed apartment" },
+        { src: "images/la-monte-vista/2bedpic_4a_1.jpeg", alt: "La Monte Vista 2-bed apartment" },
+        { src: "images/la-monte-vista/2bedpic_4a_2.jpeg", alt: "La Monte Vista 2-bed apartment" },
+        { src: "images/la-monte-vista/2bedpic_4c.jpeg", alt: "La Monte Vista 2-bed apartment" },
+        { src: "images/la-monte-vista/2bedpic_4c_1.jpeg", alt: "La Monte Vista 2-bed apartment" },
+        { src: "images/la-monte-vista/2bedpic_5a.jpeg", alt: "La Monte Vista 2-bed apartment" },
+        { src: "images/la-monte-vista/2bedpic_5a_1.jpeg", alt: "La Monte Vista 2-bed apartment" },
+        { src: "images/la-monte-vista/2bedpic_5a_2.jpeg", alt: "La Monte Vista 2-bed apartment" },
+        { src: "images/la-monte-vista/pricelist.jpeg", alt: "La Monte Vista price list" }
+      ],
+      floorPlanImages: [
+        { src: "images/la-monte-vista/pricelist.jpeg", alt: "La Monte Vista price list" },
+        { src: "images/la-monte-vista/location.jpeg", alt: "La Monte Vista location map" }
+      ],
+      dossier: {
+        copy:
+          "Delivered 2021 in 166-B Commercial, Bahria Town — apartments and commercial halls, now fully sold. Gallery below from the La Monte Vista interiors.",
+        hero: "images/la-monte-vista/exterior.jpeg",
+        locImage: "images/la-monte-vista/location.jpeg",
+        caption: "La Monte Vista — Bahria Town, Lahore",
+        imageKind: "Photo",
+        stats: [
+          { label: "Status", value: "Sold Out" },
+          { label: "Completed", value: "2021" },
+          { label: "Units", value: "20 apartments + 3 halls" }
+        ],
+        rate: 0,
+        months: 18,
+        sample: false,
+        units: [
+          {
+            id: "1bed",
+            name: "1 Bed",
+            area: 0,
+            blurb: "One-bed apartments at La Monte Vista — interiors from the delivered building.",
+            hero: "images/la-monte-vista/1bedpic_5b.jpeg",
+            plan: "images/la-monte-vista/1bedpic_2a_2b.jpeg",
+            gallery: [
+              { src: "images/la-monte-vista/1bedpic_2a_2b.jpeg", alt: "La Monte Vista 1-bed" },
+              { src: "images/la-monte-vista/1bedpic_2a_2b_1.jpeg", alt: "La Monte Vista 1-bed" },
+              { src: "images/la-monte-vista/1bedpic_2a_2b_2.jpeg", alt: "La Monte Vista 1-bed" },
+              { src: "images/la-monte-vista/1bedpic_2c_3c.jpeg", alt: "La Monte Vista 1-bed" },
+              { src: "images/la-monte-vista/1bedpic_2c_3c_1.jpeg", alt: "La Monte Vista 1-bed" },
+              { src: "images/la-monte-vista/1bedpic_2c_3c_2.jpeg", alt: "La Monte Vista 1-bed" },
+              { src: "images/la-monte-vista/1bedpic_2c_3c_3.jpeg", alt: "La Monte Vista 1-bed" },
+              { src: "images/la-monte-vista/1bedpic_5b.jpeg", alt: "La Monte Vista 1-bed" },
+              { src: "images/la-monte-vista/1bedpic_5b_1.jpeg", alt: "La Monte Vista 1-bed" },
+              { src: "images/la-monte-vista/1bedpic_5b_2.jpeg", alt: "La Monte Vista 1-bed" },
+              { src: "images/la-monte-vista/1bedpic_5c.jpeg", alt: "La Monte Vista 1-bed" },
+              { src: "images/la-monte-vista/1bedpic_5c_1.jpeg", alt: "La Monte Vista 1-bed" },
+              { src: "images/la-monte-vista/1bedpic_5c_2.jpeg", alt: "La Monte Vista 1-bed" }
+            ]
+          },
+          {
+            id: "2bed",
+            name: "2 Bed",
+            area: 0,
+            blurb: "Two-bed apartments at La Monte Vista — interiors from the delivered building.",
+            hero: "images/la-monte-vista/2bedpic_5a.jpeg",
+            plan: "images/la-monte-vista/2bedpic_4a.jpeg",
+            gallery: [
+              { src: "images/la-monte-vista/2bedpic_2b_3b.jpeg", alt: "La Monte Vista 2-bed" },
+              { src: "images/la-monte-vista/2bedpic_2b_3b_1.jpeg", alt: "La Monte Vista 2-bed" },
+              { src: "images/la-monte-vista/2bedpic_2b_3b_2.jpeg", alt: "La Monte Vista 2-bed" },
+              { src: "images/la-monte-vista/2bedpic_4a.jpeg", alt: "La Monte Vista 2-bed" },
+              { src: "images/la-monte-vista/2bedpic_4a_1.jpeg", alt: "La Monte Vista 2-bed" },
+              { src: "images/la-monte-vista/2bedpic_4a_2.jpeg", alt: "La Monte Vista 2-bed" },
+              { src: "images/la-monte-vista/2bedpic_4c.jpeg", alt: "La Monte Vista 2-bed" },
+              { src: "images/la-monte-vista/2bedpic_4c_1.jpeg", alt: "La Monte Vista 2-bed" },
+              { src: "images/la-monte-vista/2bedpic_5a.jpeg", alt: "La Monte Vista 2-bed" },
+              { src: "images/la-monte-vista/2bedpic_5a_1.jpeg", alt: "La Monte Vista 2-bed" },
+              { src: "images/la-monte-vista/2bedpic_5a_2.jpeg", alt: "La Monte Vista 2-bed" }
+            ]
+          }
+        ],
+        floors: [],
+        amenityShots: [
+          { src: "images/la-monte-vista/intro.jpeg", alt: "La Monte Vista intro" },
+          { src: "images/la-monte-vista/exterior.jpeg", alt: "La Monte Vista exterior" },
+          { src: "images/la-monte-vista/1bedpic_5b.jpeg", alt: "1-bed interior" },
+          { src: "images/la-monte-vista/2bedpic_5a.jpeg", alt: "2-bed interior" },
+          { src: "images/la-monte-vista/1bedpic_2c_3c.jpeg", alt: "1-bed interior" },
+          { src: "images/la-monte-vista/2bedpic_4a.jpeg", alt: "2-bed interior" },
+          { src: "images/la-monte-vista/location.jpeg", alt: "Location" },
+          { src: "images/la-monte-vista/pricelist.jpeg", alt: "Price list" }
+        ],
+        updates: [
+          {
+            title: "Sold out",
+            note: "Completed 2021",
+            body: "La Monte Vista is fully sold. Call or WhatsApp for related RealTek inventory still booking."
+          }
+        ],
+        faqs: [
+          {
+            q: "Is La Monte Vista still booking?",
+            a: "No — it is sold out. Madina Heights 4 & 5 and Madina Mall & Residency still have availability."
+          },
+          {
+            q: "Where is it?",
+            a: "166-B Commercial, Bahria Town, Lahore."
+          },
+          {
+            q: "How do I contact RealTek?",
+            a: "WhatsApp or call 0312 4455477, or email info@realtek.pk."
+          }
+        ],
+        mapsQuery: "166-B Commercial Bahria Town Lahore"
+      }
     },
     {
       id: "2",
