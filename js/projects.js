@@ -76,12 +76,18 @@
         { src: "images/la-monte-vista/2bedpic_4c_1.jpeg", alt: "La Monte Vista 2-bed apartment" },
         { src: "images/la-monte-vista/2bedpic_5a.jpeg", alt: "La Monte Vista 2-bed apartment" },
         { src: "images/la-monte-vista/2bedpic_5a_1.jpeg", alt: "La Monte Vista 2-bed apartment" },
-        { src: "images/la-monte-vista/2bedpic_5a_2.jpeg", alt: "La Monte Vista 2-bed apartment" },
-        { src: "images/la-monte-vista/pricelist.jpeg", alt: "La Monte Vista price list" }
+        { src: "images/la-monte-vista/2bedpic_5a_2.jpeg", alt: "La Monte Vista 2-bed apartment" }
       ],
       floorPlanImages: [
-        { src: "images/la-monte-vista/pricelist.jpeg", alt: "La Monte Vista price list" },
         { src: "images/la-monte-vista/location.jpeg", alt: "La Monte Vista location map" }
+      ],
+      videos: [
+        {
+          src: "images/la-monte-vista/drone.mp4",
+          poster: "images/la-monte-vista/drone-poster.jpg",
+          title: "La Monte Vista drone",
+          note: "Aerial site view"
+        }
       ],
       dossier: {
         copy:
@@ -152,8 +158,7 @@
           { src: "images/la-monte-vista/2bedpic_5a.jpeg", alt: "2-bed interior" },
           { src: "images/la-monte-vista/1bedpic_2c_3c.jpeg", alt: "1-bed interior" },
           { src: "images/la-monte-vista/2bedpic_4a.jpeg", alt: "2-bed interior" },
-          { src: "images/la-monte-vista/location.jpeg", alt: "Location" },
-          { src: "images/la-monte-vista/pricelist.jpeg", alt: "Price list" }
+          { src: "images/la-monte-vista/location.jpeg", alt: "Location" }
         ],
         updates: [
           {
@@ -201,7 +206,15 @@
         { label: "Units", value: "22 apartments, 02 commercial halls" },
         { label: "Area", value: "13,000 sq. ft." }
       ],
-      gallery: [{ src: "images/project-2.jpg", alt: "Madina Heights 1 on Canal Bank Road" }]
+      gallery: [{ src: "images/project-2.jpg", alt: "Madina Heights 1 on Canal Bank Road" }],
+      videos: [
+        {
+          src: "images/madina-heights-1/drone.mp4",
+          poster: "images/madina-heights-1/drone-poster.jpg",
+          title: "Madina Heights 1 drone",
+          note: "Aerial site view"
+        }
+      ]
     },
     {
       id: "3",
@@ -232,6 +245,14 @@
         { src: "images/madina-heights-2/photo-03.jpeg", alt: "Madina Heights 2" },
         { src: "images/madina-heights-2/photo-04.jpeg", alt: "Madina Heights 2" },
         { src: "images/madina-heights-2/photo-05.jpeg", alt: "Madina Heights 2" }
+      ],
+      videos: [
+        {
+          src: "images/madina-heights-2/drone.mp4",
+          poster: "images/madina-heights-2/drone-poster.jpg",
+          title: "Madina Heights 2 drone",
+          note: "Aerial site view"
+        }
       ]
     },
     {
@@ -327,8 +348,7 @@
         { src: "images/madina-heights-4/brochure/page-39.jpg", alt: "Madina Heights 4" }
       ],
       floorPlanImages: [
-        { src: "images/madina-heights-4/payment/payment-1.jpg", alt: "Madina Heights 4 plan" },
-        { src: "images/madina-heights-4/elevation/elevation-01.jpg", alt: "Madina Heights 4 plan" }
+        { src: "images/madina-heights-4/elevation/elevation-01.jpg", alt: "Madina Heights 4 elevation" }
       ]
     },
     {
@@ -384,7 +404,15 @@
         { label: "Units", value: "35 apartments, 03 commercial halls" },
         { label: "Area", value: "30,000 sq. ft." }
       ],
-      gallery: [{ src: "images/project-7.jpg", alt: "Madina Silver Heights in Bahria Town Lahore" }]
+      gallery: [{ src: "images/project-7.jpg", alt: "Madina Silver Heights in Bahria Town Lahore" }],
+      videos: [
+        {
+          src: "images/madina-silver-heights/drone.mp4",
+          poster: "images/madina-silver-heights/drone-poster.jpg",
+          title: "Madina Silver Heights drone",
+          note: "Aerial site view"
+        }
+      ]
     },
     {
       id: "8",
@@ -521,19 +549,20 @@
           title: "Commercial 1% Payment Plan",
           note: "36 months installment",
           rows: [
-            ["Basement", "16,000", "17.5%", "17.5%", "1%", "4%", "5%"],
-            ["Ground Floor", "35,000", "17.5%", "17.5%", "1%", "4%", "5%"],
-            ["1st Floor", "24,000", "17.5%", "17.5%", "1%", "4%", "5%"],
-            ["2nd Floor", "18,000", "17.5%", "17.5%", "1%", "4%", "5%"]
+            ["Basement", "17.5%", "17.5%", "1%", "4%", "5%"],
+            ["Ground Floor", "17.5%", "17.5%", "1%", "4%", "5%"],
+            ["1st Floor", "17.5%", "17.5%", "1%", "4%", "5%"],
+            ["2nd Floor", "17.5%", "17.5%", "1%", "4%", "5%"]
           ]
         },
         {
           title: "Residential 1% Payment Plan",
           note: "36 months installment",
-          rows: [["Apartment", "13,500", "17.5%", "17.5%", "1%", "4%", "5%"]]
+          rows: [["Apartment", "17.5%", "17.5%", "1%", "4%", "5%"]]
         }
       ],
       paymentNotes: [
+        "Percentages only · rupee amounts on request at booking.",
         "Front facing category charges will be 15%.",
         "All areas are approx and gross.",
         "All category charges that may apply will be applicable."
@@ -547,6 +576,14 @@
         { src: "images/madina-mall-apt-1bed.jpg", alt: "One-bed apartment visual" },
         { src: "images/madina-mall-apt-2bed.jpg", alt: "Two-bed apartment visual" }
       ],
+      videos: [
+        {
+          src: "images/madina-mall/videos/drone.mp4",
+          poster: "images/madina-mall/videos/drone-poster.jpg",
+          title: "Madina Mall & Residency drone",
+          note: "Aerial site view"
+        }
+      ],
       dossier: {
         copy:
           "A mixed-use corner in Bahria Town: premium retail at street level, residences above, and a full amenity deck. Studios, one-beds, two-beds, and three-beds on a 36-month, 1% plan — construction-linked, issued in writing at booking.",
@@ -557,9 +594,9 @@
         stats: [
           { label: "Installment", value: "36 months" },
           { label: "Unit types", value: "Studio / 1 Bed / 2 Bed / 3 Bed" },
-          { label: "Residential rate", value: "Rs 13,500 / sq. ft." }
+          { label: "Status", value: "Live · booking open" }
         ],
-        rate: 13500,
+        rate: null,
         months: 36,
         units: [
           {
@@ -615,7 +652,7 @@
             desc: "Parking, tanks, and 27 numbered shop units on wide passages.",
             units: "27 shops",
             sizes: "See blueprint",
-            rate: 16000,
+            rate: null,
             use: "Parking & services",
             image: "images/madina-mall-floor-basement.jpg"
           },
@@ -625,7 +662,7 @@
             desc: "Eighteen shopfronts around the central escalators — the main retail plate.",
             units: "18 shops",
             sizes: "See blueprint",
-            rate: 35000,
+            rate: null,
             use: "Premium retail",
             image: "images/madina-mall-floor-ground.jpg"
           },
@@ -635,7 +672,7 @@
             desc: "Brands and commercial suites on the upper mall plate.",
             units: "25 shops",
             sizes: "See blueprint",
-            rate: 24000,
+            rate: null,
             use: "Brands & commercial",
             image: "images/madina-mall-floor-1-2.jpg"
           },
@@ -645,7 +682,7 @@
             desc: "Fashion and lifestyle shopfronts — same plate, lower rate.",
             units: "25 shops",
             sizes: "See blueprint",
-            rate: 18000,
+            rate: null,
             use: "Fashion & lifestyle",
             image: "images/madina-mall-floor-1-2.jpg"
           },

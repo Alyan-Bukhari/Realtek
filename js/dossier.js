@@ -1,7 +1,7 @@
 /**
  * Project dossier — Zee99-style subnav, residences, commercial, payment.
- * Madina Mall uses published rates (Rs 13,500 / sq. ft. residential).
- * Other projects use clearly marked sample figures.
+ * Price amounts are withheld site-wide; payment sections show percentages only.
+ * Madina Mall, Heights 4 & 5 keep payment-plan tables.
  */
 (function (global) {
   const FX = { PKR: 1, GBP: 365, USD: 278, AUD: 185, EUR: 305 };
@@ -51,7 +51,7 @@
   }
 
   function dummyDossier(project) {
-    const rate = 12500;
+    const rate = 0;
     const months = 36;
     return {
       sample: true,
@@ -122,8 +122,8 @@
       ],
       faqs: [
         {
-          q: "Are these prices final?",
-          a: "No. Figures on this page for " + project.name + " are samples so you can see the layout. WhatsApp for the issued schedule."
+          q: "How do I get pricing?",
+          a: "WhatsApp or call 0312 4455477 for the issued schedule for " + project.name + "."
         },
         {
           q: "How do I visit?",
@@ -139,7 +139,7 @@
     return id === "upcoming" || id === "5" || id === "6";
   }
 
-  function navHtml(hasCommercial, showPayment) {
+  function navHtml(hasCommercial, showPayment, showVideos) {
     const links = [
       ["overview", "Overview"],
       ["residences", "Residences & Plans"]
@@ -147,6 +147,7 @@
     if (hasCommercial) links.push(["commercial", "Commercial"]);
     if (showPayment) links.push(["plans", "Payment"]);
     links.push(["amenities", "Amenities"]);
+    if (showVideos) links.push(["videos", "Videos"]);
     links.push(["location", "Location"], ["updates", "Updates"], ["faqs", "FAQs"]);
     return (
       '<nav class="dossier-nav" aria-label="On this page"><div class="dossier-nav-inner">' +
@@ -170,9 +171,30 @@
     return n < 10 ? "0" + n : String(n);
   }
 
+  function videoCards(videos) {
+    return (videos || [])
+      .map(function (v) {
+        return (
+          '<article class="dossier-video">' +
+          '<div class="dossier-video-frame">' +
+          '<video controls playsinline preload="metadata"' +
+          (v.poster ? ' poster="' + esc(v.poster) + '"' : "") +
+          ">" +
+          '<source src="' +
+          esc(v.src) +
+          '" type="video/mp4">' +
+          "</video></div>" +
+          "<h3>" +
+          esc(v.title || "Drone video") +
+          "</h3>" +
+          (v.note ? "<p>" + esc(v.note) + "</p>" : "") +
+          "</article>"
+        );
+      })
+      .join("");
+  }
+
   function unitCard(unit, rate, months, sample, showPayment) {
-    const showPay = !!(showPayment && rate > 0 && unit.area > 0);
-    const pay = showPay ? unitSchedule(unit, rate, months) : null;
     const n = (unit.gallery || []).length;
     const galBtns = (unit.gallery || [])
       .map(function (img, i) {
@@ -196,33 +218,9 @@
       })
       .join("");
 
-    const priceBlock = showPay
-      ? '<p class="unit-card-price" data-pkr="' +
-        pay.total +
-        '">' +
-        formatShort(pay.total, "PKR") +
-        "</p>" +
-        '<p class="unit-card-sub">' +
-        (sample ? "sample total" : "total price") +
-        "</p>" +
-        '<dl class="unit-card-pay"><div><dt>Down</dt><dd data-pkr="' +
-        pay.down +
-        '">' +
-        FX_LABEL.PKR +
-        " " +
-        formatFull(pay.down, "PKR") +
-        "</dd></div><div><dt>Monthly</dt><dd><span data-keep>" +
-        pay.months +
-        " × </span><span data-pkr=\"" +
-        pay.monthly +
-        '">' +
-        FX_LABEL.PKR +
-        " " +
-        formatFull(pay.monthly, "PKR") +
-        "</span></dd></div></dl>"
-      : showPayment
-        ? '<p class="unit-card-price">On request</p><p class="unit-card-sub">WhatsApp for schedule</p>'
-        : '<p class="unit-card-price">Sold out</p><p class="unit-card-sub">delivered project</p>';
+    const priceBlock = showPayment
+      ? '<p class="unit-card-price">On request</p><p class="unit-card-sub">WhatsApp for schedule</p>'
+      : '<p class="unit-card-price">Sold out</p><p class="unit-card-sub">delivered project</p>';
 
     return (
       '<article class="unit-card" data-unit="' +
@@ -273,10 +271,6 @@
   }
 
   function floorPanel(floor, i) {
-    const rateVal = floor.rate
-      ? "Rs " + floor.rate.toLocaleString("en-PK") + " / sq. ft."
-      : "—";
-    const fromVal = floor.rate ? "On request" : "—";
     return (
       '<article class="floor-split' +
       (i === 0 ? " is-active" : "") +
@@ -294,12 +288,10 @@
       "<div><span>Sizes</span><strong>" +
       esc(floor.sizes) +
       "</strong></div>" +
-      "<div><span>Rate</span><strong>" +
-      esc(rateVal) +
+      "<div><span>Use</span><strong>" +
+      esc(floor.use || "—") +
       "</strong></div>" +
-      "<div><span>From</span><strong>" +
-      esc(fromVal) +
-      "</strong></div></div></div>" +
+      "<div><span>Pricing</span><strong>On request</strong></div></div></div>" +
       '<figure class="floor-plan"><button type="button" data-lightbox data-lightbox-group="floor-' +
       esc(floor.id) +
       '" data-src="' +
@@ -339,9 +331,10 @@
           rows: rows
         }
       ],
-      notes: d.sample
+        notes: d.sample
         ? ["Sample schedule for this page — confirm the issued plan at booking."]
         : [
+            "Percentages only · amounts on request at booking.",
             "All areas are approx and gross.",
             "All category charges that may apply will be applicable."
           ]
@@ -350,29 +343,6 @@
 
   function paymentPlansHtml(project, d, rate, months) {
     const data = defaultPaymentPlans(project, d, rate, months);
-    const payImgs = (project.floorPlanImages || []).filter(function (img) {
-      return /payment/i.test(img.src || "") || /payment/i.test(img.alt || "");
-    });
-    const gallery =
-      payImgs.length > 0
-        ? '<div class="amenity-shots" style="margin-top:1.5rem">' +
-          payImgs
-            .map(function (img) {
-              return (
-                '<button type="button" data-lightbox data-lightbox-group="payment-plans" data-src="' +
-                esc(img.src) +
-                '" data-alt="' +
-                esc(img.alt) +
-                '"><img src="' +
-                esc(img.src) +
-                '" alt="' +
-                esc(img.alt) +
-                '" loading="lazy"></button>'
-              );
-            })
-            .join("") +
-          "</div>"
-        : "";
     return (
       data.plans
         .map(function (plan) {
@@ -408,8 +378,7 @@
           return "<li>" + esc(n) + "</li>";
         })
         .join("") +
-      "</ul>" +
-      gallery
+      "</ul>"
     );
   }
 
@@ -498,6 +467,12 @@
   function build(project, d, isMall, hasCommercial, rate, months, img) {
     const sample = !!d.sample;
     const showPayment = hasLivePayment(project);
+    const projectVideos = Array.isArray(d.videos)
+      ? d.videos
+      : Array.isArray(project.videos)
+        ? project.videos
+        : [];
+    const showVideos = projectVideos.length > 0;
     let step = 1;
 
     const stats = d.stats
@@ -589,7 +564,7 @@
     }
 
     return (
-      navHtml(hasCommercial, showPayment) +
+      navHtml(hasCommercial, showPayment, showVideos) +
       (sample && showPayment
         ? '<p class="dossier-banner wrap">Sample figures for this page — not a published RealTek schedule. WhatsApp for issued drawings.</p>'
         : "") +
@@ -655,6 +630,15 @@
       "</div>" +
       (amenityLists ? '<div class="amenity-cols">' + amenityLists + "</div>" : "") +
       "</div></section>" +
+      (showVideos
+        ? '<section class="dossier-block" id="videos"><div class="wrap">' +
+          kicker("Videos") +
+          '<h2 class="display display-emphasis">From the air.</h2>' +
+          '<p class="dossier-note">Drone footage of the building and site.</p>' +
+          '<div class="dossier-videos">' +
+          videoCards(projectVideos) +
+          "</div></div></section>"
+        : "") +
       '<section class="dossier-block" id="location">' +
       '<div class="wrap dossier-split"><div>' +
       kicker("Location") +
