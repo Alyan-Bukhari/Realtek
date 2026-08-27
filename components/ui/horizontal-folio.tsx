@@ -194,7 +194,7 @@ export default function HorizontalFolio({
               />
               <img
                 className="hf-end-inset"
-                src="/images/project-6.jpg"
+                src="/images/madina-heights-5/commercial-view.jpeg"
                 alt=""
                 aria-hidden="true"
                 loading="eager"

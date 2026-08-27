@@ -1600,15 +1600,21 @@ body.is-radial-pinned .float-contact {
 
 .folio-card-media img {
   width: 100%;
+  aspect-ratio: 3 / 4;
   height: auto;
   display: block;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   transition: transform 1.4s var(--ease);
 }
 
 .folio-card:hover .folio-card-media img {
-  transform: none;
+  transform: scale(1.03);
+}
+
+.folio-card.is-featured .folio-card-media img {
+  aspect-ratio: 16 / 9;
+  object-position: center 35%;
 }
 
 .folio-card-media::after {

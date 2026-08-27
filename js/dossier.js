@@ -134,13 +134,19 @@
     };
   }
 
-  function navHtml(hasCommercial) {
+  function hasLivePayment(project) {
+    const id = project && project.id;
+    return id === "upcoming" || id === "5" || id === "6";
+  }
+
+  function navHtml(hasCommercial, showPayment) {
     const links = [
       ["overview", "Overview"],
       ["residences", "Residences & Plans"]
     ];
     if (hasCommercial) links.push(["commercial", "Commercial"]);
-    links.push(["plans", "Payment"], ["amenities", "Amenities"]);
+    if (showPayment) links.push(["plans", "Payment"]);
+    links.push(["amenities", "Amenities"]);
     links.push(["location", "Location"], ["updates", "Updates"], ["faqs", "FAQs"]);
     return (
       '<nav class="dossier-nav" aria-label="On this page"><div class="dossier-nav-inner">' +
@@ -164,8 +170,8 @@
     return n < 10 ? "0" + n : String(n);
   }
 
-  function unitCard(unit, rate, months, sample) {
-    const showPay = rate > 0 && unit.area > 0;
+  function unitCard(unit, rate, months, sample, showPayment) {
+    const showPay = !!(showPayment && rate > 0 && unit.area > 0);
     const pay = showPay ? unitSchedule(unit, rate, months) : null;
     const n = (unit.gallery || []).length;
     const galBtns = (unit.gallery || [])
@@ -214,7 +220,9 @@
         " " +
         formatFull(pay.monthly, "PKR") +
         "</span></dd></div></dl>"
-      : '<p class="unit-card-price">Sold out</p><p class="unit-card-sub">delivered project</p>';
+      : showPayment
+        ? '<p class="unit-card-price">On request</p><p class="unit-card-sub">WhatsApp for schedule</p>'
+        : '<p class="unit-card-price">Sold out</p><p class="unit-card-sub">delivered project</p>';
 
     return (
       '<article class="unit-card" data-unit="' +
@@ -256,8 +264,10 @@
           esc(unit.name) +
           ' floor plan">' +
           '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v4h-7zM13 10h7v10h-7zM4 13h7v7H4z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Floor plan</button>') +
-      '<a class="unit-act" href="#plans">' +
-      '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7 10h10M7 14h6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Payment plan</a>' +
+      (showPayment
+        ? '<a class="unit-act" href="#plans">' +
+          '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7 10h10M7 14h6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Payment plan</a>'
+        : "") +
       "</div></article>"
     );
   }
@@ -340,6 +350,29 @@
 
   function paymentPlansHtml(project, d, rate, months) {
     const data = defaultPaymentPlans(project, d, rate, months);
+    const payImgs = (project.floorPlanImages || []).filter(function (img) {
+      return /payment/i.test(img.src || "") || /payment/i.test(img.alt || "");
+    });
+    const gallery =
+      payImgs.length > 0
+        ? '<div class="amenity-shots" style="margin-top:1.5rem">' +
+          payImgs
+            .map(function (img) {
+              return (
+                '<button type="button" data-lightbox data-lightbox-group="payment-plans" data-src="' +
+                esc(img.src) +
+                '" data-alt="' +
+                esc(img.alt) +
+                '"><img src="' +
+                esc(img.src) +
+                '" alt="' +
+                esc(img.alt) +
+                '" loading="lazy"></button>'
+              );
+            })
+            .join("") +
+          "</div>"
+        : "";
     return (
       data.plans
         .map(function (plan) {
@@ -375,7 +408,8 @@
           return "<li>" + esc(n) + "</li>";
         })
         .join("") +
-      "</ul>"
+      "</ul>" +
+      gallery
     );
   }
 
@@ -463,6 +497,7 @@
 
   function build(project, d, isMall, hasCommercial, rate, months, img) {
     const sample = !!d.sample;
+    const showPayment = hasLivePayment(project);
     let step = 1;
 
     const stats = d.stats
@@ -554,8 +589,8 @@
     }
 
     return (
-      navHtml(hasCommercial) +
-      (sample
+      navHtml(hasCommercial, showPayment) +
+      (sample && showPayment
         ? '<p class="dossier-banner wrap">Sample figures for this page — not a published RealTek schedule. WhatsApp for issued drawings.</p>'
         : "") +
       '<section class="dossier-block" id="overview">' +
@@ -588,7 +623,7 @@
         : "<p class=\"dossier-note\">Photos from the delivered building. Ask RealTek for related inventory still booking.</p>") +
       '<div class="unit-grid">' +
       d.units.map(function (u) {
-        return unitCard(u, rate, months, sample);
+        return unitCard(u, showPayment ? rate : 0, months, sample, showPayment);
       }).join("") +
       "</div></div></section>" +
       (hasCommercial
@@ -601,12 +636,14 @@
           d.floors.map(floorPanel).join("") +
           "</div></section>"
         : "") +
-      '<section class="dossier-block" id="plans">' +
-      '<div class="wrap">' +
-      kicker("Payment") +
-      '<h2 class="display display-emphasis">Payment plans</h2>' +
-      paymentPlansHtml(project, d, rate, months) +
-      "</div></section>" +
+      (showPayment
+        ? '<section class="dossier-block" id="plans">' +
+          '<div class="wrap">' +
+          kicker("Payment") +
+          '<h2 class="display display-emphasis">Payment plans</h2>' +
+          paymentPlansHtml(project, d, rate, months) +
+          "</div></section>"
+        : "") +
       '<section class="dossier-block" id="amenities">' +
       '<div class="wrap">' +
       kicker("Amenities") +

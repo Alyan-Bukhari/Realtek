@@ -55,7 +55,7 @@ const PROJECT_PAGES = [
     type: "Commercial + Apartments",
     overview:
       "Delivered 2021 in 166-B Commercial — 20 apartments and three commercial halls, now fully sold.",
-    image: "images/la-monte-vista/exterior.jpeg",
+    image: "images/la-monte-vista/exterior-card.jpeg",
     address: "166-B Commercial, Bahria Town."
   },
   {
@@ -77,7 +77,7 @@ const PROJECT_PAGES = [
     type: "Commercial + Apartments",
     overview:
       "Sector-C side commercial — 18 apartments and six halls, completed 2023.",
-    image: "images/project-3.jpg",
+    image: "images/madina-heights-2/photo-06.jpeg",
     address: "189 A Side Commercial, Sector-C."
   },
   {
@@ -99,7 +99,7 @@ const PROJECT_PAGES = [
     type: "Commercial + Residential",
     overview:
       "Two plots at Umer block — 54 apartments and 27 shops, still booking on a 30-month plan.",
-    image: "images/project-5.jpg",
+    image: "images/madina-heights-4/elevation/elevation-01.jpg",
     address: "11,12 Umer block Commercial."
   },
   {
@@ -110,7 +110,7 @@ const PROJECT_PAGES = [
     type: "Commercial + Residential",
     overview:
       "Our largest Heights building — 84 apartments and 43 shops, still booking through 2026.",
-    image: "images/project-6.jpg",
+    image: "images/madina-heights-5/commercial-view.jpeg",
     address: "166B Commercial, Bahria Town."
   },
   {
@@ -132,7 +132,7 @@ const PROJECT_PAGES = [
     type: "Double-story villas",
     overview:
       "Fifty three-bedroom villas in a gated community — sold out, possession ongoing.",
-    image: "images/project-8.jpg",
+    image: "images/madina-homes/page-1.jpg",
     address: "Mariam Town (Gated Community)."
   },
   {

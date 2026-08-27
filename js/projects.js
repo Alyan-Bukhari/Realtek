@@ -34,7 +34,7 @@
       address: "166-B Commercial, Bahria Town.",
       status: "SOLD OUT",
       filter: "sold",
-      image: "images/la-monte-vista/exterior.jpeg",
+      image: "images/la-monte-vista/exterior-card.jpeg",
       shot: "Exterior",
       type: "Commercial + Apartments",
       area: "08 Marla",
@@ -46,7 +46,6 @@
       facts: [
         { label: "Status", value: "SOLD OUT" },
         { label: "ROI", value: "200% increase on investment" },
-        { label: "Plan", value: "18 months instalments & possession" },
         { label: "Units", value: "20 apartments, 03 commercial halls" },
         { label: "Area", value: "13,600 sq. ft." }
       ],
@@ -199,7 +198,6 @@
       facts: [
         { label: "Status", value: "SOLD OUT" },
         { label: "ROI", value: "200% increase on investment" },
-        { label: "Plan", value: "18 months instalments & possession" },
         { label: "Units", value: "22 apartments, 02 commercial halls" },
         { label: "Area", value: "13,000 sq. ft." }
       ],
@@ -212,7 +210,7 @@
       address: "189 A Side Commercial, Sector-C.",
       status: "SOLD OUT",
       filter: "sold",
-      image: "images/project-3.jpg",
+      image: "images/madina-heights-2/photo-06.jpeg",
       shot: "Exterior",
       type: "Commercial + Apartments",
       area: "05 Marla",
@@ -224,11 +222,17 @@
       facts: [
         { label: "Status", value: "SOLD OUT" },
         { label: "ROI", value: "150% increase on investment" },
-        { label: "Plan", value: "18 months instalments & possession" },
         { label: "Units", value: "18 apartments, 06 commercial halls" },
         { label: "Area", value: "9,000 sq. ft." }
       ],
-      gallery: [{ src: "images/project-3.jpg", alt: "Madina Heights 2 in Sector C, Bahria Town" }]
+      gallery: [
+        { src: "images/madina-heights-2/photo-06.jpeg", alt: "Madina Heights 2" },
+        { src: "images/madina-heights-2/photo-01.jpeg", alt: "Madina Heights 2" },
+        { src: "images/madina-heights-2/photo-02.jpeg", alt: "Madina Heights 2" },
+        { src: "images/madina-heights-2/photo-03.jpeg", alt: "Madina Heights 2" },
+        { src: "images/madina-heights-2/photo-04.jpeg", alt: "Madina Heights 2" },
+        { src: "images/madina-heights-2/photo-05.jpeg", alt: "Madina Heights 2" }
+      ]
     },
     {
       id: "4",
@@ -249,7 +253,6 @@
       facts: [
         { label: "Status", value: "SOLD OUT" },
         { label: "ROI", value: "100% increase on investment" },
-        { label: "Plan", value: "24 months instalments & possession" },
         { label: "Units", value: "22 apartments, 02 commercial halls" },
         { label: "Area", value: "13,000 sq. ft." }
       ],
@@ -262,7 +265,7 @@
       address: "11,12 Umer block Commercial.",
       status: "80% SOLD OUT",
       filter: "available",
-      image: "images/project-5.jpg",
+      image: "images/madina-heights-4/elevation/elevation-01.jpg",
       shot: "Exterior",
       type: "Commercial + Residential",
       area: "16 Marla",
@@ -278,7 +281,55 @@
         { label: "Units", value: "54 apartments, 27 shops" },
         { label: "Area", value: "30,000 sq. ft." }
       ],
-      gallery: [{ src: "images/project-5.jpg", alt: "Madina Heights 4 at Safari Villas" }]
+      gallery: [
+        { src: "images/madina-heights-4/elevation/elevation-01.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/elevation/elevation-02.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/elevation/elevation-03.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/elevation/elevation-04.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-01.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-02.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-03.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-04.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-05.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-06.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-07.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-08.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-09.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-10.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-11.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-12.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-13.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-14.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-15.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-16.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-17.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-18.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-19.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-20.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-21.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-22.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-23.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-24.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-25.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-26.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-27.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-28.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-29.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-30.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-31.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-32.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-33.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-34.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-35.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-36.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-37.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-38.jpg", alt: "Madina Heights 4" },
+        { src: "images/madina-heights-4/brochure/page-39.jpg", alt: "Madina Heights 4" }
+      ],
+      floorPlanImages: [
+        { src: "images/madina-heights-4/payment/payment-1.jpg", alt: "Madina Heights 4 plan" },
+        { src: "images/madina-heights-4/elevation/elevation-01.jpg", alt: "Madina Heights 4 plan" }
+      ]
     },
     {
       id: "6",
@@ -287,7 +338,7 @@
       address: "166B Commercial, Bahria Town.",
       status: "80% SOLD OUT",
       filter: "available",
-      image: "images/project-6.jpg",
+      image: "images/madina-heights-5/commercial-view.jpeg",
       shot: "Exterior",
       type: "Commercial + Residential",
       area: "16 Marla",
@@ -303,7 +354,13 @@
         { label: "Units", value: "84 apartments, 43 shops" },
         { label: "Area", value: "45,000 sq. ft." }
       ],
-      gallery: [{ src: "images/project-6.jpg", alt: "Madina Heights 5 in Bahria Town Lahore" }]
+      gallery: [
+        { src: "images/madina-heights-5/commercial-view.jpeg", alt: "Madina Heights 5" },
+        { src: "images/madina-heights-5/floorplan-1.jpg", alt: "Madina Heights 5" }
+      ],
+      floorPlanImages: [
+        { src: "images/madina-heights-5/floorplan-1.jpg", alt: "Madina Heights 5 floor plan" }
+      ]
     },
     {
       id: "7",
@@ -324,7 +381,6 @@
       facts: [
         { label: "Status", value: "SOLD OUT" },
         { label: "ROI", value: "200% increase on investment" },
-        { label: "Plan", value: "12 months instalments & possession" },
         { label: "Units", value: "35 apartments, 03 commercial halls" },
         { label: "Area", value: "30,000 sq. ft." }
       ],
@@ -337,7 +393,7 @@
       address: "Mariam Town (Gated Community).",
       status: "SOLD OUT",
       filter: "sold",
-      image: "images/project-8.jpg",
+      image: "images/madina-homes/page-1.jpg",
       shot: "Exterior",
       type: "Double-story villas",
       area: "3 Marla",
@@ -349,11 +405,26 @@
       facts: [
         { label: "Status", value: "SOLD OUT" },
         { label: "ROI", value: "200% increase on investment" },
-        { label: "Plan", value: "36 months instalments & possession" },
         { label: "Units", value: "50 three-bedroom units, 03 commercial halls" },
         { label: "Type", value: "Double-story villas built on 3 marlas" }
       ],
-      gallery: [{ src: "images/project-8.jpg", alt: "Madina Homes in Mariam Town" }]
+      gallery: [
+        { src: "images/madina-homes/page-1.jpg", alt: "Madina Homes" },
+        { src: "images/madina-homes/page-2.jpg", alt: "Madina Homes" },
+        { src: "images/madina-homes/page-3.jpg", alt: "Madina Homes" },
+        { src: "images/madina-homes/page-4.jpg", alt: "Madina Homes" },
+        { src: "images/madina-homes/page-5.jpg", alt: "Madina Homes" },
+        { src: "images/madina-homes/page-6.jpg", alt: "Madina Homes" },
+        { src: "images/madina-homes/page-7.jpg", alt: "Madina Homes" }
+      ],
+      floorPlanImages: [
+        { src: "images/madina-homes/page-2.jpg", alt: "Madina Homes details" },
+        { src: "images/madina-homes/page-3.jpg", alt: "Madina Homes details" },
+        { src: "images/madina-homes/page-4.jpg", alt: "Madina Homes details" },
+        { src: "images/madina-homes/page-5.jpg", alt: "Madina Homes details" },
+        { src: "images/madina-homes/page-6.jpg", alt: "Madina Homes details" },
+        { src: "images/madina-homes/page-7.jpg", alt: "Madina Homes details" }
+      ]
     },
     {
       id: "upcoming",
