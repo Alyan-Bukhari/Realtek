@@ -810,15 +810,20 @@ body.is-radial-pinned .float-contact {
   display: flex;
   flex-direction: column;
   flex: 0 0 clamp(16.5rem, 32vw, 26rem);
+  width: clamp(16.5rem, 32vw, 26rem);
+  height: min(70vh, 36rem);
   overflow: hidden;
   color: inherit;
   background: var(--ink);
   min-height: 0;
 }
 
+.work.is-pinned-scroll .work-card {
+  height: 100%;
+}
+
 .work.is-native-scroll .work-card {
   scroll-snap-align: start;
-  height: min(70vh, 36rem);
 }
 
 .work-card img {
@@ -827,15 +832,18 @@ body.is-radial-pinned .float-contact {
   min-height: 0;
   width: 100%;
   height: 0;
-  object-fit: contain;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
   object-position: center center;
   background: var(--ink);
   transition: transform 0.8s var(--ease);
 }
 
-.work.is-native-scroll .work-card img {
+.work.is-native-scroll .work-card img,
+.work.is-pinned-scroll .work-card img {
   height: 0;
   flex: 1 1 auto;
+  aspect-ratio: auto;
 }
 
 .work-card:hover img,
@@ -3000,6 +3008,7 @@ th {
 
   .work-card {
     flex-basis: min(78vw, 22rem);
+    width: min(78vw, 22rem);
   }
 
   .surfer-pin {
