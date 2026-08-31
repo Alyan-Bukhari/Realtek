@@ -694,32 +694,102 @@
     }
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    initLoadBar();
-    initHeader();
-    const lenis = initLenis();
-    window.RT = window.RT || {};
-    window.RT.lenis = lenis;
-    window.dispatchEvent(new CustomEvent("rt:lenis"));
-    initAnchorScroll(lenis);
-    initSplit();
-    initHeroIntro();
-    initParallax();
-    initTicker();
-    initCounters();
-    window.addEventListener(
-      "load",
-      () => {
+  function initIntroSplash(onDone) {
+    const splash = $("#intro-splash");
+    const STORAGE_KEY = "realtek-intro-seen";
+    let finished = false;
+    let exitTimer;
+    let doneTimer;
+    let safety;
+
+    const clear = () => {
+      window.clearTimeout(exitTimer);
+      window.clearTimeout(doneTimer);
+      window.clearTimeout(safety);
+    };
+
+    const done = () => {
+      if (finished) return;
+      finished = true;
+      clear();
+      try {
+        sessionStorage.setItem(STORAGE_KEY, "1");
+      } catch (e) {}
+      document.documentElement.classList.remove("intro-pending");
+      if (splash) splash.remove();
+      onDone();
+      requestAnimationFrame(() => {
+        window.dispatchEvent(new Event("scroll"));
+        window.dispatchEvent(new Event("resize"));
         if (typeof ScrollTrigger !== "undefined") ScrollTrigger.refresh();
+      });
+    };
+
+    if (!splash) {
+      document.documentElement.classList.remove("intro-pending");
+      onDone();
+      return;
+    }
+
+    let skip = false;
+    try {
+      skip =
+        sessionStorage.getItem(STORAGE_KEY) === "1" ||
+        new URLSearchParams(location.search).get("skipIntro") === "1";
+    } catch (e) {}
+
+    if (skip || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      done();
+      return;
+    }
+
+    if (!document.documentElement.classList.contains("intro-pending")) {
+      document.documentElement.classList.add("intro-pending");
+    }
+
+    exitTimer = window.setTimeout(() => {
+      splash.classList.add("is-exit");
+    }, 1400);
+    doneTimer = window.setTimeout(done, 2150);
+    safety = window.setTimeout(done, 3000);
+
+    splash.addEventListener(
+      "animationend",
+      (e) => {
+        if (e.animationName === "intro-fade-out") done();
       },
       { once: true }
     );
-    renderHomeProjects();
-    initFilters();
-    initGallery();
-    initTabs();
-    initLightbox();
-    initNewsletter();
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    initLoadBar();
+    initHeader();
+    initIntroSplash(() => {
+      const lenis = initLenis();
+      window.RT = window.RT || {};
+      window.RT.lenis = lenis;
+      window.dispatchEvent(new CustomEvent("rt:lenis"));
+      initAnchorScroll(lenis);
+      initSplit();
+      initHeroIntro();
+      initParallax();
+      initTicker();
+      initCounters();
+      window.addEventListener(
+        "load",
+        () => {
+          if (typeof ScrollTrigger !== "undefined") ScrollTrigger.refresh();
+        },
+        { once: true }
+      );
+      renderHomeProjects();
+      initFilters();
+      initGallery();
+      initTabs();
+      initLightbox();
+      initNewsletter();
+    });
   });
 
   function initLightbox() {

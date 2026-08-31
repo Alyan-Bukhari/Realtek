@@ -11,14 +11,38 @@
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#452d2a">
   <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <script>
+    (function () {
+      try {
+        var q = new URLSearchParams(location.search);
+        if (q.get("skipIntro") === "1") {
+          sessionStorage.setItem("realtek-intro-seen", "1");
+          return;
+        }
+        if (sessionStorage.getItem("realtek-intro-seen") !== "1") {
+          document.documentElement.classList.add("intro-pending");
+        }
+      } catch (e) {}
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
   <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300;1,9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=mall-fit">
+  <link rel="stylesheet" href="css/styles.css?v=intro-splash">
 </head>
 <body>
+  <div id="intro-splash" class="intro-splash" role="presentation" aria-hidden="true">
+    <div class="intro-splash__mark" aria-hidden="true">
+      <span class="intro-splash__mark-letter">R</span>
+    </div>
+    <div class="intro-splash__wordmark">
+      <span class="intro-splash__word-main">RealTek</span>
+      <span class="intro-splash__word-sub">Developers</span>
+    </div>
+    <p class="intro-splash__tag">Elevating real estate in Pakistan</p>
+  </div>
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="loadbar" id="loadbar" aria-hidden="true"><i></i></div>
 
@@ -409,7 +433,7 @@
   <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
   <script src="js/projects.js"></script>
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=intro-splash"></script>
   <script src="js/chat.js"></script>
   <script type="module" src="/src/radial-mount.tsx"></script>
 </body>
