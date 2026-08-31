@@ -73,7 +73,10 @@
     boot.ran = true;
     if (!window.RT || !RT.getProject) return;
     const params = new URLSearchParams(window.location.search);
-    const id = params.get("id") || "1";
+    const id =
+      params.get("id") ||
+      (document.body && document.body.getAttribute("data-seo-project")) ||
+      "1";
     const project = RT.getProject(id);
 
     if (!project) {

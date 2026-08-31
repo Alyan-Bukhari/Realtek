@@ -20,7 +20,10 @@
     if (!root) return;
 
     const params = new URLSearchParams(window.location.search);
-    const seriesKey = params.get("series") || "";
+    const seriesKey =
+      params.get("series") ||
+      (document.body && document.body.getAttribute("data-seo-series")) ||
+      "";
     const series = SERIES[seriesKey] || null;
 
     const buttons = root.querySelectorAll("[data-filter]");
@@ -30,6 +33,16 @@
 
     if (series) {
       applySeriesBranding(series, seriesKey);
+      if (window.RT && typeof RT.applySeo === "function") {
+        RT.applySeo(
+          {
+            title: series.title,
+            description: series.lead,
+            image: "images/madina-heights-4/elevation/elevation-01.jpg"
+          },
+          window.location.origin + "/madina-heights.html"
+        );
+      }
       cards.forEach((card) => {
         if (!series.match(card)) card.classList.add("is-hidden");
       });

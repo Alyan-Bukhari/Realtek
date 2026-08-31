@@ -4,6 +4,19 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig, loadEnv } from "vite";
 import { FALLBACK, answerChat, clientIp, readJsonBody } from "./lib/realtek-chat.js";
+import {
+  SITE,
+  STATIC_PAGES,
+  SERIES_PAGES,
+  absUrl,
+  absImage,
+  esc,
+  injectSeo,
+  orgJsonLd,
+  projectJsonLd,
+  sitemapXml,
+  robotsTxt
+} from "./lib/seo-build.js";
 
 function groqChatPlugin() {
   return {
@@ -43,8 +56,6 @@ function groqChatPlugin() {
     }
   };
 }
-
-const SITE = process.env.SITE_URL || "https://realtek.vercel.app";
 
 const PROJECT_PAGES = [
   {
@@ -148,14 +159,6 @@ const PROJECT_PAGES = [
   }
 ];
 
-function esc(str) {
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
 function copyStatic() {
   return {
     name: "copy-static",
@@ -168,13 +171,74 @@ function copyStatic() {
         }
       }
 
+      const sitemapUrls = [];
+
+      for (const page of STATIC_PAGES) {
+        const filePath = path.join(dist, page.file);
+        if (!fs.existsSync(filePath)) continue;
+        let html = fs.readFileSync(filePath, "utf8");
+        html = html.replace(/<title>[\s\S]*?<\/title>/, "<title>" + esc(page.title) + "</title>");
+        html = html.replace(
+          /<meta name="description" content="[^"]*">/,
+          '<meta name="description" content="' + esc(page.description) + '">'
+        );
+        html = html.replace(
+          /<meta property="og:title" content="[^"]*">/,
+          '<meta property="og:title" content="' + esc(page.title) + '">'
+        );
+        html = html.replace(
+          /<meta property="og:description" content="[^"]*">/,
+          '<meta property="og:description" content="' + esc(page.description) + '">'
+        );
+        const jsonLd = page.file === "index.html" ? orgJsonLd() : null;
+        html = injectSeo(html, page, jsonLd);
+        fs.writeFileSync(filePath, html);
+        sitemapUrls.push({
+          loc: absUrl(page.path),
+          priority: page.file === "index.html" ? "1.0" : "0.8",
+          changefreq: page.file === "index.html" ? "weekly" : "monthly"
+        });
+      }
+
+      for (const sp of SERIES_PAGES) {
+        const srcPath = path.join(dist, sp.source);
+        if (!fs.existsSync(srcPath)) continue;
+        let html = fs.readFileSync(srcPath, "utf8");
+        html = html.replace(/<title>[\s\S]*?<\/title>/, "<title>" + esc(sp.title) + "</title>");
+        html = html.replace(
+          /<meta name="description" content="[^"]*">/,
+          '<meta name="description" content="' + esc(sp.description) + '">'
+        );
+        html = html.replace(
+          /<meta property="og:title" content="[^"]*">/,
+          '<meta property="og:title" content="' + esc(sp.title) + '">'
+        );
+        html = html.replace(
+          /<meta property="og:description" content="[^"]*">/,
+          '<meta property="og:description" content="' + esc(sp.description) + '">'
+        );
+        const pageMeta = {
+          ...sp,
+          type: "website",
+          dataSeries: sp.series || undefined,
+          dataProject: sp.projectId || undefined
+        };
+        html = injectSeo(html, pageMeta, null);
+        fs.writeFileSync(path.join(dist, sp.file), html);
+        sitemapUrls.push({
+          loc: absUrl(sp.path),
+          priority: "0.9",
+          changefreq: "weekly"
+        });
+      }
+
       const templatePath = path.join(dist, "project.html");
       if (!fs.existsSync(templatePath)) return;
       const template = fs.readFileSync(templatePath, "utf8");
 
       for (const p of PROJECT_PAGES) {
-        const absImg = SITE.replace(/\/$/, "") + "/" + p.image;
-        const pageUrl = SITE.replace(/\/$/, "") + "/project.html?id=" + encodeURIComponent(p.id);
+        const pagePath = "/project-" + p.id + ".html";
+        const pageUrl = absUrl(pagePath);
         let html = template;
         html = html.replace(/<title>[\s\S]*?<\/title>/, "<title>" + esc(p.name) + " | RealTek Developers</title>");
         html = html.replace(
@@ -189,18 +253,18 @@ function copyStatic() {
           /<meta property="og:description" content="[^"]*">/,
           '<meta property="og:description" content="' + esc(p.overview) + '">'
         );
-        html = html.replace(
-          /<meta property="og:image" content="[^"]*">/,
-          '<meta property="og:image" content="' + absImg + '">'
+        html = injectSeo(
+          html,
+          {
+            path: pagePath,
+            title: p.name + " | RealTek Developers",
+            description: p.overview,
+            image: p.image,
+            type: "website",
+            dataProject: p.id
+          },
+          projectJsonLd(p)
         );
-        if (!html.includes('property="og:url"')) {
-          html = html.replace(
-            '<meta property="og:type" content="website">',
-            '<meta property="og:type" content="website">\n  <meta property="og:url" content="' +
-              pageUrl +
-              '">'
-          );
-        }
         html = html.replace(/id="p-crumb">[^<]*/, 'id="p-crumb">' + esc(p.name));
         html = html.replace(/id="p-status">[^<]*/, 'id="p-status">' + esc(p.status));
         html = html.replace(/id="p-title">[^<]*/, 'id="p-title">' + esc(p.name));
@@ -227,7 +291,15 @@ function copyStatic() {
             "</strong><span>Status</span></div></section>"
         );
         fs.writeFileSync(path.join(dist, "project-" + p.id + ".html"), html);
+        sitemapUrls.push({
+          loc: pageUrl,
+          priority: p.id === "upcoming" || p.id === "5" || p.id === "6" ? "0.9" : "0.7",
+          changefreq: "monthly"
+        });
       }
+
+      fs.writeFileSync(path.join(dist, "robots.txt"), robotsTxt());
+      fs.writeFileSync(path.join(dist, "sitemap.xml"), sitemapXml(sitemapUrls));
     }
   };
 }

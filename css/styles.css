@@ -754,7 +754,7 @@ body.is-radial-pinned .float-contact {
 .hero-lockup {
   position: absolute;
   z-index: 2;
-  left: max(var(--gutter), calc((100vw - var(--max)) / 2));
+  left: max(var(--gutter), calc((min(100vw, 100%) - var(--max)) / 2));
   right: auto;
   bottom: 4.25rem;
   top: auto;
@@ -1098,7 +1098,7 @@ body.is-radial-pinned .float-contact {
   position: absolute;
   z-index: 4;
   top: clamp(1.25rem, 3vw, 2.4rem);
-  left: max(var(--gutter), calc((100vw - var(--max)) / 2));
+  left: max(var(--gutter), calc((min(100vw, 100%) - var(--max)) / 2));
   max-width: 16em;
   pointer-events: none;
   mix-blend-mode: difference;
@@ -4444,4 +4444,183 @@ body.is-dossier .gallery {
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+/* Mobile polish + overflow guard */
+html {
+  overflow-x: clip;
+}
+
+body {
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+}
+
+.float-contact,
+.float-dock {
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+@media (max-width: 860px) {
+  .pay-table {
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .pay-table::after {
+    content: "Swipe →";
+    display: block;
+    margin-top: 0.5rem;
+    font-size: var(--fs-ui);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: right;
+  }
+
+  .pay-row {
+    min-width: 34rem;
+    gap: 0.35rem;
+    padding: 0.75rem 0;
+    font-size: 0.82rem;
+  }
+
+  .pay-row > span small {
+    font-size: 0.58rem;
+  }
+
+  .dossier-nav-inner {
+    padding-bottom: 0.35rem;
+  }
+
+  .page-hero h1.display {
+    font-size: clamp(2rem, 9vw, 2.8rem);
+  }
+
+  .key-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .nav-toggle,
+  .gallery-nav button,
+  .lightbox-close,
+  .lightbox-arrow,
+  .lightbox-tools button,
+  .float-more,
+  .float-fab {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .filter-btn,
+  .floor-tab,
+  .tab,
+  .chat-chips button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0.65rem 1.15rem;
+  }
+
+  .folio-filters,
+  .floor-tabs,
+  .tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+    padding-bottom: 0.35rem;
+  }
+
+  .folio-filters::-webkit-scrollbar,
+  .floor-tabs::-webkit-scrollbar,
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .dossier-nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.7rem 0.65rem 0.55rem;
+  }
+
+  .fact-list li {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+
+  .inquire-actions,
+  .dossier-archive-status-actions,
+  .dossier-video-empty-actions,
+  .hero-actions {
+    display: grid;
+    gap: 0.65rem;
+  }
+
+  .inquire-actions .btn,
+  .inquire-actions .btn-outline,
+  .dossier-archive-status-actions .btn,
+  .dossier-archive-status-actions .btn-outline,
+  .dossier-video-empty-actions .btn,
+  .dossier-video-empty-actions .btn-outline,
+  .hero-actions .btn,
+  .hero-actions .btn-outline {
+    width: 100%;
+    justify-content: center;
+    min-height: 44px;
+  }
+
+  .site-footer {
+    padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+  }
+
+  .chat-form button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .unit-card-acts .unit-act {
+    min-height: 44px;
+    padding-inline: 0.85rem;
+  }
+
+  .dossier-videos video {
+    width: 100%;
+    max-height: 56vw;
+    object-fit: cover;
+  }
+
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .folio-card.is-featured {
+    grid-column: auto;
+  }
+
+  .page-hero {
+    min-height: 62svh;
+    padding-bottom: 2.5rem;
+  }
+
+  .page-hero-loc {
+    max-width: 28ch;
+  }
+}
+
+@media (max-width: 420px) {
+  .key-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .intro-splash__word-main {
+    font-size: clamp(2rem, 12vw, 2.6rem);
+  }
 }
