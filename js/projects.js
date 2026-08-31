@@ -4,6 +4,7 @@
  * Do not invent additional stats.
  */
 (function (global) {
+  /* videos-center-v1 */
   function unitPhotos(folder, label) {
     const out = [];
     for (let i = 1; i <= 8; i++) {

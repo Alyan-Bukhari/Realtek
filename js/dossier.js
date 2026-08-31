@@ -1,4 +1,5 @@
 /**
+ * videos-center-v1
  * Project dossier — Zee99-style subnav, residences, commercial, payment.
  * Price amounts are withheld site-wide; payment sections show percentages only.
  * Madina Mall, Heights 4 & 5 keep payment-plan tables.
@@ -139,16 +140,20 @@
     return id === "upcoming" || id === "5" || id === "6";
   }
 
-  function navHtml(hasCommercial, showPayment, showVideos) {
+  function navHtml(hasCommercial, showPayment) {
     const links = [
       ["overview", "Overview"],
       ["residences", "Residences & Plans"]
     ];
     if (hasCommercial) links.push(["commercial", "Commercial"]);
     if (showPayment) links.push(["plans", "Payment"]);
-    links.push(["amenities", "Amenities"]);
-    if (showVideos) links.push(["videos", "Videos"]);
-    links.push(["location", "Location"], ["updates", "Updates"], ["faqs", "FAQs"]);
+    links.push(
+      ["amenities", "Amenities"],
+      ["videos", "Videos"],
+      ["location", "Location"],
+      ["updates", "Updates"],
+      ["faqs", "FAQs"]
+    );
     return (
       '<nav class="dossier-nav" aria-label="On this page"><div class="dossier-nav-inner">' +
       links
@@ -192,6 +197,46 @@
         );
       })
       .join("");
+  }
+
+  function videosSection(project, videos, kickerHtml) {
+    const hasVideos = Array.isArray(videos) && videos.length > 0;
+    const waMsg =
+      "Hi, I'd like site footage and further details for " +
+      (project.name || "a RealTek project") +
+      ".";
+    const wa =
+      global.RT && typeof RT.whatsappHref === "function"
+        ? RT.whatsappHref(waMsg)
+        : "https://wa.me/923124455477?text=" + encodeURIComponent(waMsg);
+
+    if (hasVideos) {
+      return (
+        '<section class="dossier-block" id="videos"><div class="wrap dossier-videos-wrap">' +
+        kickerHtml +
+        '<h2 class="display display-emphasis">From the air.</h2>' +
+        '<p class="dossier-note">Drone footage of the building and site.</p>' +
+        '<div class="dossier-videos">' +
+        videoCards(videos) +
+        "</div></div></section>"
+      );
+    }
+
+    return (
+      '<section class="dossier-block" id="videos"><div class="wrap dossier-videos-wrap">' +
+      kickerHtml +
+      '<h2 class="display display-emphasis">Footage on request.</h2>' +
+      '<div class="dossier-video-empty">' +
+      "<p>Aerial and site media for " +
+      esc(project.name || "this project") +
+      " is not published here yet. Our team can share current photography, a private briefing, and availability over WhatsApp.</p>" +
+      '<div class="dossier-video-empty-actions">' +
+      '<a class="btn" href="' +
+      esc(wa) +
+      '" target="_blank" rel="noopener noreferrer">WhatsApp the office</a>' +
+      '<a class="btn btn-outline" href="tel:03124455477">Call 0312 4455477</a>' +
+      "</div></div></div></section>"
+    );
   }
 
   function unitCard(unit, rate, months, sample, showPayment) {
@@ -472,7 +517,6 @@
       : Array.isArray(project.videos)
         ? project.videos
         : [];
-    const showVideos = projectVideos.length > 0;
     let step = 1;
 
     const stats = d.stats
@@ -564,7 +608,7 @@
     }
 
     return (
-      navHtml(hasCommercial, showPayment, showVideos) +
+      navHtml(hasCommercial, showPayment) +
       (sample && showPayment
         ? '<p class="dossier-banner wrap">Sample figures for this page — not a published RealTek schedule. WhatsApp for issued drawings.</p>'
         : "") +
@@ -630,15 +674,7 @@
       "</div>" +
       (amenityLists ? '<div class="amenity-cols">' + amenityLists + "</div>" : "") +
       "</div></section>" +
-      (showVideos
-        ? '<section class="dossier-block" id="videos"><div class="wrap">' +
-          kicker("Videos") +
-          '<h2 class="display display-emphasis">From the air.</h2>' +
-          '<p class="dossier-note">Drone footage of the building and site.</p>' +
-          '<div class="dossier-videos">' +
-          videoCards(projectVideos) +
-          "</div></div></section>"
-        : "") +
+      videosSection(project, projectVideos, kicker("Videos")) +
       '<section class="dossier-block" id="location">' +
       '<div class="wrap dossier-split"><div>' +
       kicker("Location") +

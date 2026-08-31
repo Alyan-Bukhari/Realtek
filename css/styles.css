@@ -3698,18 +3698,38 @@ body.is-dossier .gallery {
   margin-top: 1.25rem;
 }
 
+.dossier-videos-wrap {
+  max-width: min(60rem, 94vw);
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.dossier-videos-wrap .dossier-note {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .dossier-videos {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.25rem 1rem;
-  margin: 1.5rem 0 0;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  gap: 1.75rem;
+  margin: 1.75rem auto 0;
+  width: 100%;
+}
+
+.dossier-video {
+  width: 100%;
+  max-width: 60rem;
+  text-align: left;
 }
 
 .dossier-video h3 {
   font-family: var(--font-display);
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   letter-spacing: -0.03em;
-  margin: 0.75rem 0 0.2rem;
+  margin: 0.9rem 0 0.25rem;
 }
 
 .dossier-video p {
@@ -3721,6 +3741,8 @@ body.is-dossier .gallery {
 .dossier-video-frame {
   background: var(--espresso-deep);
   overflow: hidden;
+  border-radius: 2px;
+  box-shadow: 0 28px 60px -36px rgba(28, 21, 18, 0.55);
 }
 
 .dossier-video-frame video {
@@ -3729,6 +3751,29 @@ body.is-dossier .gallery {
   height: auto;
   aspect-ratio: 16 / 9;
   object-fit: cover;
+}
+
+.dossier-video-empty {
+  margin: 1.75rem auto 0;
+  max-width: 40rem;
+  padding: 2rem 1.75rem;
+  border: 1px solid var(--line);
+  background: var(--cream-hot);
+  text-align: left;
+}
+
+.dossier-video-empty p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.02rem;
+  line-height: 1.55;
+}
+
+.dossier-video-empty-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.35rem;
 }
 
 .amenity-shots {
@@ -3828,7 +3873,6 @@ body.is-dossier .gallery {
   .unit-grid,
   .amenity-shots,
   .amenity-cols,
-  .dossier-videos,
   .dossier-stats {
     grid-template-columns: 1fr 1fr;
   }
@@ -3844,9 +3888,22 @@ body.is-dossier .gallery {
   .unit-grid,
   .amenity-shots,
   .amenity-cols,
-  .dossier-videos,
   .dossier-stats {
     grid-template-columns: 1fr;
+  }
+
+  .dossier-videos-wrap {
+    max-width: 100%;
+  }
+
+  .dossier-video-empty-actions {
+    flex-direction: column;
+  }
+
+  .dossier-video-empty-actions .btn,
+  .dossier-video-empty-actions .btn-outline {
+    width: 100%;
+    justify-content: center;
   }
 
   .dossier-stats > div,
