@@ -1,5 +1,5 @@
 /**
- * videos-center-v1
+ * archive-sold-v4
  * Project dossier — Zee99-style subnav, residences, commercial, payment.
  * Price amounts are withheld site-wide; payment sections show percentages only.
  * Madina Mall, Heights 4 & 5 keep payment-plan tables.
@@ -15,6 +15,33 @@
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
   }
+
+  function imageKey(src) {
+    return String(src || "")
+      .split("?")[0]
+      .replace(/\\/g, "/")
+      .replace(/^\.\//, "")
+      .toLowerCase();
+  }
+
+  function uniqueImages(list, limit, exclude) {
+    const out = [];
+    const seen = Object.create(null);
+    (exclude || []).forEach(function (src) {
+      const key = imageKey(src);
+      if (key) seen[key] = true;
+    });
+    (list || []).forEach(function (img) {
+      if (!img || !img.src) return;
+      const key = imageKey(img.src);
+      if (!key || seen[key]) return;
+      seen[key] = true;
+      out.push(img);
+    });
+    if (limit && out.length > limit) return out.slice(0, limit);
+    return out;
+  }
+
 
   function schedule(total, months) {
     return {
@@ -66,35 +93,35 @@
       ],
       rate: rate,
       months: months,
-      units: [
-        {
-          id: "a",
-          name: "Studio",
-          area: 400,
-          blurb: "Sample studio plate — confirm sizes and the written schedule at booking.",
-          hero: project.image,
-          plan: project.image,
-          gallery: (project.gallery || [{ src: project.image, alt: project.name }]).slice(0, 3)
-        },
-        {
-          id: "b",
-          name: "1 Bed",
-          area: 550,
-          blurb: "Sample one-bed plate — confirm sizes and the written schedule at booking.",
-          hero: (project.gallery && project.gallery[1] && project.gallery[1].src) || project.image,
-          plan: project.image,
-          gallery: (project.gallery || [{ src: project.image, alt: project.name }]).slice(0, 3)
-        },
-        {
-          id: "c",
-          name: "2 Bed",
-          area: 850,
-          blurb: "Sample two-bed plate — confirm sizes and the written schedule at booking.",
-          hero: (project.gallery && project.gallery[2] && project.gallery[2].src) || project.image,
-          plan: project.image,
-          gallery: (project.gallery || [{ src: project.image, alt: project.name }]).slice(0, 3)
+      units: (function () {
+        const labels = [
+          { id: "a", name: "Studio", area: 400, blurb: "Sample studio plate — confirm sizes and the written schedule at booking." },
+          { id: "b", name: "1 Bed", area: 550, blurb: "Sample one-bed plate — confirm sizes and the written schedule at booking." },
+          { id: "c", name: "2 Bed", area: 850, blurb: "Sample two-bed plate — confirm sizes and the written schedule at booking." }
+        ];
+        const pool = uniqueImages(
+          (project.gallery && project.gallery.length
+            ? project.gallery
+            : [{ src: project.image, alt: project.name }]
+          ).concat(project.image ? [{ src: project.image, alt: project.name }] : []),
+          3
+        );
+        if (!pool.length && project.image) {
+          pool.push({ src: project.image, alt: project.name });
         }
-      ],
+        return pool.map(function (img, i) {
+          const meta = labels[i] || labels[labels.length - 1];
+          return {
+            id: meta.id + String(i),
+            name: meta.name,
+            area: meta.area,
+            blurb: meta.blurb,
+            hero: img.src,
+            plan: img.src,
+            gallery: [img]
+          };
+        });
+      })(),
       floors: [
         {
           id: "typical",
@@ -107,12 +134,12 @@
           image: project.image
         }
       ],
-      amenityShots: [
+      amenityShots: uniqueImages([
         { src: project.image, alt: project.name },
         { src: "images/dummy-night.jpg", alt: "Sample night elevation" },
         { src: "images/dummy-terrace.jpg", alt: "Sample terrace" },
         { src: "images/dummy-facade.jpg", alt: "Sample facade" }
-      ],
+      ]),
       amenityGroups: [],
       updates: [
         {
@@ -138,6 +165,11 @@
   function hasLivePayment(project) {
     const id = project && project.id;
     return id === "upcoming" || id === "5" || id === "6";
+  }
+
+  /** MMR + Heights 4 & 5 keep the full booking dossier. */
+  function isLiveBooking(project) {
+    return hasLivePayment(project);
   }
 
   function navHtml(hasCommercial, showPayment) {
@@ -199,12 +231,17 @@
       .join("");
   }
 
-  function videosSection(project, videos, kickerHtml) {
+  function videosSection(project, videos, kickerHtml, opts) {
+    opts = opts || {};
     const hasVideos = Array.isArray(videos) && videos.length > 0;
-    const waMsg =
-      "Hi, I'd like site footage and further details for " +
-      (project.name || "a RealTek project") +
-      ".";
+    const soldOut = !!opts.soldOut;
+    const waMsg = soldOut
+      ? "Hi, " +
+        (project.name || "this project") +
+        " is sold out — please share archive media or current booking options (Madina Mall & Residency / Heights 4 & 5)."
+      : "Hi, I'd like site footage and further details for " +
+        (project.name || "a RealTek project") +
+        ".";
     const wa =
       global.RT && typeof RT.whatsappHref === "function"
         ? RT.whatsappHref(waMsg)
@@ -212,7 +249,9 @@
 
     if (hasVideos) {
       return (
-        '<section class="dossier-block" id="videos"><div class="wrap dossier-videos-wrap">' +
+        '<section class="dossier-block" id="videos"><div class="wrap dossier-videos-wrap' +
+        (soldOut ? " dossier-archive" : "") +
+        '">' +
         kickerHtml +
         '<h2 class="display display-emphasis">From the air.</h2>' +
         '<p class="dossier-note">Drone footage of the building and site.</p>' +
@@ -222,19 +261,35 @@
       );
     }
 
+    const emptyCopy = soldOut
+      ? "Aerial media for " +
+        esc(project.name || "this project") +
+        " is not published here. WhatsApp our team for archive photography, or ask about Madina Mall & Residency and Heights 4 & 5 — still booking."
+      : "Aerial and site media for " +
+        esc(project.name || "this project") +
+        " is not published here yet. Our team can share current photography, a private briefing, and availability over WhatsApp.";
+
+    const secondBtn = soldOut
+      ? '<a class="btn btn-outline" href="project.html?id=upcoming">See live projects</a>'
+      : '<a class="btn btn-outline" href="tel:03124455477">Call 0312 4455477</a>';
+
     return (
-      '<section class="dossier-block" id="videos"><div class="wrap dossier-videos-wrap">' +
+      '<section class="dossier-block" id="videos"><div class="wrap dossier-videos-wrap' +
+      (soldOut ? " dossier-archive" : "") +
+      '">' +
       kickerHtml +
-      '<h2 class="display display-emphasis">Footage on request.</h2>' +
+      '<h2 class="display display-emphasis">' +
+      (soldOut ? "Archive media." : "Footage on request.") +
+      "</h2>" +
       '<div class="dossier-video-empty">' +
-      "<p>Aerial and site media for " +
-      esc(project.name || "this project") +
-      " is not published here yet. Our team can share current photography, a private briefing, and availability over WhatsApp.</p>" +
+      "<p>" +
+      emptyCopy +
+      "</p>" +
       '<div class="dossier-video-empty-actions">' +
       '<a class="btn" href="' +
       esc(wa) +
       '" target="_blank" rel="noopener noreferrer">WhatsApp the office</a>' +
-      '<a class="btn btn-outline" href="tel:03124455477">Call 0312 4455477</a>' +
+      secondBtn +
       "</div></div></div></section>"
     );
   }
@@ -502,7 +557,177 @@
     );
   }
 
+
+  function archiveNavHtml() {
+    const links = [
+      ["overview", "Overview"],
+      ["videos", "Videos"],
+      ["location", "Location"]
+    ];
+    return (
+      '<nav class="dossier-nav" aria-label="On this page"><div class="dossier-nav-inner">' +
+      links
+        .map(function (l, i) {
+          return (
+            '<a href="#' +
+            l[0] +
+            '"' +
+            (i === 0 ? ' class="is-active"' : "") +
+            ">" +
+            esc(l[1]) +
+            "</a>"
+          );
+        })
+        .join("") +
+      "</div></nav>"
+    );
+  }
+
+  function archiveGalleryHtml(project, exclude) {
+    const raw = project.gallery || [];
+    const list = uniqueImages(
+      raw.filter(function (img) {
+        const src = String((img && img.src) || "").toLowerCase();
+        return src && !/floorplan|floor-plan|\/plan-|brochure\/page-/i.test(src);
+      }),
+      9,
+      exclude || []
+    );
+    if (!list.length) return "";
+    return (
+      '<div class="dossier-archive-gallery" data-count="' +
+      list.length +
+      '">' +
+      list
+        .map(function (img, i) {
+          return (
+            '<button type="button" data-lightbox data-lightbox-group="archive" data-src="' +
+            esc(img.src) +
+            '" data-alt="' +
+            esc(img.alt || project.name) +
+            '"><img src="' +
+            esc(img.src) +
+            '" alt="' +
+            esc(img.alt || project.name) +
+            '"' +
+            (i === 0 ? "" : ' loading="lazy"') +
+            "></button>"
+          );
+        })
+        .join("") +
+      "</div>"
+    );
+  }
+
+  function buildSoldOutArchive(project) {
+    const d = project.dossier || {};
+    const copy = d.copy || project.overview || "";
+    const locSrc = (function () {
+      if (d.locImage) return d.locImage;
+      const gallery = uniqueImages(project.gallery || [], 9);
+      const alt = gallery.find(function (img) {
+        return img.src && img.src !== project.image && !/floorplan|floor-plan/i.test(img.src);
+      });
+      return (alt && alt.src) || d.hero || project.image;
+    })();
+    const maps = encodeURIComponent(d.mapsQuery || project.address || project.location || "");
+    const projectVideos = Array.isArray(d.videos)
+      ? d.videos
+      : Array.isArray(project.videos)
+        ? project.videos
+        : [];
+    const statsSrc = (
+      d.stats && d.stats.length
+        ? d.stats.map(function (s, i) {
+            if (i === 0 || /status/i.test(s.label || "")) {
+              return { label: s.label || "Status", value: "Sold Out" };
+            }
+            return s;
+          })
+        : [
+            { label: "Status", value: "Sold Out" },
+            { label: "Type", value: project.type || "—" },
+            { label: "Location", value: project.location || "—" }
+          ]
+    ).slice(0, 3);
+    const stats = statsSrc
+      .map(function (s) {
+        return (
+          "<div><span>" +
+          esc(s.label) +
+          "</span><strong>" +
+          esc(s.value) +
+          "</strong></div>"
+        );
+      })
+      .join("");
+    let step = 1;
+    function kicker(label) {
+      const n = padNum(step++);
+      return '<p class="dossier-kicker"><i></i>' + n + " — " + label + "</p>";
+    }
+    const waLive =
+      global.RT && typeof RT.whatsappHref === "function"
+        ? RT.whatsappHref(
+            "Hi, I'm looking at sold-out " +
+              project.name +
+              ". Please share current booking options."
+          )
+        : "https://wa.me/923124455477";
+
+    return (
+      archiveNavHtml() +
+      '<section class="dossier-block" id="overview">' +
+      '<div class="wrap dossier-archive">' +
+      kicker("Overview") +
+      '<div class="dossier-archive-status">' +
+      '<span class="badge">Sold Out</span>' +
+      "<div>" +
+      "<p><strong>" +
+      esc(project.name) +
+      " is fully placed.</strong> Floor plans and payment schedules are closed for this development. For current inventory, see Madina Mall &amp; Residency or Heights 4 &amp; 5.</p>" +
+      '<div class="dossier-archive-status-actions">' +
+      '<a class="btn" href="project.html?id=upcoming">Madina Mall &amp; Residency</a>' +
+      '<a class="btn btn-outline" href="' +
+      esc(waLive) +
+      '" target="_blank" rel="noopener noreferrer">WhatsApp for live options</a>' +
+      "</div></div></div>" +
+      '<h2 class="display display-emphasis">About the project.</h2>' +
+      '<p class="dossier-archive-copy">' +
+      esc(copy) +
+      "</p>" +
+      '<div class="dossier-stats dossier-archive-stats">' +
+      stats +
+      "</div>" +
+      archiveGalleryHtml(project, [project.image, locSrc]) +
+      "</div></section>" +
+      videosSection(project, projectVideos, kicker("Videos"), { soldOut: true }) +
+      '<section class="dossier-block" id="location">' +
+      '<div class="wrap dossier-archive"><div class="dossier-split dossier-archive-location"><div>' +
+      kicker("Location") +
+      '<h2 class="display display-emphasis">' +
+      esc(project.location) +
+      "</h2><p>" +
+      esc(project.address || project.location) +
+      '</p><a class="btn btn-outline" href="https://www.google.com/maps/search/?api=1&query=' +
+      maps +
+      '" target="_blank" rel="noopener noreferrer">Get directions</a></div>' +
+      '<figure><img src="' +
+      esc(locSrc) +
+      '" alt="' +
+      esc(project.name) +
+      ", " +
+      esc(project.location) +
+      '" loading="lazy"><figcaption><span>' +
+      esc(project.name) +
+      "</span><span>Site</span></figcaption></figure></div></section>"
+    );
+  }
+
   function render(project) {
+    if (!isLiveBooking(project)) {
+      return buildSoldOutArchive(project);
+    }
     const d = project.dossier || dummyDossier(project);
     const hasCommercial = Array.isArray(d.floors) && d.floors.length > 0;
     const isMall = project.id === "upcoming";
@@ -600,7 +825,14 @@
 
     const maps = encodeURIComponent(d.mapsQuery || project.location);
 
-    const locSrc = d.locImage || d.hero || project.image;
+    const locSrc = (function () {
+      if (d.locImage) return d.locImage;
+      const gallery = uniqueImages(project.gallery || [], 9);
+      const alt = gallery.find(function (img) {
+        return img.src && img.src !== project.image && !/floorplan|floor-plan/i.test(img.src);
+      });
+      return (alt && alt.src) || d.hero || project.image;
+    })();
 
     function kicker(label) {
       const n = padNum(step++);
@@ -829,6 +1061,7 @@
   function mount(project, host) {
     if (!host || !project) return;
     document.body.classList.add("is-dossier");
+    document.body.classList.toggle("is-dossier-archive", !isLiveBooking(project));
     host.innerHTML = render(project);
     bind(host, project);
     if (global.RT && typeof RT.initLightbox === "function") RT.initLightbox();

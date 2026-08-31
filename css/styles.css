@@ -2290,6 +2290,9 @@ body.is-radial-pinned .float-contact {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center center;
+  transform-origin: center center;
+  will-change: transform;
 }
 
 .page-hero-veil {
@@ -2297,8 +2300,9 @@ body.is-radial-pinned .float-contact {
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(55, 37, 34, 0.25),
-    rgba(55, 37, 34, 0.78)
+    rgba(28, 21, 18, 0.12) 0%,
+    rgba(28, 21, 18, 0.22) 42%,
+    rgba(28, 21, 18, 0.52) 100%
   );
 }
 
@@ -2318,6 +2322,7 @@ body.is-radial-pinned .float-contact {
   color: var(--cream-hot);
   font-size: clamp(2.1rem, 5vw, 3.85rem);
   line-height: 0.98;
+  text-shadow: 0 2px 28px rgba(28, 21, 18, 0.45);
 }
 
 .page-hero-loc {
@@ -2850,6 +2855,219 @@ th {
 .page-hero h1,
 [data-split] {
   line-height: 0.96;
+}
+
+
+
+/* One unit card — no empty twin columns */
+.unit-grid:has(.unit-card:only-child) {
+  grid-template-columns: minmax(0, 22rem);
+}
+
+body.is-dossier-archive .dossier-archive-gallery[data-count="1"] {
+  margin-inline: 0;
+  max-width: min(40rem, 100%);
+}
+
+body.is-dossier-archive .dossier-archive-gallery[data-count="1"] button {
+  aspect-ratio: 16 / 10;
+}
+
+
+/* Archive column lock — overview / videos / location share one measure */
+body.is-dossier-archive .dossier-archive.dossier-videos-wrap,
+body.is-dossier-archive .dossier-videos-wrap.dossier-archive {
+  max-width: min(60rem, 100%);
+  margin-inline: auto;
+}
+
+body.is-dossier-archive .dossier-archive-stats {
+  width: 100%;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+body.is-dossier-archive .dossier-archive-location {
+  width: 100%;
+}
+
+body.is-dossier-archive .dossier-archive-location > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100%;
+}
+
+body.is-dossier-archive .dossier-archive-location figure {
+  border-radius: 0;
+  aspect-ratio: 4 / 3;
+}
+
+body.is-dossier-archive .dossier-archive-location figure img {
+  min-height: 0;
+  aspect-ratio: 4 / 3;
+}
+
+body.is-dossier-archive .dossier-videos {
+  width: 100%;
+}
+
+body.is-dossier-archive .dossier-videos video,
+body.is-dossier-archive .dossier-videos .dossier-video-card {
+  width: 100%;
+}
+
+/* Sold-out project archive — compact, aligned dossier */
+body.is-dossier-archive .dossier-nav-inner {
+  justify-content: flex-start;
+}
+
+.dossier-archive {
+  max-width: min(60rem, 100%);
+  margin-inline: auto;
+}
+
+.dossier-archive-status {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.25rem 1.5rem;
+  align-items: start;
+  margin: 0 0 2rem;
+  padding: 1.35rem 1.5rem;
+  border: 1px solid var(--line);
+  background: var(--cream-hot);
+}
+
+.dossier-archive-status .badge {
+  position: static;
+  margin: 0.15rem 0 0;
+}
+
+.dossier-archive-status p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.02rem;
+  line-height: 1.55;
+  max-width: 52ch;
+}
+
+.dossier-archive-status p strong {
+  color: var(--espresso);
+  font-weight: 600;
+}
+
+.dossier-archive-status-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.1rem;
+}
+
+.dossier-archive-copy {
+  max-width: 52ch;
+  margin: 1rem 0 0;
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.dossier-archive-stats {
+  width: 100%;
+  margin: 2.25rem 0 0;
+}
+
+.dossier-archive-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 2.25rem 0 0;
+}
+
+.dossier-archive-gallery[data-count="1"] {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 36rem;
+}
+
+.dossier-archive-gallery[data-count="2"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dossier-archive-gallery button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: var(--espresso-deep);
+  cursor: zoom-in;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+}
+
+.dossier-archive-gallery img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  transition: transform 0.7s var(--ease);
+}
+
+.dossier-archive-gallery button:hover img,
+.dossier-archive-gallery button:focus-visible img {
+  transform: scale(1.03);
+}
+
+.dossier-archive-location {
+  align-items: stretch;
+}
+
+.dossier-archive-location figure {
+  margin: 0;
+  background: var(--espresso-deep);
+  overflow: hidden;
+  min-height: 100%;
+}
+
+.dossier-archive-location figure img {
+  width: 100%;
+  height: 100%;
+  min-height: 18rem;
+  object-fit: cover;
+  object-position: center center;
+  background: var(--espresso-deep);
+}
+
+@media (max-width: 860px) {
+  .dossier-archive-status {
+    grid-template-columns: 1fr;
+  }
+
+  .dossier-archive-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dossier-archive-gallery[data-count="1"] {
+    grid-template-columns: 1fr;
+    max-width: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .dossier-archive-gallery,
+  .dossier-archive-gallery[data-count="2"] {
+    grid-template-columns: 1fr;
+  }
+
+  .dossier-archive-status-actions {
+    flex-direction: column;
+  }
+
+  .dossier-archive-status-actions .btn,
+  .dossier-archive-status-actions .btn-outline {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* Collection filmstrip image fill */

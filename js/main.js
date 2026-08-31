@@ -422,7 +422,7 @@
     if (pageHeroImg && motionOk() && !isMobile()) {
       gsap.fromTo(
         pageHeroImg,
-        { scale: 1.14 },
+        { scale: 1.06 },
         {
           scale: 1,
           ease: "none",
