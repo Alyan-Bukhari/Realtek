@@ -370,8 +370,7 @@
   display: block;
   width: 100%;
   height: 100%;
-  padding: calc(3.25rem + env(safe-area-inset-top)) 4vw 0.75rem;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center center;
 }
 
@@ -458,7 +457,8 @@
 .hf-grid-card img {
   width: 100%;
   aspect-ratio: 4 / 5;
-  object-fit: contain;
+  object-fit: cover;
+  object-position: center center;
   background: #1c1512;
 }
 
@@ -477,11 +477,6 @@
 
   .hf-more {
     grid-column: 1 / -1;
-  }
-
-  .hf-visual img {
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
   }
 
   .hf-slide-intro,
