@@ -40,7 +40,7 @@ const GlassCard = React.forwardRef<HTMLAnchorElement, GlassCardProps>(
         ref={ref}
         href={href}
         className={cn(
-          "group relative block h-[380px] w-[290px] shrink-0 [perspective:1000px]",
+          "group relative block aspect-[29/38] w-[min(18.125rem,calc(100vw-2.5rem))] shrink-0 [perspective:1000px] sm:w-[290px]",
           className
         )}
         {...props}

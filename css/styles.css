@@ -314,16 +314,23 @@ ul {
   letter-spacing: var(--ls-display);
   line-height: var(--lh-display);
   text-transform: uppercase;
+  font-size: var(--fs-h1);
 }
 
 h2.display {
   font-weight: 500;
+  font-size: var(--fs-h1);
 }
 
 h1.display,
 .manifesto .display,
 .hero-logo {
   font-weight: 300;
+}
+
+.manifesto .display {
+  font-size: clamp(2.35rem, 8.2vw, 5.2rem);
+  max-width: 14em;
 }
 
 h3 {
@@ -548,40 +555,43 @@ body.is-radial-pinned .float-contact {
 
 .nav-toggle {
   display: none;
-  width: 2rem;
-  height: 1.1rem;
+  width: 44px;
+  height: 44px;
+  margin-right: -0.5rem;
   padding: 0;
   border: 0;
   background: transparent;
   cursor: pointer;
   position: relative;
+  flex-shrink: 0;
 }
 
 .nav-toggle span {
   position: absolute;
-  left: 0;
-  width: 100%;
-  height: 1px;
+  left: 50%;
+  width: 1.35rem;
+  margin-left: -0.675rem;
+  height: 1.5px;
   background: currentColor;
   transition: transform 0.3s var(--ease), top 0.3s var(--ease);
 }
 
 .nav-toggle span:first-child {
-  top: 0.25rem;
+  top: calc(50% - 0.28rem);
 }
 
 .nav-toggle span:last-child {
-  top: 0.75rem;
+  top: calc(50% + 0.28rem);
 }
 
 .nav-toggle.is-open span:first-child {
-  top: 0.5rem;
-  transform: rotate(45deg);
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
 }
 
 .nav-toggle.is-open span:last-child {
-  top: 0.5rem;
-  transform: rotate(-45deg);
+  top: 50%;
+  transform: translateY(-50%) rotate(-45deg);
 }
 
 .header-cta {
@@ -888,6 +898,7 @@ body.is-radial-pinned .float-contact {
 .work .display {
   color: #fff;
   max-width: 12em;
+  font-size: clamp(2rem, 6.2vw, 3.5rem);
 }
 
 .work-lead {
@@ -1061,9 +1072,10 @@ body.is-radial-pinned .float-contact {
   max-width: 1100px;
 }
 
-.manifesto h1 {
-  max-width: 12em;
-  font-size: clamp(2.6rem, 7.2vw, 5.8rem);
+.manifesto h1,
+.manifesto h2.display {
+  max-width: 14em;
+  font-size: clamp(2.35rem, 8.2vw, 5.2rem);
   color: var(--espresso);
 }
 
@@ -2162,9 +2174,11 @@ body.is-folio-series .folio-badge {
   align-items: end;
 }
 
-.contact-band h2 {
+.contact-band h2,
+.contact-band .display {
   max-width: 14ch;
   color: var(--cream-hot);
+  font-size: clamp(2.1rem, 6.5vw, 4rem);
 }
 
 .contact-list {
@@ -4802,6 +4816,25 @@ body {
   .page-hero-loc {
     max-width: 28ch;
   }
+
+  .folio-intro .display {
+    font-size: clamp(2.2rem, 9vw, 3.6rem);
+  }
+
+  .ceo-page .display {
+    font-size: clamp(2.2rem, 8vw, 3.4rem);
+  }
+
+  main {
+    padding-bottom: 0.5rem;
+  }
+
+  .manifesto .hero-actions,
+  .contact-band,
+  .folio-related,
+  .dossier-closeout {
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+  }
 }
 
 @media (max-width: 420px) {
@@ -4811,5 +4844,91 @@ body {
 
   .intro-splash__word-main {
     font-size: clamp(2rem, 12vw, 2.6rem);
+  }
+}
+
+/* Phablet / tablet portrait — keep readable type + 2-up cards where space allows */
+@media (min-width: 600px) and (max-width: 860px) {
+  :root {
+    --gutter: clamp(1.5rem, 3.5vw, 2.25rem);
+  }
+
+  .project-grid,
+  .plan-gallery,
+  .amenity-list,
+  .folio-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stats-grid,
+  .feature-grid,
+  .key-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .hero-actions .btn,
+  .hero-actions .btn-outline {
+    width: auto;
+    min-width: 11rem;
+  }
+}
+
+@media (min-width: 861px) and (max-width: 1100px) {
+  :root {
+    --gutter: clamp(1.75rem, 3vw, 2.5rem);
+  }
+
+  .work-card {
+    flex-basis: min(42vw, 20rem);
+    width: min(42vw, 20rem);
+  }
+
+  .page-hero {
+    min-height: 68svh;
+  }
+}
+
+/* Short landscape (phones / foldables / tablets on their side) */
+@media (max-height: 520px) and (orientation: landscape) {
+  :root {
+    --header-h: 58px;
+    --section: clamp(2.75rem, 8vh, 5rem);
+  }
+
+  .hero,
+  .page-hero.has-video,
+  .heights-page-hero {
+    min-height: 100svh;
+  }
+
+  .hero-lockup {
+    bottom: 3.25rem;
+  }
+
+  .hero-scroll,
+  .heights-page-hero .pointer-events-none.absolute.bottom-4 {
+    display: none;
+  }
+
+  .page-hero {
+    min-height: 100svh;
+    padding-block: 4.5rem 2rem;
+  }
+
+  .manifesto {
+    padding-block: 3.5rem;
+  }
+}
+
+/* Touch devices — avoid sticky 3D hover transforms on glass cards */
+@media (hover: none) {
+  .related-glass a.group:hover > div,
+  .heights-series a.group:hover > div {
+    transform: none !important;
   }
 }

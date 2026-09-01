@@ -167,7 +167,7 @@ export function HeightsSeries() {
           }}
         />
 
-        <div className="absolute inset-x-0 bottom-0 z-[3] flex flex-col gap-5 px-[max(1.25rem,calc((100vw-72rem)/2))] pb-10 pt-24 sm:flex-row sm:items-end sm:justify-between sm:pb-14">
+        <div className="absolute inset-x-0 bottom-0 z-[3] flex flex-col gap-5 px-[max(1.25rem,calc((100vw-72rem)/2))] pb-[max(2.5rem,calc(5.5rem+env(safe-area-inset-bottom)))] pt-24 sm:flex-row sm:items-end sm:justify-between sm:pb-14">
           <div className="max-w-xl">
             <p className="mb-3 font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-[#f2e6d6]/90">
               Madina Heights · Live now

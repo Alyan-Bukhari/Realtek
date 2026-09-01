@@ -41,8 +41,15 @@ body.is-folio-series .site-header {
 
 .heights-page-hero {
   width: 100vw;
+  max-width: 100%;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
+}
+
+@media (max-width: 640px) {
+  .heights-series .flex.flex-wrap.items-center.justify-center.gap-x-4 {
+    gap: 1rem;
+  }
 }
 
 .heights-series .font-serif {

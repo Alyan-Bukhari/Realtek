@@ -116,18 +116,33 @@
 
       if (mode === "chars-scrub" && split.chars && split.chars.length) {
         const section = el.closest(".manifesto") || el;
-        gsap.set(split.chars, { yPercent: 120 });
-        gsap.to(split.chars, {
-          yPercent: 0,
-          ease: "power3.out",
-          stagger: { each: 0.05, from: "random" },
-          scrollTrigger: {
-            trigger: section,
-            start: "top 75%",
-            end: "center 40%",
-            scrub: true
-          }
-        });
+        /* Scrub leaves glyphs mid-travel on short mobile scrolls — play once instead */
+        if (isMobile()) {
+          gsap.from(split.chars, {
+            yPercent: 110,
+            duration: 0.85,
+            stagger: { each: 0.02, from: "random" },
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 82%",
+              once: true
+            }
+          });
+        } else {
+          gsap.set(split.chars, { yPercent: 120 });
+          gsap.to(split.chars, {
+            yPercent: 0,
+            ease: "power3.out",
+            stagger: { each: 0.05, from: "random" },
+            scrollTrigger: {
+              trigger: section,
+              start: "top 75%",
+              end: "center 40%",
+              scrub: true
+            }
+          });
+        }
       } else if (mode === "chars" && split.chars && split.chars.length) {
         gsap.set(split.chars, { yPercent: 120 });
         gsap.to(split.chars, {
