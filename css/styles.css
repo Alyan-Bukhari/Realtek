@@ -3579,6 +3579,24 @@ body.is-dossier-archive .dossier-nav-inner {
     text-align: left;
   }
 
+  .stats .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
+  }
+
+  .stats .stat-value,
+  .stats .stat-label {
+    text-align: right;
+  }
+
+  .stats .stat-label {
+    max-width: min(22ch, 100%);
+  }
+
   .work,
   .surfer {
     height: auto;
