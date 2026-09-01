@@ -26,14 +26,23 @@
   display: block;
   background: #f2e6d6;
   color: #1c1512;
-  overflow: visible;
+  overflow: hidden;
   isolation: isolate;
+  width: 100%;
+  max-width: 100%;
 }
 
 .hf {
   position: relative;
   background: #f2e6d6;
   color: #1c1512;
+  width: 100%;
+  max-width: 100%;
+  /* GSAP pin sets overflow:visible on the pin target — force clip anyway */
+  overflow: hidden !important;
+  isolation: isolate;
+  contain: paint;
+  clip-path: inset(0);
 }
 
 .hf-progress {
@@ -76,7 +85,14 @@
 }
 
 .hf-scroller {
-  overflow: hidden;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden !important;
+  contain: paint;
+  clip-path: inset(0);
 }
 
 .hf.is-hf-native .hf-scroller {
@@ -85,13 +101,6 @@
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
-  max-width: 100%;
-}
-
-.hf.is-hf-native {
-  width: 100%;
-  max-width: 100%;
-  overflow: hidden;
 }
 
 .hf.is-hf-native .hf-scroller::-webkit-scrollbar {
@@ -101,32 +110,46 @@
 .hf-slide {
   box-sizing: border-box;
   flex: none;
+  /* JS sets exact px widths; % fallback avoids 100vw scrollbar mismatch */
   width: 100%;
   min-width: 100%;
+  max-width: 100%;
   height: 100vh;
   height: 100dvh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   scroll-snap-align: start;
   scroll-snap-stop: always;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .hf-track {
   display: flex;
+  flex-wrap: nowrap;
   width: max-content;
   height: 100vh;
   height: 100dvh;
   will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
 
 .hf.is-hf-native .hf-track {
   transform: none !important;
 }
 
+.hf-slide-project {
+  background: #1c1512;
+  color: #fbf6ee;
+  overflow: hidden;
+  position: relative;
+}
+
 .hf-slide-intro,
 .hf-slide-end {
   display: grid;
-  grid-template-columns: minmax(22rem, 1fr) minmax(22rem, 1.08fr);
+  grid-template-columns: minmax(18rem, 0.95fr) minmax(20rem, 1.05fr);
   padding: 0;
   background: #f2e6d6;
   overflow: hidden;
@@ -182,6 +205,7 @@
 .hf-end-aside {
   position: relative;
   min-height: 0;
+  overflow: hidden;
   background: #1c1512;
 }
 
@@ -191,7 +215,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 55%;
+  object-position: center 45%;
 }
 
 .hf-end-inset {
@@ -360,28 +384,63 @@
   color: #8c6239;
 }
 
-.hf-slide-project {
-  background: #1c1512;
-  color: #fbf6ee;
-  overflow: hidden;
-}
-
 .hf-visual {
   flex: 1 1 auto;
   position: relative;
   min-height: 0;
   width: 100%;
+  overflow: hidden;
+  background: #1c1512;
+  isolation: isolate;
+  contain: paint;
 }
 
 .hf-visual img {
-  position: absolute;
-  inset: 0;
+  max-width: none !important;
+  max-height: none !important;
+}
+
+.hf-end-aside img.hf-end-hero,
+.hf-end-inset {
+  max-width: none !important;
+  max-height: none !important;
+}
+
+/* Soft full-bleed wash behind portrait shots */
+.hf-visual img.hf-visual-fill {
+  position: absolute !important;
+  inset: 0 !important;
   box-sizing: border-box;
   display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center center;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  filter: blur(28px) saturate(1.05) brightness(0.55);
+  transform: scale(1.12);
+  transform-origin: center;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hf-visual img:not(.hf-visual-fill) {
+  position: absolute !important;
+  inset: 0 !important;
+  box-sizing: border-box;
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  /* Portrait renders + landscape frame: contain avoids over-zoom crop */
+  object-fit: contain !important;
+  object-position: center center !important;
+  background: transparent;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  z-index: 1;
 }
 
 .hf-meta {
@@ -493,6 +552,10 @@
   .hf-slide-end {
     grid-template-columns: 1fr;
     grid-template-rows: minmax(0, auto) minmax(0, 1fr);
+  }
+
+  .hf-visual img:not(.hf-visual-fill) {
+    object-position: center 40%;
   }
 
   .hf-end-copy {

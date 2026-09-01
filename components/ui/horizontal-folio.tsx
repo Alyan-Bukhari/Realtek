@@ -13,7 +13,8 @@ type GsapLike = {
   registerPlugin: (p: unknown) => void;
   context: (fn: () => void, scope?: Element | null) => { revert: () => void };
   set: (t: unknown, v: object) => void;
-  to: (t: unknown, v: object) => void;
+  to: (t: unknown, v: object) => unknown;
+  getProperty?: (t: unknown, p: string) => string | number;
 };
 
 type HorizontalFolioProps = {
@@ -88,7 +89,28 @@ export default function HorizontalFolio({
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      const getX = () => Math.min(0, window.innerWidth - track.scrollWidth);
+      const slides = Array.from(root.querySelectorAll(".hf-slide")) as HTMLElement[];
+      const scrollerEl = root.querySelector(".hf-scroller") as HTMLElement | null;
+      const measureWidth = () =>
+        Math.max(1, Math.round(scrollerEl?.clientWidth || window.innerWidth));
+
+      const setSlideWidths = () => {
+        const w = measureWidth();
+        slides.forEach((slide) => {
+          slide.style.width = w + "px";
+          slide.style.minWidth = w + "px";
+          slide.style.maxWidth = w + "px";
+          slide.style.flex = "0 0 " + w + "px";
+        });
+        // Keep pin target clipped — GSAP pin often forces overflow:visible
+        root.style.overflow = "hidden";
+        if (scrollerEl) scrollerEl.style.overflow = "hidden";
+      };
+      setSlideWidths();
+
+      const getX = () => -Math.max(0, (total - 1) * measureWidth());
+      const getEnd = () => "+=" + Math.max(0, (total - 1) * measureWidth());
+
       gsap.set(track, { x: 0, force3D: true });
       gsap.to(track, {
         x: getX,
@@ -96,19 +118,35 @@ export default function HorizontalFolio({
         scrollTrigger: {
           trigger: root,
           start: "top top",
-          end: () => "+=" + Math.max(window.innerHeight, Math.abs(getX()) * 0.92),
+          end: getEnd,
           pin: true,
-          scrub: 0.85,
+          scrub: 0.45,
           anticipatePin: 1,
           invalidateOnRefresh: true,
+          onRefresh: setSlideWidths,
           onUpdate: (self: { progress: number }) => {
-            const i = Math.round(self.progress * (total - 1));
+            const i = Math.min(
+              total - 1,
+              Math.max(0, Math.round(self.progress * (total - 1)))
+            );
             setIndex((prev) => (prev === i ? prev : i));
           },
         },
       });
+
+      // Second refresh after layout so end distance matches slide widths
+      requestAnimationFrame(() => {
+        const ST = (window as Window & { ScrollTrigger?: { refresh: () => void } }).ScrollTrigger;
+        setSlideWidths();
+        ST?.refresh();
+      });
     }, root);
 
+    const onResize = () => {
+      const ST = (window as Window & { ScrollTrigger?: { refresh: () => void } }).ScrollTrigger;
+      ST?.refresh();
+    };
+    window.addEventListener("resize", onResize);
     const onLoad = () => {
       const ST = (window as Window & { ScrollTrigger?: { refresh: () => void } }).ScrollTrigger;
       ST?.refresh();
@@ -116,6 +154,7 @@ export default function HorizontalFolio({
     window.addEventListener("load", onLoad);
 
     return () => {
+      window.removeEventListener("resize", onResize);
       window.removeEventListener("load", onLoad);
       ctx.revert();
     };
@@ -226,6 +265,14 @@ export default function HorizontalFolio({
           {items.map((item, i) => (
             <article key={item.href} className="hf-slide hf-slide-project">
               <div className="hf-visual">
+                <img
+                  className="hf-visual-fill"
+                  src={item.src}
+                  alt=""
+                  aria-hidden="true"
+                  loading={i < 2 ? "eager" : "lazy"}
+                  decoding="async"
+                />
                 <img
                   src={item.src}
                   alt={`${item.title}${item.caption ? `, ${item.caption}` : ""}`}

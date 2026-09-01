@@ -3219,11 +3219,32 @@ body.is-dossier-archive .dossier-nav-inner {
   }
 }
 
-/* Collection filmstrip image fill */
+/* Collection filmstrip — beat Tailwind img max-width/height:auto */
 .hf-visual img {
+  max-width: none !important;
+  max-height: none !important;
+  width: 100% !important;
+  height: 100% !important;
   padding: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+.hf-visual img.hf-visual-fill {
   object-fit: cover !important;
   object-position: center center !important;
+  filter: blur(28px) saturate(1.05) brightness(0.55);
+  transform: scale(1.12) !important;
+}
+
+.hf-visual img:not(.hf-visual-fill) {
+  object-fit: contain !important;
+  object-position: center center !important;
+}
+
+.hf,
+.hf-scroller {
+  overflow: hidden !important;
 }
 
 .hf-grid-card img {
