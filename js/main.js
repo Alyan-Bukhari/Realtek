@@ -12,11 +12,19 @@
     const nav = $("#nav");
     if (!header) return;
 
-    const onDarkHero = !!$(".hero, .page-hero");
+    const onDarkHero =
+      !!$(".hero, .page-hero, .heights-page-hero") ||
+      document.body.classList.contains("is-folio-series") ||
+      document.body.getAttribute("data-seo-series") === "madina-heights" ||
+      new URLSearchParams(window.location.search).get("series") === "madina-heights";
     if (!onDarkHero) header.classList.add("is-light");
+    else header.classList.remove("is-light");
 
     const onScroll = () => {
-      header.classList.toggle("is-scrolled", window.scrollY > 24);
+      const threshold = $(".heights-page-hero")
+        ? Math.max(48, window.innerHeight * 0.55)
+        : 24;
+      header.classList.toggle("is-scrolled", window.scrollY > threshold);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });

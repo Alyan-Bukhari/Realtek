@@ -24,7 +24,7 @@
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
   <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300;1,9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=seo-mobile3">
+  <link rel="stylesheet" href="css/styles.css?v=mmr-hero1">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -56,8 +56,20 @@
   </header>
 
   <main id="main">
-    <section class="page-hero">
-      <img id="p-hero-img" src="images/la-monte-vista/exterior.jpeg" alt="">
+    <section class="page-hero" id="p-hero">
+      <div class="page-hero-media">
+        <video
+          id="p-hero-video"
+          class="page-hero-video"
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          hidden
+          aria-hidden="true"
+        ></video>
+        <img id="p-hero-img" src="images/la-monte-vista/exterior.jpeg" alt="">
+      </div>
       <div class="page-hero-veil"></div>
       <div class="wrap">
         <nav class="folio-crumb" aria-label="Breadcrumb">
@@ -116,12 +128,15 @@
 
     <aside class="folio-next wrap" id="p-next" hidden></aside>
 
-    <section class="folio-related" id="p-related" aria-label="Other projects">
+    <section class="folio-related is-glass-related" id="p-related" aria-label="Other projects">
       <div class="wrap">
-        <p class="eyebrow">The record</p>
-        <h2 class="display display-emphasis">Other <em>projects.</em></h2>
+        <header class="folio-related-intro">
+          <p class="eyebrow">The record</p>
+          <h2 class="display display-emphasis">Other <em>projects.</em></h2>
+        </header>
+        <div id="related-glass-root" hidden></div>
         <div class="folio-grid" id="p-related-grid"></div>
-        <p style="margin-top: 1.75rem">
+        <p class="folio-related-more">
           <a class="folio-now" href="projects.html">See all projects <span aria-hidden="true">→</span></a>
         </p>
       </div>
@@ -230,8 +245,9 @@
   <script src="js/main.js"></script>
   <script src="js/chat.js"></script>
   <script src="js/seo.js"></script>
-  <script src="js/dossier.js?v=seo-mobile"></script>
+  <script src="js/dossier.js?v=hero-dedupe1"></script>
   <script src="js/tour.js"></script>
-  <script src="js/project-page.js"></script>
+  <script src="js/project-page.js?v=lmonte-hero1"></script>
+  <script type="module" src="/src/related-mount.tsx"></script>
 </body>
 </html>

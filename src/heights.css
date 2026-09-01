@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+@source "../components/**/*.{ts,tsx}";
+@source "./**/*.{ts,tsx}";
+
+@theme {
+  --font-sans: "General Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Fraunces", "Iowan Old Style", Palatino, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+#heights-series-root {
+  width: 100%;
+}
+
+#heights-series-root:not([hidden]) {
+  display: block;
+}
+
+body.is-folio-series .folio-page {
+  padding-top: 0;
+}
+
+body.is-folio-series .folio-page > .wrap > .folio-intro,
+body.is-folio-series .folio-page > .wrap > .folio-filters,
+body.is-folio-series .folio-page > .wrap > .folio-empty {
+  display: none !important;
+}
+
+body.is-folio-series .folio-page > .wrap {
+  display: none;
+}
+
+body.is-folio-series .site-header {
+  --header-fg: #fbf6ee;
+}
+
+.heights-series {
+  font-family: var(--font-sans);
+}
+
+.heights-page-hero {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+.heights-series .font-serif {
+  font-family: var(--font-serif);
+}
+
+.heights-series .font-mono {
+  font-family: var(--font-mono);
+}
+
+body.is-folio-series .folio-grid,
+body.is-folio-series [data-folio-empty] {
+  display: none !important;
+}
+
+body.is-folio-series #heights-series-root {
+  display: block;
+}
+
+#related-glass-root:not([hidden]) {
+  display: block;
+  width: 100%;
+}
+
+.related-glass {
+  font-family: var(--font-sans);
+}
+
+.related-glass .font-serif {
+  font-family: var(--font-serif);
+}
+
+.related-glass .font-mono {
+  font-family: var(--font-mono);
+}

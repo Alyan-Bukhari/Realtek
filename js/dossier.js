@@ -172,16 +172,16 @@
     return hasLivePayment(project);
   }
 
-  function navHtml(hasCommercial, showPayment) {
+  function navHtml(hasCommercial, showPayment, showVideos) {
     const links = [
       ["overview", "Overview"],
       ["residences", "Residences & Plans"]
     ];
     if (hasCommercial) links.push(["commercial", "Commercial"]);
     if (showPayment) links.push(["plans", "Payment"]);
+    links.push(["amenities", "Amenities"]);
+    if (showVideos !== false) links.push(["videos", "Videos"]);
     links.push(
-      ["amenities", "Amenities"],
-      ["videos", "Videos"],
       ["location", "Location"],
       ["updates", "Updates"],
       ["faqs", "FAQs"]
@@ -206,6 +206,30 @@
 
   function padNum(n) {
     return n < 10 ? "0" + n : String(n);
+  }
+
+  function normMediaPath(src) {
+    return String(src || "")
+      .replace(/^\.\//, "")
+      .replace(/^\//, "");
+  }
+
+  /** Videos for the dossier block — skip the clip already used as the page hero. */
+  function dossierVideos(project) {
+    const d = (project && project.dossier) || {};
+    const list = Array.isArray(d.videos)
+      ? d.videos
+      : Array.isArray(project.videos)
+        ? project.videos
+        : [];
+    const heroSrc =
+      Array.isArray(project.videos) && project.videos[0] && project.videos[0].src
+        ? normMediaPath(project.videos[0].src)
+        : "";
+    if (!heroSrc) return list.slice();
+    return list.filter(function (v) {
+      return normMediaPath(v && v.src) !== heroSrc;
+    });
   }
 
   function videoCards(videos) {
@@ -234,6 +258,7 @@
   function videosSection(project, videos, kickerHtml, opts) {
     opts = opts || {};
     const hasVideos = Array.isArray(videos) && videos.length > 0;
+    if (!hasVideos && opts.omitWhenEmpty) return "";
     const soldOut = !!opts.soldOut;
     const waMsg = soldOut
       ? "Hi, " +
@@ -558,12 +583,11 @@
   }
 
 
-  function archiveNavHtml() {
-    const links = [
-      ["overview", "Overview"],
-      ["videos", "Videos"],
-      ["location", "Location"]
-    ];
+  function archiveNavHtml(opts) {
+    opts = opts || {};
+    const links = [["overview", "Overview"]];
+    if (opts.showVideos) links.push(["videos", "Videos"]);
+    links.push(["location", "Location"]);
     return (
       '<nav class="dossier-nav" aria-label="On this page"><div class="dossier-nav-inner">' +
       links
@@ -631,11 +655,8 @@
       return (alt && alt.src) || d.hero || project.image;
     })();
     const maps = encodeURIComponent(d.mapsQuery || project.address || project.location || "");
-    const projectVideos = Array.isArray(d.videos)
-      ? d.videos
-      : Array.isArray(project.videos)
-        ? project.videos
-        : [];
+    const projectVideos = dossierVideos(project);
+    const showVideos = projectVideos.length > 0;
     const statsSrc = (
       d.stats && d.stats.length
         ? d.stats.map(function (s, i) {
@@ -676,7 +697,7 @@
         : "https://wa.me/923124455477";
 
     return (
-      archiveNavHtml() +
+      archiveNavHtml({ showVideos: showVideos }) +
       '<section class="dossier-block" id="overview">' +
       '<div class="wrap dossier-archive">' +
       kicker("Overview") +
@@ -701,7 +722,12 @@
       "</div>" +
       archiveGalleryHtml(project, [project.image, locSrc]) +
       "</div></section>" +
-      videosSection(project, projectVideos, kicker("Videos"), { soldOut: true }) +
+      (showVideos
+        ? videosSection(project, projectVideos, kicker("Videos"), {
+            soldOut: true,
+            omitWhenEmpty: true
+          })
+        : "") +
       '<section class="dossier-block" id="location">' +
       '<div class="wrap dossier-archive"><div class="dossier-split dossier-archive-location"><div>' +
       kicker("Location") +
@@ -737,11 +763,8 @@
   function build(project, d, isMall, hasCommercial, rate, months, img) {
     const sample = !!d.sample;
     const showPayment = hasLivePayment(project);
-    const projectVideos = Array.isArray(d.videos)
-      ? d.videos
-      : Array.isArray(project.videos)
-        ? project.videos
-        : [];
+    const projectVideos = dossierVideos(project);
+    const showVideos = projectVideos.length > 0;
     let step = 1;
 
     const stats = d.stats
@@ -840,7 +863,7 @@
     }
 
     return (
-      navHtml(hasCommercial, showPayment) +
+      navHtml(hasCommercial, showPayment, showVideos) +
       (sample && showPayment
         ? '<p class="dossier-banner wrap">Sample figures for this page — not a published RealTek schedule. WhatsApp for issued drawings.</p>'
         : "") +
@@ -906,7 +929,11 @@
       "</div>" +
       (amenityLists ? '<div class="amenity-cols">' + amenityLists + "</div>" : "") +
       "</div></section>" +
-      videosSection(project, projectVideos, kicker("Videos")) +
+      (showVideos
+        ? videosSection(project, projectVideos, kicker("Videos"), {
+            omitWhenEmpty: true
+          })
+        : "") +
       '<section class="dossier-block" id="location">' +
       '<div class="wrap dossier-split"><div>' +
       kicker("Location") +

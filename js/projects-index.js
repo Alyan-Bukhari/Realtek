@@ -31,25 +31,38 @@
     const empty = root.querySelector("[data-folio-empty]");
     const pool = series ? cards.filter(series.match) : cards;
 
+    const reactSeries = Boolean(series && document.getElementById("heights-series-root"));
+
     if (series) {
+      document.body.classList.add("is-folio-series", "is-series-" + seriesKey);
       applySeriesBranding(series, seriesKey);
+      if (!reactSeries) sortSeriesCards(root, pool);
       if (window.RT && typeof RT.applySeo === "function") {
         RT.applySeo(
           {
             title: series.title,
             description: series.lead,
-            image: "images/madina-heights-4/elevation/elevation-01.jpg"
+            image: "images/madina-mall/videos/drone-poster.jpg"
           },
           window.location.origin + "/madina-heights.html"
         );
       }
       cards.forEach((card) => {
         if (!series.match(card)) card.classList.add("is-hidden");
+        card.classList.remove("is-featured");
       });
       updateFilterCounts(buttons, pool);
+      if (reactSeries) {
+        const reactRoot = document.getElementById("heights-series-root");
+        if (reactRoot) reactRoot.hidden = false;
+        const grid = root.querySelector(".folio-grid");
+        if (grid) grid.classList.add("is-hidden");
+        if (empty) empty.hidden = true;
+      }
     }
 
     const apply = (kind) => {
+      if (reactSeries) return;
       let shown = 0;
       pool.forEach((card) => {
         const match = kind === "all" || card.getAttribute("data-kind") === kind;
@@ -61,6 +74,7 @@
 
     buttons.forEach((btn) => {
       btn.addEventListener("click", () => {
+        if (reactSeries) return;
         const kind = btn.getAttribute("data-filter") || "all";
         buttons.forEach((other) => {
           const on = other === btn;
@@ -71,8 +85,20 @@
       });
     });
 
-    if (series) apply("all");
+    if (series && !reactSeries) apply("all");
   });
+
+  function sortSeriesCards(root, pool) {
+    const grid = root.querySelector(".folio-grid");
+    if (!grid) return;
+    // Highest series-order first so MMR is on top; Heights 1 lands at the bottom
+    const ordered = pool.slice().sort((a, b) => {
+      const ao = Number(a.getAttribute("data-series-order") || 0);
+      const bo = Number(b.getAttribute("data-series-order") || 0);
+      return bo - ao;
+    });
+    ordered.forEach((card) => grid.appendChild(card));
+  }
 
   function applySeriesBranding(series, seriesKey) {
     document.title = series.title;

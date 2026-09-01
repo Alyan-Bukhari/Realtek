@@ -114,9 +114,49 @@
     applyProjectBranding(id);
 
     const heroImg = document.getElementById("p-hero-img");
+    const heroVideo = document.getElementById("p-hero-video");
+    const heroSection = document.getElementById("p-hero");
     if (heroImg) {
       heroImg.src = project.image;
       heroImg.alt = project.name + ", " + project.location;
+    }
+    if (heroVideo && heroSection) {
+      const heroClip =
+        (Array.isArray(project.videos) && project.videos[0]) ||
+        (String(project.id) === "upcoming"
+          ? {
+              src: "images/madina-mall/videos/drone.mp4",
+              poster: "images/madina-mall/videos/drone-poster.jpg"
+            }
+          : null);
+
+      if (heroClip && heroClip.src) {
+        const poster = heroClip.poster || project.image;
+        const src = heroClip.src;
+        heroVideo.poster = poster;
+        heroVideo.innerHTML =
+          '<source src="' + src + '" type="video/mp4">';
+        heroVideo.hidden = false;
+        heroVideo.setAttribute("autoplay", "");
+        heroSection.classList.add("has-video");
+        if (heroImg) {
+          heroImg.src = poster;
+          heroImg.classList.add("is-video-fallback");
+        }
+        const play = () => {
+          const p = heroVideo.play();
+          if (p && typeof p.catch === "function") p.catch(function () {});
+        };
+        if (heroVideo.readyState >= 2) play();
+        else heroVideo.addEventListener("loadeddata", play, { once: true });
+      } else {
+        heroVideo.hidden = true;
+        heroVideo.removeAttribute("autoplay");
+        heroVideo.removeAttribute("src");
+        heroVideo.innerHTML = "";
+        heroSection.classList.remove("has-video");
+        if (heroImg) heroImg.classList.remove("is-video-fallback");
+      }
     }
 
     setText("p-status", project.status);
@@ -272,6 +312,16 @@
   }
 
   function renderRelated(project) {
+    const reactRoot = document.getElementById("related-glass-root");
+    if (reactRoot) {
+      reactRoot.hidden = false;
+      const grid = document.getElementById("p-related-grid");
+      if (grid) {
+        grid.hidden = true;
+        grid.innerHTML = "";
+      }
+      return;
+    }
     const grid = document.getElementById("p-related-grid");
     if (!grid || !RT.PROJECTS) return;
     const others = RT.PROJECTS.filter((p) => p.id !== project.id).sort((a, b) => {

@@ -24,7 +24,7 @@
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
   <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300;1,9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=seo-mobile3">
+  <link rel="stylesheet" href="css/styles.css?v=heights-hero1">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -56,6 +56,8 @@
   </header>
 
   <main id="main" class="folio-page" data-folio>
+    <div id="heights-series-root" hidden></div>
+
     <div class="wrap">
       <header class="folio-intro">
         <p class="eyebrow">Projects — The record</p>
@@ -72,7 +74,7 @@
       <p class="folio-empty" data-folio-empty hidden>Nothing in this chapter. Try another filter.</p>
 
       <div class="folio-grid">
-        <a class="folio-card is-featured" data-kind="available" data-project-id="upcoming" data-series="madina" href="project.html?id=upcoming">
+        <a class="folio-card" data-kind="available" data-project-id="upcoming" data-series="madina" data-series-order="7" href="project.html?id=upcoming">
           <div class="folio-card-media">
             <img src="images/madina-mall-featured.jpg" alt="Madina Mall &amp; Residency, Bahria Town Lahore" width="963" height="1024" decoding="async">
             <span class="folio-badge is-live"><i></i>Live</span>
@@ -87,7 +89,37 @@
           </div>
         </a>
 
-        <a class="folio-card" data-kind="available" data-project-id="5" data-series="madina" href="project.html?id=5">
+        <a class="folio-card" data-kind="sold" data-project-id="7" data-series="madina" data-series-order="6" href="project.html?id=7">
+          <div class="folio-card-media">
+            <img src="images/project-7.jpg" alt="Madina Silver Heights in Bahria Town Lahore" width="761" height="1024" loading="lazy">
+            <span class="folio-badge">Sold Out</span>
+          </div>
+          <div class="folio-card-body">
+            <div class="folio-card-top">
+              <h2>Madina Silver Heights</h2>
+              <p class="folio-card-meta">Mixed Use · Bahria Town</p>
+            </div>
+            <p>Twelve-month plan, 35 apartments — handed over 2025 in 166B Commercial.</p>
+            <span class="folio-card-cta">See project <span aria-hidden="true">→</span></span>
+          </div>
+        </a>
+
+        <a class="folio-card" data-kind="available" data-project-id="6" data-series="madina" data-series-order="5" href="project.html?id=6">
+          <div class="folio-card-media">
+            <img src="images/madina-heights-5/commercial-view.jpeg" alt="Madina Heights 5 in Bahria Town Lahore" width="767" height="1024" loading="lazy">
+            <span class="folio-badge is-reserved">80% Sold</span>
+          </div>
+          <div class="folio-card-body">
+            <div class="folio-card-top">
+              <h2>Madina Heights 5</h2>
+              <p class="folio-card-meta">Commercial + Residential · Bahria Town</p>
+            </div>
+            <p>Our largest Heights building — 84 apartments and 43 shops, still booking through 2026.</p>
+            <span class="folio-card-cta">See project <span aria-hidden="true">→</span></span>
+          </div>
+        </a>
+
+        <a class="folio-card" data-kind="available" data-project-id="5" data-series="madina" data-series-order="4" href="project.html?id=5">
           <div class="folio-card-media">
             <img src="images/madina-heights-4/elevation/elevation-01.jpg" alt="Madina Heights 4 at Safari Villas" width="755" height="1024" loading="lazy">
             <span class="folio-badge is-reserved">80% Sold</span>
@@ -102,17 +134,47 @@
           </div>
         </a>
 
-        <a class="folio-card" data-kind="available" data-project-id="6" data-series="madina" href="project.html?id=6">
+        <a class="folio-card" data-kind="sold" data-project-id="4" data-series="madina" data-series-order="3" href="project.html?id=4">
           <div class="folio-card-media">
-            <img src="images/madina-heights-5/commercial-view.jpeg" alt="Madina Heights 5 in Bahria Town Lahore" width="767" height="1024" loading="lazy">
-            <span class="folio-badge is-reserved">80% Sold</span>
+            <img src="images/project-4.jpg" alt="Madina Heights 3 at Safari Villas" width="760" height="1024" loading="lazy">
+            <span class="folio-badge">Sold Out</span>
           </div>
           <div class="folio-card-body">
             <div class="folio-card-top">
-              <h2>Madina Heights 5</h2>
-              <p class="folio-card-meta">Commercial + Residential · Bahria Town</p>
+              <h2>Madina Heights 3</h2>
+              <p class="folio-card-meta">Commercial + Residential · Safari Villas</p>
             </div>
-            <p>Our largest Heights building — 84 apartments and 43 shops, still booking through 2026.</p>
+            <p>Umer block, next to Safari Villas — 22 apartments and two commercial halls, sold out.</p>
+            <span class="folio-card-cta">See project <span aria-hidden="true">→</span></span>
+          </div>
+        </a>
+
+        <a class="folio-card" data-kind="sold" data-project-id="3" data-series="madina" data-series-order="2" href="project.html?id=3">
+          <div class="folio-card-media">
+            <img src="images/madina-heights-2/photo-06.jpeg" alt="Madina Heights 2 in Sector C, Bahria Town" width="768" height="1024" loading="lazy">
+            <span class="folio-badge">Sold Out</span>
+          </div>
+          <div class="folio-card-body">
+            <div class="folio-card-top">
+              <h2>Madina Heights 2</h2>
+              <p class="folio-card-meta">Commercial + Apartments · Sector C</p>
+            </div>
+            <p>Sector-C side commercial — 18 apartments and six halls, completed 2023.</p>
+            <span class="folio-card-cta">See project <span aria-hidden="true">→</span></span>
+          </div>
+        </a>
+
+        <a class="folio-card" data-kind="sold" data-project-id="2" data-series="madina" data-series-order="1" href="project.html?id=2">
+          <div class="folio-card-media">
+            <img src="images/project-2.jpg" alt="Madina Heights 1 on Canal Bank Road" width="773" height="1024" loading="lazy">
+            <span class="folio-badge">Sold Out</span>
+          </div>
+          <div class="folio-card-body">
+            <div class="folio-card-top">
+              <h2>Madina Heights 1</h2>
+              <p class="folio-card-meta">Commercial + Apartments · Canal Bank Road</p>
+            </div>
+            <p>Main Canal Bank Road — 22 apartments and two commercial halls, handed over in 2021.</p>
             <span class="folio-card-cta">See project <span aria-hidden="true">→</span></span>
           </div>
         </a>
@@ -128,66 +190,6 @@
               <p class="folio-card-meta">Commercial + Apartments · Bahria Town</p>
             </div>
             <p>Delivered 2021 in 166-B Commercial — 20 apartments and three commercial halls, now fully sold.</p>
-            <span class="folio-card-cta">See project <span aria-hidden="true">→</span></span>
-          </div>
-        </a>
-
-        <a class="folio-card" data-kind="sold" data-project-id="2" data-series="madina" href="project.html?id=2">
-          <div class="folio-card-media">
-            <img src="images/project-2.jpg" alt="Madina Heights 1 on Canal Bank Road" width="773" height="1024" loading="lazy">
-            <span class="folio-badge">Sold Out</span>
-          </div>
-          <div class="folio-card-body">
-            <div class="folio-card-top">
-              <h2>Madina Heights 1</h2>
-              <p class="folio-card-meta">Commercial + Apartments · Canal Bank Road</p>
-            </div>
-            <p>Main Canal Bank Road — 22 apartments and two commercial halls, handed over in 2021.</p>
-            <span class="folio-card-cta">See project <span aria-hidden="true">→</span></span>
-          </div>
-        </a>
-
-        <a class="folio-card" data-kind="sold" data-project-id="3" data-series="madina" href="project.html?id=3">
-          <div class="folio-card-media">
-            <img src="images/madina-heights-2/photo-06.jpeg" alt="Madina Heights 2 in Sector C, Bahria Town" width="768" height="1024" loading="lazy">
-            <span class="folio-badge">Sold Out</span>
-          </div>
-          <div class="folio-card-body">
-            <div class="folio-card-top">
-              <h2>Madina Heights 2</h2>
-              <p class="folio-card-meta">Commercial + Apartments · Sector C</p>
-            </div>
-            <p>Sector-C side commercial — 18 apartments and six halls, completed 2023.</p>
-            <span class="folio-card-cta">See project <span aria-hidden="true">→</span></span>
-          </div>
-        </a>
-
-        <a class="folio-card" data-kind="sold" data-project-id="4" data-series="madina" href="project.html?id=4">
-          <div class="folio-card-media">
-            <img src="images/project-4.jpg" alt="Madina Heights 3 at Safari Villas" width="760" height="1024" loading="lazy">
-            <span class="folio-badge">Sold Out</span>
-          </div>
-          <div class="folio-card-body">
-            <div class="folio-card-top">
-              <h2>Madina Heights 3</h2>
-              <p class="folio-card-meta">Commercial + Residential · Safari Villas</p>
-            </div>
-            <p>Umer block, next to Safari Villas — 22 apartments and two commercial halls, sold out.</p>
-            <span class="folio-card-cta">See project <span aria-hidden="true">→</span></span>
-          </div>
-        </a>
-
-        <a class="folio-card" data-kind="sold" data-project-id="7" data-series="madina" href="project.html?id=7">
-          <div class="folio-card-media">
-            <img src="images/project-7.jpg" alt="Madina Silver Heights in Bahria Town Lahore" width="761" height="1024" loading="lazy">
-            <span class="folio-badge">Sold Out</span>
-          </div>
-          <div class="folio-card-body">
-            <div class="folio-card-top">
-              <h2>Madina Silver Heights</h2>
-              <p class="folio-card-meta">Mixed Use · Bahria Town</p>
-            </div>
-            <p>Twelve-month plan, 35 apartments — handed over 2025 in 166B Commercial.</p>
             <span class="folio-card-cta">See project <span aria-hidden="true">→</span></span>
           </div>
         </a>
@@ -292,6 +294,7 @@
   <script src="js/seo.js"></script>
   <script src="js/main.js"></script>
   <script src="js/chat.js"></script>
-  <script src="js/projects-index.js"></script>
+  <script src="js/projects-index.js?v=heights-hero1"></script>
+  <script type="module" src="/src/heights-mount.tsx"></script>
 </body>
 </html>
