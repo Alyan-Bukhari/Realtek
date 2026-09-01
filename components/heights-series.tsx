@@ -136,10 +136,10 @@ export function HeightsSeries() {
 
   return (
     <div className="heights-series">
-      <section className="heights-page-hero relative h-[100svh] min-h-[36rem] w-full overflow-hidden bg-[#1c1512] text-[#fbf6ee]">
-        <div className="absolute inset-0">
+      <section className="heights-page-hero relative w-full overflow-hidden bg-[#1c1512] text-[#fbf6ee]">
+        <div className="heights-page-hero__media">
           <video
-            className="absolute inset-0 z-[1] h-full w-full object-cover object-center"
+            className="heights-page-hero__video"
             autoPlay
             muted
             loop
@@ -151,7 +151,7 @@ export function HeightsSeries() {
             <source src="/images/madina-mall/videos/drone.mp4" type="video/mp4" />
           </video>
           <img
-            className="absolute inset-0 z-0 h-full w-full object-cover object-center"
+            className="heights-page-hero__poster"
             src="/images/madina-mall/videos/drone-poster.jpg"
             alt=""
             aria-hidden="true"
@@ -159,15 +159,9 @@ export function HeightsSeries() {
           />
         </div>
 
-        <div
-          className="pointer-events-none absolute inset-0 z-[2]"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(28,16,14,0.58) 0%, rgba(28,16,14,0.12) 32%, rgba(28,16,14,0.18) 52%, rgba(28,16,14,0.82) 100%)",
-          }}
-        />
+        <div className="heights-page-hero__veil" aria-hidden="true" />
 
-        <div className="absolute inset-x-0 bottom-0 z-[3] flex flex-col gap-5 px-[max(1.25rem,calc((100vw-72rem)/2))] pb-[max(2.5rem,calc(5.5rem+env(safe-area-inset-bottom)))] pt-24 sm:flex-row sm:items-end sm:justify-between sm:pb-14">
+        <div className="heights-page-hero__copy">
           <div className="max-w-xl">
             <p className="mb-3 font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-[#f2e6d6]/90">
               Madina Heights · Live now
@@ -176,7 +170,7 @@ export function HeightsSeries() {
               <i className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#fbf6ee]" />
               Live · Phase 07
             </p>
-            <h1 className="font-serif text-[clamp(2.4rem,7vw,4.5rem)] font-medium uppercase leading-[0.95] tracking-[-0.03em] text-white drop-shadow-[0_2px_28px_rgba(0,0,0,0.4)]">
+            <h1 className="font-serif text-[clamp(2.2rem,7vw,4.5rem)] font-medium uppercase leading-[0.95] tracking-[-0.03em] text-white drop-shadow-[0_2px_28px_rgba(0,0,0,0.4)]">
               Madina Mall
               <span className="block">&amp; Residency</span>
             </h1>
@@ -201,7 +195,7 @@ export function HeightsSeries() {
           </div>
         </div>
 
-        <p className="pointer-events-none absolute bottom-4 left-1/2 z-[3] hidden -translate-x-1/2 font-mono text-[10px] uppercase tracking-[0.28em] text-white/70 sm:block">
+        <p className="heights-page-hero__scroll" aria-hidden="true">
           Scroll
         </p>
       </section>

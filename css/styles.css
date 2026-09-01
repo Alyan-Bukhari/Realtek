@@ -3575,17 +3575,6 @@ body.is-dossier-archive .dossier-nav-inner {
     grid-template-columns: 1fr;
   }
 
-  .hero {
-    min-height: 100svh;
-  }
-
-  .hero-lockup {
-    left: var(--gutter);
-    right: var(--gutter);
-    bottom: 5.5rem;
-    max-width: none;
-  }
-
   .hero-kicker {
     text-align: left;
   }
@@ -4808,11 +4797,6 @@ body {
     grid-column: auto;
   }
 
-  .page-hero {
-    min-height: 62svh;
-    padding-bottom: 2.5rem;
-  }
-
   .page-hero-loc {
     max-width: 28ch;
   }
@@ -4900,28 +4884,189 @@ body {
     --section: clamp(2.75rem, 8vh, 5rem);
   }
 
-  .hero,
-  .page-hero.has-video,
-  .heights-page-hero {
-    min-height: 100svh;
-  }
-
-  .hero-lockup {
-    bottom: 3.25rem;
-  }
-
-  .hero-scroll,
-  .heights-page-hero .pointer-events-none.absolute.bottom-4 {
+  .hero-scroll {
     display: none;
-  }
-
-  .page-hero {
-    min-height: 100svh;
-    padding-block: 4.5rem 2rem;
   }
 
   .manifesto {
     padding-block: 3.5rem;
+  }
+}
+
+/*
+ * Tall viewports (phones, phablets, portrait tablets):
+ * keep landscape media in a 16:9 frame so nothing is stretched or over-cropped.
+ * Wide desktops keep full-bleed cover heroes.
+ */
+@media (max-aspect-ratio: 10 / 11) {
+  .hero {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 0;
+    overflow: hidden;
+    background: #1c1512;
+  }
+
+  .hero-media {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    flex: 0 0 auto;
+    overflow: hidden;
+    background: #1c1512;
+  }
+
+  .hero-media video,
+  .hero-media img {
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  .hero-veil {
+    inset: unset;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(
+      180deg,
+      rgba(28, 16, 14, 0.35) 0%,
+      rgba(28, 16, 14, 0.08) 45%,
+      rgba(28, 16, 14, 0.55) 100%
+    );
+  }
+
+  .hero-lockup {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    top: auto;
+    z-index: 2;
+    width: 100%;
+    max-width: none;
+    padding: 1.6rem var(--gutter) 2.1rem;
+    background: linear-gradient(180deg, #2a1c19 0%, #1c1512 100%);
+  }
+
+  .hero-logo {
+    font-size: clamp(2.4rem, 11vw, 3.6rem);
+    text-shadow: none;
+  }
+
+  .hero-tagline {
+    max-width: none;
+    text-shadow: none;
+  }
+
+  .hero .hero-actions {
+    display: grid;
+    gap: 0.65rem;
+  }
+
+  .hero .hero-actions .btn,
+  .hero .hero-actions .btn-ghost {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-scroll {
+    display: none;
+  }
+
+  .page-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    min-height: 0;
+    height: auto;
+    padding: var(--header-h) 0 0;
+    background: var(--cream);
+  }
+
+  .page-hero-media {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    flex: 0 0 auto;
+    overflow: hidden;
+    background: #1c1512;
+  }
+
+  .page-hero img,
+  .page-hero-video {
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  .page-hero-veil {
+    inset: unset;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(
+      180deg,
+      rgba(28, 16, 14, 0.45) 0%,
+      rgba(28, 16, 14, 0.1) 50%,
+      rgba(28, 16, 14, 0.35) 100%
+    );
+  }
+
+  .page-hero .wrap {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: none;
+    padding: calc(var(--header-h) * 0.15 + 1.35rem) var(--gutter) 1.85rem;
+    background: var(--cream);
+    color: var(--espresso);
+  }
+
+  .page-hero h1,
+  .page-hero h1.display {
+    max-width: none;
+    color: var(--espresso);
+    font-size: clamp(2rem, 8.5vw, 2.9rem);
+  }
+
+  .page-hero-loc {
+    max-width: none;
+    color: var(--muted);
+  }
+
+  .page-hero .folio-crumb {
+    color: var(--muted);
+  }
+
+  .page-hero .folio-crumb a {
+    color: var(--espresso);
+  }
+
+  .page-hero .folio-crumb a:hover {
+    color: var(--terracotta);
+  }
+
+  /* Cards / galleries: keep natural framing, never stretch */
+  .folio-card-media img,
+  .work-card img,
+  .project-card img,
+  .gallery-item img,
+  .amenity-shots img,
+  .ceo-photo img {
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  .folio-card.is-featured .folio-card-media img {
+    object-fit: contain;
   }
 }
 
