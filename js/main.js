@@ -51,8 +51,10 @@
   function initLenis() {
     if (!motionOk() || isMobile() || typeof Lenis === "undefined") return null;
     const lenis = new Lenis({
-      duration: 1.25,
+      duration: 1.15,
       smoothWheel: true,
+      wheelMultiplier: 0.8,
+      touchMultiplier: 1,
       autoRaf: false
     });
     const notifyScroll = () => {
@@ -366,14 +368,31 @@
       return;
     }
 
+    const baseWheel = 0.8;
+    const pinnedWheel = 0.42;
+    const setWheel = (mult) => {
+      const lenis = window.RT && window.RT.lenis;
+      if (lenis && lenis.options) lenis.options.wheelMultiplier = mult;
+    };
+
+    /* Longer pin + lagged scrub so trackpad/mouse flicks cannot skip the reveal */
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: pin,
         start: "top top",
-        end: "+=160%",
+        end: () => "+=" + Math.round(window.innerHeight * 4.5),
         pin: true,
-        scrub: true,
-        anticipatePin: 1
+        scrub: 1.25,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        fastScrollEnd: false,
+        preventOverlaps: true,
+        onToggle(self) {
+          setWheel(self.isActive ? pinnedWheel : baseWheel);
+        },
+        onKill() {
+          setWheel(baseWheel);
+        }
       }
     });
     tl.fromTo(
