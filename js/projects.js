@@ -26,6 +26,12 @@
     };
   }
 
+  const HEIGHTS4_TOURS = [
+    { id: "studio", name: "Studio", panoee: "https://tour.panoee.net/6aa34a9c09ac3e7ed6a5dc82" },
+    { id: "1bed", name: "1 Bed", panoee: "https://tour.panoee.net/6aa3482f09ac3ea980a5dc3b" },
+    { id: "2bed", name: "2 Bed", panoee: "https://tour.panoee.net/6aa1b7b809ac3e094ba5abc9" }
+  ];
+
 
   const PROJECTS = [
     {
@@ -171,7 +177,7 @@
         faqs: [
           {
             q: "Is La Monte Vista still booking?",
-            a: "No — it is sold out. Madina Heights 4 & 5 and Madina Mall & Residency still have availability."
+            a: "No — it is sold out. Madina Heights 4 and 5 and Madina Mall & Residency still have availability."
           },
           {
             q: "Where is it?",
@@ -294,6 +300,7 @@
       floors: "B+C+5",
       completion: "2026",
       timeline: "Dec 2023 – June 2026",
+      virtualTours: HEIGHTS4_TOURS,
       overview:
         "Two plots at Umer block — 54 apartments and 27 shops, still booking on a 30-month plan.",
       facts: [
@@ -755,6 +762,7 @@
 
   global.RT = global.RT || {};
   global.RT.PROJECTS = PROJECTS;
+  global.RT.HEIGHTS4_TOURS = HEIGHTS4_TOURS;
   global.RT.getProject = getProject;
   global.RT.projectHref = projectHref;
   global.RT.whatsappHref = whatsappHref;

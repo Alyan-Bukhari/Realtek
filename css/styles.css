@@ -2664,6 +2664,29 @@ body.is-folio-series .folio-badge {
   text-transform: uppercase;
 }
 
+.page-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.page-hero-actions[hidden] {
+  display: none;
+}
+
+.page-hero .btn-ghost {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border-color: #fff;
+  backdrop-filter: blur(8px);
+}
+
+.page-hero .btn-ghost:hover {
+  background: #fff;
+  color: var(--espresso);
+}
+
 /* Key facts */
 .key-facts {
   display: grid;
@@ -4520,6 +4543,61 @@ body.is-dossier .gallery {
   color: var(--cream-hot);
   font-size: 1.5rem;
   cursor: pointer;
+  z-index: 2;
+}
+
+.apt-tour-picker {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 28rem;
+  min-height: calc(100svh - 4.5rem);
+  margin: 0 auto;
+}
+
+.apt-tour-picker[hidden] {
+  display: none;
+}
+
+.apt-tour-picker-list {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.apt-tour-picker-list button {
+  min-height: 3rem;
+  border: 1px solid var(--cream);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--cream-hot);
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.apt-tour-picker-list button:hover {
+  background: #fff;
+  color: var(--espresso);
+}
+
+.apt-tour-panoee {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100svh - 2.5rem);
+}
+
+.apt-tour-panoee[hidden] {
+  display: none;
+}
+
+.apt-tour-panoee iframe {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: min(78svh, 52rem);
+  margin-top: 0.75rem;
+  border: 0;
+  background: #120c0b;
 }
 
 .apt-tour-kicker {
@@ -4987,7 +5065,8 @@ body {
   }
 
   .hero .hero-actions .btn,
-  .hero .hero-actions .btn-ghost {
+  .hero .hero-actions .btn-ghost,
+  .page-hero-actions .btn {
     width: 100%;
     justify-content: center;
   }

@@ -24,7 +24,7 @@
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
   <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300;1,9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=device-media1">
+  <link rel="stylesheet" href="css/styles.css?v=h4tour1">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -80,6 +80,9 @@
         <span class="badge" id="p-status">Status</span>
         <h1 class="display" id="p-title">Project</h1>
         <p class="page-hero-loc" id="p-location">Location</p>
+        <div class="page-hero-actions" id="p-hero-actions" hidden>
+          <button class="btn btn-ghost" type="button" data-virtual-tour>Take a virtual tour</button>
+        </div>
       </div>
     </section>
 
@@ -241,13 +244,14 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
-  <script src="js/projects.js?v=seo-mobile"></script>
+  <script src="js/projects.js?v=h4tour1"></script>
   <script src="js/main.js"></script>
   <script src="js/chat.js"></script>
   <script src="js/seo.js"></script>
-  <script src="js/dossier.js?v=hero-dedupe1"></script>
-  <script src="js/tour.js"></script>
-  <script src="js/project-page.js?v=lmonte-hero1"></script>
+  <script src="js/dossier.js?v=h4tour1"></script>
+  <script src="js/tour.js?v=h4tour1"></script>
+  <script src="js/project-page.js?v=h4tour1"></script>
   <script type="module" src="/src/related-mount.tsx"></script>
+  <script type="module" src="/src/analytics-mount.tsx"></script>
 </body>
 </html>

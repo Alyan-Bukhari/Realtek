@@ -39,6 +39,17 @@
       '<button type="button" data-tour-next aria-label="Next photo">→</button>' +
       "</div>" +
       '<div class="apt-tour-thumbs" data-tour-thumbs></div>' +
+      "</div>" +
+      '<div class="apt-tour-picker" data-tour-picker hidden>' +
+      '<p class="apt-tour-kicker" data-tour-picker-kicker>Madina Heights 4</p>' +
+      "<h2>Take a virtual tour</h2>" +
+      '<p class="apt-tour-hint">Choose a residence to walk through.</p>' +
+      '<div class="apt-tour-picker-list" data-tour-picker-list></div>' +
+      "</div>" +
+      '<div class="apt-tour-panoee" data-tour-panoee hidden>' +
+      '<p class="apt-tour-kicker">360° tour</p>' +
+      "<h2 data-tour-panoee-title></h2>" +
+      '<iframe data-tour-panoee-frame title="360 apartment tour" allowfullscreen allow="xr-spatial-tracking; gyroscope; accelerometer; fullscreen" referrerpolicy="no-referrer-when-downgrade"></iframe>' +
       "</div>";
     document.body.appendChild(wrap);
 
@@ -68,11 +79,67 @@
     kenBurns = null;
   }
 
+  function hidePicker(root) {
+    const picker = root && root.querySelector("[data-tour-picker]");
+    if (picker) picker.hidden = true;
+  }
+
   function showPlan() {
     const root = ensure();
+    const panoee = root.querySelector("[data-tour-panoee]");
+    if (panoee && !panoee.hidden) return;
+    hidePicker(root);
     root.querySelector("[data-tour-plan]").hidden = false;
     root.querySelector("[data-tour-room]").hidden = true;
     stopKenBurns();
+  }
+
+  function heights4Tours() {
+    if (global.RT && RT.HEIGHTS4_TOURS && RT.HEIGHTS4_TOURS.length) {
+      return RT.HEIGHTS4_TOURS;
+    }
+    const project = global.RT && RT.getProject ? RT.getProject("5") : null;
+    return (project && project.virtualTours) || [];
+  }
+
+  function openPicker() {
+    const tours = heights4Tours();
+    if (!tours.length) return;
+    const root = ensure();
+    const picker = root.querySelector("[data-tour-picker]");
+    const list = root.querySelector("[data-tour-picker-list]");
+    root.querySelector("[data-tour-plan]").hidden = true;
+    root.querySelector("[data-tour-room]").hidden = true;
+    const pane = root.querySelector("[data-tour-panoee]");
+    if (pane) pane.hidden = true;
+    const frame = $("[data-tour-panoee-frame]", root);
+    if (frame) frame.src = "about:blank";
+    if (list) {
+      list.innerHTML = tours
+        .map(function (t) {
+          return (
+            '<button type="button" data-tour-pick="' +
+            String(t.panoee).replace(/"/g, "") +
+            '" data-tour-pick-name="' +
+            String(t.name || "Residence").replace(/"/g, "") +
+            '">' +
+            (t.name || "Residence") +
+            "</button>"
+          );
+        })
+        .join("");
+      list.querySelectorAll("[data-tour-pick]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          open({ panoee: btn.getAttribute("data-tour-pick") }, btn.getAttribute("data-tour-pick-name"));
+        });
+      });
+    }
+    if (picker) picker.hidden = false;
+    root.hidden = false;
+    document.body.style.overflow = "hidden";
+    if (global.RT && RT.lenis && typeof RT.lenis.stop === "function") RT.lenis.stop();
+    const closeBtn = $("[data-tour-close]", root);
+    if (closeBtn) closeBtn.focus();
   }
 
   function showPhoto(i) {
@@ -104,10 +171,41 @@
   }
 
   function open(config, name) {
-    if (!config || !config.plan) return;
+    if (!config) return;
+    if (config.panoee) {
+      photos = [];
+      title = name || "Apartment";
+      const root = ensure();
+      hidePicker(root);
+      const frame = $("[data-tour-panoee-frame]", root);
+      const heading = $("[data-tour-panoee-title]", root);
+      root.querySelector("[data-tour-plan]").hidden = true;
+      root.querySelector("[data-tour-room]").hidden = true;
+      const pane = root.querySelector("[data-tour-panoee]");
+      pane.hidden = false;
+      if (heading) heading.textContent = title;
+      if (frame) {
+        frame.src = config.panoee;
+        frame.title = title + " 360 tour";
+      }
+      root.hidden = false;
+      document.body.style.overflow = "hidden";
+      if (global.RT && RT.lenis && typeof RT.lenis.stop === "function") RT.lenis.stop();
+      const closeBtn = $("[data-tour-close]", root);
+      if (closeBtn) closeBtn.focus();
+      return;
+    }
+    if (!config.plan) return;
     photos = config.photos || [];
     title = name || "Apartment";
     const root = ensure();
+    hidePicker(root);
+    const panoeePane = root.querySelector("[data-tour-panoee]");
+    if (panoeePane) {
+      panoeePane.hidden = true;
+      const frame = $("[data-tour-panoee-frame]", root);
+      if (frame) frame.src = "about:blank";
+    }
     $("[data-tour-title]", root).textContent = title;
     const planImg = $("[data-tour-plan-img]", root);
     planImg.src = config.plan;
@@ -177,13 +275,26 @@
   function close() {
     const root = $("#apt-tour");
     if (!root) return;
+    const frame = $("[data-tour-panoee-frame]", root);
+    if (frame) frame.src = "about:blank";
+    const pane = root.querySelector("[data-tour-panoee]");
+    if (pane) pane.hidden = true;
+    hidePicker(root);
     root.hidden = true;
     document.body.style.overflow = "";
     stopKenBurns();
     if (global.RT && RT.lenis && typeof RT.lenis.start === "function") RT.lenis.start();
   }
 
+  document.addEventListener("click", function (e) {
+    const trigger = e.target.closest("[data-virtual-tour]");
+    if (!trigger) return;
+    e.preventDefault();
+    openPicker();
+  });
+
   global.RT = global.RT || {};
   global.RT.openTour = open;
   global.RT.closeTour = close;
+  global.RT.openTourPicker = openPicker;
 })(window);

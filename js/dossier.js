@@ -2,7 +2,7 @@
  * archive-sold-v4
  * Project dossier — Zee99-style subnav, residences, commercial, payment.
  * Price amounts are withheld site-wide; payment sections show percentages only.
- * Madina Mall, Heights 4 & 5 keep payment-plan tables.
+ * Madina Mall, Madina Heights 4 & 5 keep payment-plan tables.
  */
 (function (global) {
   const FX = { PKR: 1, GBP: 365, USD: 278, AUD: 185, EUR: 305 };
@@ -111,6 +111,7 @@
         }
         return pool.map(function (img, i) {
           const meta = labels[i] || labels[labels.length - 1];
+          const virtual = (project.virtualTours || [])[i];
           return {
             id: meta.id + String(i),
             name: meta.name,
@@ -118,7 +119,8 @@
             blurb: meta.blurb,
             hero: img.src,
             plan: img.src,
-            gallery: [img]
+            gallery: [img],
+            tour: virtual && virtual.panoee ? { panoee: virtual.panoee } : undefined
           };
         });
       })(),
@@ -167,7 +169,7 @@
     return id === "upcoming" || id === "5" || id === "6";
   }
 
-  /** MMR + Heights 4 & 5 keep the full booking dossier. */
+  /** MMR + Madina Heights 4 & 5 keep the full booking dossier. */
   function isLiveBooking(project) {
     return hasLivePayment(project);
   }
@@ -263,7 +265,7 @@
     const waMsg = soldOut
       ? "Hi, " +
         (project.name || "this project") +
-        " is sold out — please share archive media or current booking options (Madina Mall & Residency / Heights 4 & 5)."
+        " is sold out — please share archive media or current booking options (Madina Mall & Residency / Madina Heights 4 & 5)."
       : "Hi, I'd like site footage and further details for " +
         (project.name || "a RealTek project") +
         ".";
@@ -289,7 +291,7 @@
     const emptyCopy = soldOut
       ? "Aerial media for " +
         esc(project.name || "this project") +
-        " is not published here. WhatsApp our team for archive photography, or ask about Madina Mall & Residency and Heights 4 & 5 — still booking."
+        " is not published here. WhatsApp our team for archive photography, or ask about Madina Mall & Residency and Madina Heights 4 & 5 — still booking."
       : "Aerial and site media for " +
         esc(project.name || "this project") +
         " is not published here yet. Our team can share current photography, a private briefing, and availability over WhatsApp.";
@@ -706,7 +708,7 @@
       "<div>" +
       "<p><strong>" +
       esc(project.name) +
-      " is fully placed.</strong> Floor plans and payment schedules are closed for this development. For current inventory, see Madina Mall &amp; Residency or Heights 4 &amp; 5.</p>" +
+      " is sold out.</strong> Floor plans and payment schedules are closed for this development. For current inventory, see Madina Mall &amp; Residency or Madina Heights 4 &amp; 5.</p>" +
       '<div class="dossier-archive-status-actions">' +
       '<a class="btn" href="project.html?id=upcoming">Madina Mall &amp; Residency</a>' +
       '<a class="btn btn-outline" href="' +

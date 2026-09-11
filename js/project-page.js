@@ -82,6 +82,8 @@
     if (!project) {
       setText("p-title", "Project not found");
       setText("p-location", "The requested project could not be located.");
+      const missingActions = document.getElementById("p-hero-actions");
+      if (missingActions) missingActions.hidden = true;
       return;
     }
 
@@ -171,6 +173,10 @@
     setText("p-title", project.name);
     setText("p-location", project.address || project.location);
     setText("p-crumb", project.name);
+    const heroActions = document.getElementById("p-hero-actions");
+    if (heroActions) {
+      heroActions.hidden = !(project.virtualTours && project.virtualTours.length);
+    }
 
     const waMessage =
       "Hi, I'm interested in " +
