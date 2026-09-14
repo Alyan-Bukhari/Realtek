@@ -49,7 +49,7 @@
       '<div class="apt-tour-panoee" data-tour-panoee hidden>' +
       '<p class="apt-tour-kicker">360° tour</p>' +
       "<h2 data-tour-panoee-title></h2>" +
-      '<iframe data-tour-panoee-frame title="360 apartment tour" allowfullscreen allow="xr-spatial-tracking; gyroscope; accelerometer; fullscreen" referrerpolicy="no-referrer-when-downgrade"></iframe>' +
+      '<iframe data-tour-panoee-frame title="360 apartment tour" allowfullscreen webkitallowfullscreen mozallowfullscreen allow="fullscreen; xr-spatial-tracking; gyroscope; accelerometer; magnetometer; web-share" referrerpolicy="no-referrer-when-downgrade"></iframe>' +
       "</div>";
     document.body.appendChild(wrap);
 
@@ -84,11 +84,78 @@
     if (picker) picker.hidden = true;
   }
 
+  function syncTourViewport() {
+    const root = $("#apt-tour");
+    if (!root || root.hidden || !root.classList.contains("is-panoee")) return;
+    const view = window.visualViewport;
+    const w = Math.round((view && view.width) || window.innerWidth);
+    const h = Math.round((view && view.height) || window.innerHeight);
+    const top = Math.round((view && view.offsetTop) || 0);
+    const left = Math.round((view && view.offsetLeft) || 0);
+    root.style.setProperty("--tour-w", w + "px");
+    root.style.setProperty("--tour-h", h + "px");
+    root.style.top = top + "px";
+    root.style.left = left + "px";
+    root.style.width = w + "px";
+    root.style.height = h + "px";
+
+    const phone = Math.min(w, h) <= 900;
+    const portrait = h > w;
+    if (phone && portrait) {
+      const coverW = Math.ceil(Math.max(w, h * (16 / 9)));
+      const coverH = Math.ceil(Math.max(h, w * (9 / 16)));
+      root.classList.add("is-panoee-cover");
+      root.style.setProperty("--tour-frame-w", coverW + "px");
+      root.style.setProperty("--tour-frame-h", coverH + "px");
+    } else {
+      root.classList.remove("is-panoee-cover");
+      root.style.removeProperty("--tour-frame-w");
+      root.style.removeProperty("--tour-frame-h");
+    }
+  }
+
+  function bindTourViewport() {
+    if (bindTourViewport.bound) return;
+    bindTourViewport.bound = true;
+    const sync = function () {
+      syncTourViewport();
+    };
+    window.addEventListener("resize", sync);
+    window.addEventListener("orientationchange", sync);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", sync);
+      window.visualViewport.addEventListener("scroll", sync);
+    }
+  }
+
+  function setTourMode(mode) {
+    const root = ensure();
+    const open = mode !== "closed";
+    root.classList.toggle("is-panoee", mode === "panoee");
+    document.documentElement.classList.toggle("apt-tour-open", open);
+    document.body.classList.toggle("apt-tour-open", open);
+    if (mode === "panoee") {
+      bindTourViewport();
+      syncTourViewport();
+    } else {
+      root.style.removeProperty("--tour-w");
+      root.style.removeProperty("--tour-h");
+      root.style.removeProperty("--tour-frame-w");
+      root.style.removeProperty("--tour-frame-h");
+      root.classList.remove("is-panoee-cover");
+      root.style.top = "";
+      root.style.left = "";
+      root.style.width = "";
+      root.style.height = "";
+    }
+  }
+
   function showPlan() {
     const root = ensure();
     const panoee = root.querySelector("[data-tour-panoee]");
     if (panoee && !panoee.hidden) return;
     hidePicker(root);
+    setTourMode("plan");
     root.querySelector("[data-tour-plan]").hidden = false;
     root.querySelector("[data-tour-room]").hidden = true;
     stopKenBurns();
@@ -136,6 +203,7 @@
     }
     if (picker) picker.hidden = false;
     root.hidden = false;
+    setTourMode("picker");
     document.body.style.overflow = "hidden";
     if (global.RT && RT.lenis && typeof RT.lenis.stop === "function") RT.lenis.stop();
     const closeBtn = $("[data-tour-close]", root);
@@ -189,6 +257,7 @@
         frame.title = title + " 360 tour";
       }
       root.hidden = false;
+      setTourMode("panoee");
       document.body.style.overflow = "hidden";
       if (global.RT && RT.lenis && typeof RT.lenis.stop === "function") RT.lenis.stop();
       const closeBtn = $("[data-tour-close]", root);
@@ -266,6 +335,7 @@
 
     showPlan();
     root.hidden = false;
+    setTourMode("plan");
     document.body.style.overflow = "hidden";
     if (global.RT && RT.lenis && typeof RT.lenis.stop === "function") RT.lenis.stop();
     const closeBtn = $("[data-tour-close]", root);
@@ -281,6 +351,7 @@
     if (pane) pane.hidden = true;
     hidePicker(root);
     root.hidden = true;
+    setTourMode("closed");
     document.body.style.overflow = "";
     stopKenBurns();
     if (global.RT && RT.lenis && typeof RT.lenis.start === "function") RT.lenis.start();

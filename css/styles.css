@@ -4532,6 +4532,14 @@ body.is-dossier .gallery {
   padding: 1.25rem var(--gutter) 2rem;
 }
 
+html.apt-tour-open,
+html.apt-tour-open body {
+  overflow: hidden !important;
+  overscroll-behavior: none;
+  height: 100%;
+  height: 100dvh;
+}
+
 .apt-tour-close {
   position: sticky;
   top: 0.5rem;
@@ -4544,6 +4552,33 @@ body.is-dossier .gallery {
   font-size: 1.5rem;
   cursor: pointer;
   z-index: 2;
+}
+
+.apt-tour.is-panoee {
+  padding: 0;
+  overflow: hidden;
+  background: #000;
+  inset: auto;
+  top: 0;
+  left: 0;
+  right: auto;
+  bottom: auto;
+  width: var(--tour-w, 100vw);
+  height: var(--tour-h, 100dvh);
+  max-width: 100vw;
+  max-height: 100dvh;
+}
+
+.apt-tour.is-panoee .apt-tour-close {
+  position: absolute;
+  top: max(0.5rem, env(safe-area-inset-top));
+  right: max(0.5rem, env(safe-area-inset-right));
+  float: none;
+  z-index: 5;
+  width: 2.75rem;
+  height: 2.75rem;
+  background: rgba(18, 12, 11, 0.55);
+  backdrop-filter: blur(8px);
 }
 
 .apt-tour-picker {
@@ -4598,6 +4633,50 @@ body.is-dossier .gallery {
   margin-top: 0.75rem;
   border: 0;
   background: #120c0b;
+}
+
+.apt-tour.is-panoee .apt-tour-panoee {
+  position: absolute;
+  inset: 0;
+  display: block;
+  min-height: 0;
+}
+
+.apt-tour.is-panoee .apt-tour-panoee .apt-tour-kicker,
+.apt-tour.is-panoee .apt-tour-panoee h2 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.apt-tour.is-panoee .apt-tour-panoee iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+  border: 0;
+  background: #000;
+}
+
+.apt-tour.is-panoee-cover .apt-tour-panoee {
+  overflow: hidden;
+}
+
+.apt-tour.is-panoee-cover .apt-tour-panoee iframe {
+  inset: auto;
+  top: 50%;
+  left: 50%;
+  width: var(--tour-frame-w, 177.78vh);
+  height: var(--tour-frame-h, 100%);
+  transform: translate(-50%, -50%);
 }
 
 .apt-tour-kicker {
