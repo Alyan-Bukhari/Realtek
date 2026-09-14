@@ -4581,13 +4581,59 @@ html.apt-tour-open body {
   backdrop-filter: blur(8px);
 }
 
-.apt-tour-picker {
+.apt-tour.is-picker {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  overflow: hidden;
+  padding: max(1.25rem, env(safe-area-inset-top)) var(--gutter)
+    max(1.5rem, env(safe-area-inset-bottom));
+  inset: auto;
+  top: 0;
+  left: 0;
+  right: auto;
+  bottom: auto;
+  width: var(--tour-w, 100%);
+  height: var(--tour-h, 100dvh);
+  max-width: 100vw;
+  max-height: 100dvh;
+}
+
+.apt-tour.is-picker .apt-tour-close {
+  position: absolute;
+  top: max(0.5rem, env(safe-area-inset-top));
+  right: max(0.5rem, env(safe-area-inset-right));
+  float: none;
+}
+
+.apt-tour-picker {
+  position: relative;
+  display: block;
+  width: min(22rem, 100%);
   max-width: 28rem;
-  min-height: calc(100svh - 4.5rem);
+  height: 100%;
+  min-height: 0;
   margin: 0 auto;
+  text-align: center;
+}
+
+.apt-tour-picker-copy {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(50% + 6.1rem);
+}
+
+.apt-tour-picker-copy .apt-tour-hint {
+  margin-bottom: 0;
+}
+
+.apt-tour.is-picker .apt-tour-picker-list {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .apt-tour-picker[hidden] {

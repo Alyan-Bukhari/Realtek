@@ -41,9 +41,11 @@
       '<div class="apt-tour-thumbs" data-tour-thumbs></div>' +
       "</div>" +
       '<div class="apt-tour-picker" data-tour-picker hidden>' +
+      '<div class="apt-tour-picker-copy">' +
       '<p class="apt-tour-kicker" data-tour-picker-kicker>Madina Heights 4</p>' +
       "<h2>Take a virtual tour</h2>" +
       '<p class="apt-tour-hint">Choose a residence to walk through.</p>' +
+      "</div>" +
       '<div class="apt-tour-picker-list" data-tour-picker-list></div>' +
       "</div>" +
       '<div class="apt-tour-panoee" data-tour-panoee hidden>' +
@@ -86,7 +88,10 @@
 
   function syncTourViewport() {
     const root = $("#apt-tour");
-    if (!root || root.hidden || !root.classList.contains("is-panoee")) return;
+    if (!root || root.hidden) return;
+    const panoee = root.classList.contains("is-panoee");
+    const picker = root.classList.contains("is-picker");
+    if (!panoee && !picker) return;
     const view = window.visualViewport;
     const w = Math.round((view && view.width) || window.innerWidth);
     const h = Math.round((view && view.height) || window.innerHeight);
@@ -101,7 +106,7 @@
 
     const phone = Math.min(w, h) <= 900;
     const portrait = h > w;
-    if (phone && portrait) {
+    if (panoee && phone && portrait) {
       const coverW = Math.ceil(Math.max(w, h * (16 / 9)));
       const coverH = Math.ceil(Math.max(h, w * (9 / 16)));
       root.classList.add("is-panoee-cover");
@@ -132,9 +137,10 @@
     const root = ensure();
     const open = mode !== "closed";
     root.classList.toggle("is-panoee", mode === "panoee");
+    root.classList.toggle("is-picker", mode === "picker");
     document.documentElement.classList.toggle("apt-tour-open", open);
     document.body.classList.toggle("apt-tour-open", open);
-    if (mode === "panoee") {
+    if (mode === "panoee" || mode === "picker") {
       bindTourViewport();
       syncTourViewport();
     } else {
