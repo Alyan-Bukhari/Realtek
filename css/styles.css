@@ -4859,6 +4859,181 @@ html.apt-tour-open body {
   display: block;
 }
 
+/* 3D apartment models viewer */
+.models-3d {
+  position: fixed;
+  inset: 0;
+  z-index: 220;
+  background: rgba(55, 37, 34, 0.96);
+  color: var(--cream-hot);
+  overflow: hidden;
+}
+
+.models-3d[hidden] {
+  display: none;
+}
+
+.models-3d-close {
+  position: absolute;
+  top: max(0.5rem, env(safe-area-inset-top));
+  right: max(0.5rem, env(safe-area-inset-right));
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--cream);
+  background: rgba(18, 12, 11, 0.55);
+  backdrop-filter: blur(8px);
+  color: var(--cream-hot);
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 5;
+}
+
+.models-3d.is-picker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(1.25rem, env(safe-area-inset-top)) var(--gutter)
+    max(1.5rem, env(safe-area-inset-bottom));
+}
+
+.models-3d-picker {
+  position: relative;
+  width: min(22rem, 100%);
+  max-width: 28rem;
+  text-align: center;
+}
+
+.models-3d-picker[hidden] {
+  display: none;
+}
+
+.models-3d-kicker {
+  margin-bottom: 0.5rem;
+  color: var(--sand);
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+}
+
+.models-3d h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.6rem, 4vw, 2.25rem);
+  letter-spacing: 0.02em;
+  margin: 0 0 0.75rem;
+}
+
+.models-3d-hint {
+  color: var(--cream);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  margin: 0 0 1.5rem;
+}
+
+.models-3d-list {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.models-3d-list button {
+  min-height: 3rem;
+  border: 1px solid var(--cream);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--cream-hot);
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.models-3d-list button:hover {
+  background: #fff;
+  color: var(--espresso);
+}
+
+.models-3d.is-viewer {
+  background: #141010;
+  padding: 0;
+}
+
+.models-3d-viewer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  height: 100dvh;
+}
+
+.models-3d-viewer[hidden] {
+  display: none;
+}
+
+.models-3d-topbar {
+  position: absolute;
+  top: max(0.75rem, env(safe-area-inset-top));
+  left: max(0.75rem, env(safe-area-inset-left));
+  right: 4rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.models-3d-topbar h2 {
+  margin: 0;
+  font-size: clamp(1.1rem, 2.6vw, 1.5rem);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.models-3d-back {
+  pointer-events: auto;
+  flex: none;
+  border: 1px solid var(--cream);
+  background: rgba(18, 12, 11, 0.55);
+  backdrop-filter: blur(8px);
+  color: var(--cream-hot);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.65rem 1rem;
+  cursor: pointer;
+}
+
+.models-3d-back:hover {
+  background: #fff;
+  color: var(--espresso);
+}
+
+.models-3d-stage {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.models-3d-stage model-viewer {
+  --poster-color: transparent;
+  background: radial-gradient(ellipse at 50% 40%, #2a2120 0%, #141010 70%);
+}
+
+.models-3d-viewer-hint {
+  position: absolute;
+  bottom: max(0.75rem, env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  color: var(--cream);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.75;
+  white-space: nowrap;
+  z-index: 4;
+  pointer-events: none;
+}
+
 /* Mobile polish + overflow guard */
 html {
   overflow-x: clip;
