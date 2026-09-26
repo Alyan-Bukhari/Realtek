@@ -69,10 +69,10 @@
     if (global.RT && RT.lenis && typeof RT.lenis.start === "function") RT.lenis.start();
   }
 
-  function showPicker() {
+  function showPicker(kickerText) {
     var root = ensure();
     var kicker = root.querySelector("[data-m3d-kicker]");
-    if (kicker) kicker.textContent = projectName();
+    if (kicker) kicker.textContent = kickerText || projectName();
     var list = root.querySelector("[data-m3d-list]");
     if (list && !list.children.length) {
       MODELS.forEach(function (m) {
@@ -147,7 +147,7 @@
     var trigger = e.target.closest("[data-3d-models]");
     if (!trigger) return;
     e.preventDefault();
-    showPicker();
+    showPicker(trigger.getAttribute("data-3d-kicker"));
   });
 
   global.RT = global.RT || {};
