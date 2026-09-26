@@ -15,7 +15,8 @@
 
   function projectName() {
     var el = document.getElementById("p-title");
-    return el ? el.textContent.trim() : "";
+    var name = el ? el.textContent.trim() : "";
+    return name || "Madina Heights";
   }
 
   function ensure() {

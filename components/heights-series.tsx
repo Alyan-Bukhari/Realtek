@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Box } from "lucide-react";
 import GlassCard from "@/components/ui/glass-card";
 
 type SeriesItem = {
@@ -191,6 +191,14 @@ export function HeightsSeries() {
               >
                 View collection
               </a>
+              <button
+                type="button"
+                data-3d-models
+                className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/10 px-5 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-sm transition hover:bg-white/20"
+              >
+                <Box className="h-4 w-4" strokeWidth={2.4} />
+                View 3D models
+              </button>
             </div>
           </div>
         </div>
