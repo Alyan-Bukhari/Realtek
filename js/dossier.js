@@ -867,7 +867,7 @@
     return (
       navHtml(hasCommercial, showPayment, showVideos) +
       (sample && showPayment
-        ? '<p class="dossier-banner wrap">Sample figures for this page — not a published RealTek schedule. WhatsApp for issued drawings.</p>'
+        ? '<p class="dossier-banner wrap">Illustrative payment plan — we\'ll confirm the issued schedule with you at booking.</p>'
         : "") +
       '<section class="dossier-block" id="overview">' +
       '<div class="wrap dossier-split">' +
@@ -895,7 +895,7 @@
       (isMall ? "Three ways in." : d.sample ? "Sample plates." : "Residences.") +
       "</h2>" +
       (sample
-        ? "<p class=\"dossier-note\">Dummy layouts for this project — WhatsApp for issued drawings.</p>"
+        ? "<p class=\"dossier-note\">Sample layouts for this project — <a href=\"https://wa.me/923124455477\" target=\"_blank\" rel=\"noopener\">message us on WhatsApp</a> for the issued drawings.</p>"
         : "<p class=\"dossier-note\">Photos from the delivered building. Ask RealTek for related inventory still booking.</p>") +
       '<div class="unit-grid">' +
       d.units.map(function (u) {

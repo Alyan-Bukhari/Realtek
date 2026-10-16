@@ -1,4 +1,7 @@
 (function () {
+  /* Signal JS presence before first paint: CSS reveal states only apply when JS runs */
+  document.documentElement.classList.add("js");
+
   const reduce = window.matchMedia("(prefers-reduced-motion: no-preference)");
   const motionOk = () => reduce.matches;
   const isMobile = () => window.matchMedia("(max-width: 860px)").matches;
@@ -113,6 +116,14 @@
     const nodes = $$("[data-split]");
     if (!nodes.length) return;
 
+    /* will-change lives only for the duration of a reveal tween — never in CSS */
+    const armWillChange = (targets, value) => {
+      targets.forEach((t) => {
+        t.style.willChange = value;
+      });
+    };
+    const clearWillChange = (targets) => () => armWillChange(targets, "");
+
     nodes.forEach((el) => {
       const mode = el.getAttribute("data-split") || "words";
       const types = mode.indexOf("chars") === 0 ? "lines, chars" : "lines, words";
@@ -138,6 +149,8 @@
             duration: 0.85,
             stagger: { each: 0.02, from: "random" },
             ease: "power3.out",
+            onStart: () => armWillChange(split.chars, "transform, opacity"),
+            onComplete: clearWillChange(split.chars),
             scrollTrigger: {
               trigger: section,
               start: "top 82%",
@@ -154,7 +167,10 @@
               trigger: section,
               start: "top 75%",
               end: "center 40%",
-              scrub: true
+              scrub: true,
+              onToggle(self) {
+                armWillChange(split.chars, self.isActive ? "transform, opacity" : "");
+              }
             }
           });
         }
@@ -165,7 +181,9 @@
           duration: 1,
           stagger: { each: 0.028, from: "random" },
           ease: "power3.out",
-          delay: 0.18
+          delay: 0.18,
+          onStart: () => armWillChange(split.chars, "transform, opacity"),
+          onComplete: clearWillChange(split.chars)
         });
       } else if (split.words && split.words.length) {
         gsap.from(split.words, {
@@ -174,7 +192,9 @@
           duration: 0.9,
           stagger: 0.045,
           ease: "power3.out",
-          delay: 0.15
+          delay: 0.15,
+          onStart: () => armWillChange(split.words, "transform, opacity"),
+          onComplete: clearWillChange(split.words)
         });
       }
     });
@@ -236,6 +256,26 @@
     );
   }
 
+  function initWorkCounter() {
+    // Standalone (no GSAP dependency): wires the "01 / 05" counter to the
+    // native snap-scroll track. Visible only in .is-native-scroll mode via CSS.
+    const section = $(".work");
+    const scroller = section && $(".work-scroller", section);
+    const cur = section && $("[data-work-cur]", section);
+    const total = section && $("[data-work-total]", section);
+    const cards = section ? $$(".work-card", section) : [];
+    if (!section || !scroller || !cur || !total || !cards.length) return;
+    const update = () => {
+      if (!section.classList.contains("is-native-scroll")) return;
+      const max = scroller.scrollWidth - scroller.clientWidth;
+      const i = max > 0 ? Math.round((scroller.scrollLeft / max) * (cards.length - 1)) : 0;
+      cur.textContent = String(i + 1).padStart(2, "0");
+      total.textContent = String(cards.length).padStart(2, "0");
+    };
+    scroller.addEventListener("scroll", () => requestAnimationFrame(update), { passive: true });
+    update();
+  }
+
   function initWorkGrid() {
     const section = $(".work");
     if (!section) return;
@@ -292,7 +332,10 @@
         pin: true,
         scrub: 0.65,
         invalidateOnRefresh: true,
-        anticipatePin: 1
+        anticipatePin: 1,
+        onToggle(self) {
+          track.style.willChange = self.isActive ? "transform" : "";
+        }
       }
     });
   }
@@ -334,7 +377,10 @@
         end: "+=" + n * 560,
         pin: true,
         scrub: 0.65,
-        anticipatePin: 1
+        anticipatePin: 1,
+        onToggle(self) {
+          track.style.willChange = self.isActive ? "transform" : "";
+        }
       }
     });
 
@@ -342,22 +388,49 @@
       gsap.quickTo(card, "scale", { duration: 0.35, ease: "power3.out" })
     );
 
+    // Cache card rects and refresh lazily: rects are re-read at most once
+    // per animation frame (inside the rAF tick below) and only when a
+    // mousemove is actually being processed. Scroll/resize just mark them
+    // dirty — no layout reads in hot loops.
+    let rects = [];
+    let rectsDirty = true;
+    const markRectsDirty = () => {
+      rectsDirty = true;
+    };
+    window.addEventListener("scroll", markRectsDirty, { passive: true });
+    window.addEventListener("resize", markRectsDirty);
+
+    let rafId = 0;
+    let pendingEvent = null;
     const onMove = (e) => {
-      const mx = e.clientX;
-      const my = e.clientY;
-      cards.forEach((card, i) => {
-        const r = card.getBoundingClientRect();
-        const dx = mx - (r.left + r.width / 2);
-        const dy = my - (r.top + r.height / 2);
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        const t = Math.max(0, 1 - dist / 380);
-        const s = 1 + t * 0.48;
-        scales[i](s);
-        card.classList.toggle("is-hot", t > 0.35);
+      pendingEvent = e;
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = 0;
+        if (rectsDirty) {
+          rects = cards.map((card) => card.getBoundingClientRect());
+          rectsDirty = false;
+        }
+        const mx = pendingEvent.clientX;
+        const my = pendingEvent.clientY;
+        cards.forEach((card, i) => {
+          const r = rects[i];
+          const dx = mx - (r.left + r.width / 2);
+          const dy = my - (r.top + r.height / 2);
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          const t = Math.max(0, 1 - dist / 380);
+          const s = 1 + t * 0.48;
+          scales[i](s);
+          card.classList.toggle("is-hot", t > 0.35);
+        });
       });
     };
 
     const onLeave = () => {
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = 0;
+      }
       cards.forEach((card, i) => {
         scales[i](1);
         card.classList.remove("is-hot");
@@ -402,6 +475,8 @@
         preventOverlaps: true,
         onToggle(self) {
           setWheel(self.isActive ? pinnedWheel : baseWheel);
+          if (media) media.style.willChange = self.isActive ? "clip-path, transform" : "";
+          if (img) img.style.willChange = self.isActive ? "transform" : "";
         },
         onKill() {
           setWheel(baseWheel);
@@ -450,6 +525,8 @@
       ease: "none",
       repeat: -1
     });
+    /* Infinite tween: hint only exists because the animation actually runs */
+    track.style.willChange = "transform";
 
     let lastY = window.scrollY;
     window.addEventListener(
@@ -485,7 +562,10 @@
             trigger: ".page-hero",
             start: "top top",
             end: "bottom top",
-            scrub: true
+            scrub: true,
+            onToggle(self) {
+              pageHeroImg.style.willChange = self.isActive ? "transform" : "";
+            }
           }
         }
       );
@@ -817,6 +897,36 @@
     );
   }
 
+  /* Lightweight mobile-only reveals: IntersectionObserver fade-up using
+     transform/opacity only — no animation libraries. Desktop keeps its
+     GSAP reveals; mobile previously had zero reveal motion. Respects
+     prefers-reduced-motion (never initialises when reduced) and degrades
+     to fully-visible content when JS or IntersectionObserver is missing. */
+  function initMobileReveals() {
+    if (!("IntersectionObserver" in window)) return;
+    if (!isMobile() || !motionOk()) return;
+    const els = $$("[data-reveal]");
+    if (!els.length) return;
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-revealed");
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.06 }
+    );
+
+    els.forEach((el) => {
+      const delay = parseInt(el.getAttribute("data-reveal-delay") || "0", 10);
+      if (delay > 0) el.style.transitionDelay = Math.min(delay, 600) + "ms";
+      io.observe(el);
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     initLoadBar();
     initHeader();
@@ -829,8 +939,10 @@
       initSplit();
       initHeroIntro();
       initParallax();
+      initWorkCounter();
       initTicker();
       initCounters();
+      initMobileReveals();
       window.addEventListener(
         "load",
         () => {
