@@ -45,6 +45,19 @@
           document.body.style.overflow = "";
         });
       });
+
+      /* SEO phase: mobile Projects dropdown toggle (Dev-1) */
+      $$(".nav-item-has-dropdown", nav).forEach((item) => {
+        const btn = item.querySelector(".nav-dropdown-toggle");
+        const parentLink = item.querySelector(":scope > .nav-link");
+        if (!btn) return;
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const open = item.classList.toggle("is-open");
+          btn.setAttribute("aria-expanded", String(open));
+          if (parentLink) parentLink.setAttribute("aria-expanded", String(open));
+        });
+      });
     }
   }
 
@@ -648,8 +661,8 @@
                 ? " badge-available"
                 : "";
         return (
-          '<a class="project-card" href="project.html?id=' +
-          encodeURIComponent(p.id) +
+          '<a class="project-card" href="' +
+          (window.RT && RT.projectHref ? RT.projectHref(p.id) : "/projects/") +
           '" data-cat="' +
           p.filter +
           '">' +
