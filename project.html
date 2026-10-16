@@ -18,33 +18,46 @@
   <meta property="og:image" content="https://realtekdevelopers.com/images/madina-mall-featured.jpg">
   <meta name="twitter:image" content="https://realtekdevelopers.com/images/madina-mall-featured.jpg">
   <meta name="theme-color" content="#452d2a">
-  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
   <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300;1,9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=h4tour5">
+  <link rel="stylesheet" href="/css/styles.css?v=h4tour5">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header" id="header">
     <div class="header-inner">
-      <a href="index.html" class="wordmark" aria-label="RealTek Developers home">
+      <a href="/" class="wordmark" aria-label="RealTek Developers home">
         <span class="wordmark-main">RealTek</span>
         <span class="wordmark-sub">Developers</span>
       </a>
       <div class="header-end">
         <nav class="nav" id="nav" aria-label="Primary">
           <ul class="nav-list">
-            <li><a class="nav-link" href="index.html">Home</a></li>
-            <li><a class="nav-link" href="ceo.html">About</a></li>
-            <li><a class="nav-link is-active" href="projects.html">Projects</a></li>
-            <li><a class="nav-link" href="projects.html?series=madina-heights">Madina Heights</a></li>
-            <li><a class="nav-link" href="project.html?id=8">Madina Homes</a></li>
-            <li><a class="nav-link" href="project.html?id=1">La Monte Vista</a></li>
-            <li><a class="nav-link" href="index.html#contact">Contact</a></li>
+            <li><a class="nav-link" href="/">Home</a></li>
+            <li><a class="nav-link" href="/about-us/">About Us</a></li>
+            <li class="nav-item-has-dropdown">
+              <a class="nav-link is-active" href="/projects/" aria-haspopup="true" aria-expanded="false">Projects</a>
+              <button class="nav-dropdown-toggle" type="button" aria-label="Toggle projects submenu" aria-expanded="false"><span></span></button>
+              <ul class="nav-dropdown" aria-label="Projects">
+              <li><a href="/projects/madina-heights/">Madina Heights</a></li>
+              <li><a href="/projects/madina-homes/">Madina Homes</a></li>
+              <li><a href="/projects/la-monte-vista/">La Monte Vista</a></li>
+              <li><a href="/projects/madina-mall-residency/">Madina Mall &amp; Residency</a></li>
+              <li><a href="/projects/madina-silver-heights/">Madina Silver Heights</a></li>
+              <li><a href="/projects/madina-heights-5/">Madina Heights 5</a></li>
+              <li><a href="/projects/madina-heights-4/">Madina Heights 4</a></li>
+              <li><a href="/projects/madina-heights-3/">Madina Heights 3</a></li>
+              <li><a href="/projects/madina-heights-2/">Madina Heights 2</a></li>
+              <li><a href="/projects/madina-heights-1/">Madina Heights 1</a></li>
+              </ul>
+            </li>
+            <li><a class="nav-link" href="/blogs/">Blogs</a></li>
+            <li><a class="nav-link" href="/contact-us/">Contact Us</a></li>
           </ul>
         </nav>
         <a class="btn btn-ghost header-cta" href="tel:03124455477">Call Now</a>
@@ -68,12 +81,12 @@
           hidden
           aria-hidden="true"
         ></video>
-        <img id="p-hero-img" src="images/la-monte-vista/exterior.jpeg" alt="">
+        <img id="p-hero-img" src="/images/la-monte-vista/exterior.jpeg" alt="">
       </div>
       <div class="page-hero-veil"></div>
       <div class="wrap">
         <nav class="folio-crumb" aria-label="Breadcrumb">
-          <a href="projects.html">Projects</a>
+          <a href="/projects/">Projects</a>
           <span aria-hidden="true">/</span>
           <span id="p-crumb">Project</span>
         </nav>
@@ -81,8 +94,8 @@
         <h1 class="display" id="p-title">Project</h1>
         <p class="page-hero-loc" id="p-location">Location</p>
         <div class="page-hero-actions" id="p-hero-actions" hidden>
-          <button class="btn btn-ghost" type="button" data-virtual-tour>Take a virtual tour</button>
-          <button class="btn btn-ghost" type="button" data-3d-models>View 3D models</button>
+          <a class="btn btn-ghost icon-link" href="/virtual-tour/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.5 14.5v-9L17 12z"/></svg><span>Take a Virtual Tour</span></a>
+          <a class="btn btn-ghost icon-link" href="/3d-models/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 3 7v10l9 5 9-5V7zm0 2.3L18.7 8 12 11.7 5.3 8zm-7 4.1 6 3.4v6.6l-6-3.3zm14 0v6.7l-6 3.3v-6.6z"/></svg><span>View 3D Models</span></a>
         </div>
       </div>
     </section>
@@ -141,7 +154,7 @@
         <div id="related-glass-root" hidden></div>
         <div class="folio-grid" id="p-related-grid"></div>
         <p class="folio-related-more">
-          <a class="folio-now" href="projects.html">See all projects <span aria-hidden="true">→</span></a>
+          <a class="folio-now" href="/projects/">See all projects <span aria-hidden="true">→</span></a>
         </p>
       </div>
     </section>
@@ -150,7 +163,7 @@
   <footer class="site-footer">
     <div class="wrap footer-grid">
       <div class="footer-brand">
-        <a href="index.html" class="wordmark" aria-label="RealTek Developers">
+        <a href="/" class="wordmark" aria-label="RealTek Developers">
           <span class="wordmark-main">RealTek</span>
           <span class="wordmark-sub">Developers</span>
         </a>
@@ -158,10 +171,10 @@
       </div>
       <div class="footer-col">
         <h3>Projects</h3>
-        <a href="projects.html">All projects</a>
-        <a href="project.html?id=upcoming">Madina Mall &amp; Residency</a>
-        <a href="project.html?id=5">Madina Heights 4</a>
-        <a href="project.html?id=6">Madina Heights 5</a>
+        <a href="/projects/">All projects</a>
+        <a href="/projects/madina-mall-residency/">Madina Mall &amp; Residency</a>
+        <a href="/projects/madina-heights-4/">Madina Heights 4</a>
+        <a href="/projects/madina-heights-5/">Madina Heights 5</a>
       </div>
       <div class="footer-col">
         <h3>Contact</h3>
@@ -245,15 +258,15 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
-  <script src="js/projects.js?v=h4tour1"></script>
-  <script src="js/main.js"></script>
-  <script src="js/chat.js"></script>
-  <script src="js/seo.js"></script>
-  <script src="js/dossier.js?v=h4tour1"></script>
-  <script src="js/tour.js?v=h4tour5"></script>
+  <script src="/js/projects.js?v=h4tour1"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/chat.js"></script>
+  <script src="/js/seo.js"></script>
+  <script src="/js/dossier.js?v=h4tour1"></script>
+  <script src="/js/tour.js?v=h4tour5"></script>
   <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.3.1/dist/model-viewer.min.js"></script>
-  <script src="js/models-3d.js?v=3dmodels2"></script>
-  <script src="js/project-page.js?v=h4tour1"></script>
+  <script src="/js/models-3d.js?v=3dmodels2"></script>
+  <script src="/js/project-page.js?v=h4tour1"></script>
   <script type="module" src="/src/related-mount.tsx"></script>
   <script type="module" src="/src/analytics-mount.tsx"></script>
 </body>
