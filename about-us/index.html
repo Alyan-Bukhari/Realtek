@@ -70,7 +70,7 @@
 
   <main id="main" class="ceo-page">
     <div class="wrap ceo-page-grid">
-      <div class="ceo-photo">
+      <div class="ceo-photo" data-reveal>
         <img src="/images/ceo.jpg" alt="Hamza Ilyas Sheikh, CEO of RealTek Developers" width="954" height="1024">
         <span class="ceo-tag">13+ Years Experience</span>
       </div>
@@ -78,10 +78,10 @@
         <p class="eyebrow">Visionary Leadership</p>
         <h1 class="display" data-split style="font-size: var(--fs-h2)">Hamza Ilyas Sheikh</h1>
         <p class="ceo-role">CEO, RealTek Developers</p>
-        <div class="ceo-bio">
+        <div class="ceo-bio" data-reveal>
           <p>Embarking on his real estate journey in 2010, Hamza has reshaped the landscape of property development. With a profound passion for construction management and property trading, he established RealTek Developers in 2017 to provide truly customer-centric services. Under his leadership, RealTek has successfully delivered 8 projects over the last 7 years, demonstrating a commitment to excellence and innovation in the Pakistani real estate market.</p>
         </div>
-        <div class="socials" aria-label="Social profiles">
+        <div class="socials" data-reveal aria-label="Social profiles">
           <a href="https://www.facebook.com/realtekdevelopers" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h2.6l.4-3H13v-2c0-.6.4-1 1-1z"/></svg></a>
           <a href="https://www.instagram.com/realtekdevelopers" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zm10 2H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm-5 3.2A3.8 3.8 0 1 1 8.2 12 3.8 3.8 0 0 1 12 8.2zm0 2A1.8 1.8 0 1 0 13.8 12 1.8 1.8 0 0 0 12 10.2zM17.4 6.6a1 1 0 1 1-1 1 1 1 0 0 1 1-1z"/></svg></a>
           <a href="https://www.tiktok.com/@realtekdevelopers" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 3c.4 2.4 1.8 4 4.2 4.3v2.6c-1.5 0-2.9-.5-4.1-1.3v6.6A6.2 6.2 0 1 1 11 8.6v2.7a3.6 3.6 0 1 0 2.5 3.4V3h1z"/></svg></a>
@@ -133,9 +133,7 @@
           <label class="visually-hidden" for="newsletter-email">Email</label>
           <input id="newsletter-email" type="email" name="email" placeholder="Your email" required>
           <button type="submit">Send</button>
-        </form>
-        <p class="newsletter-note">Goes to info@realtek.pk. The first send asks FormSubmit to confirm that inbox.</p>
-      </div>
+        </form>      </div>
     </div>
     <div class="wrap footer-bottom">
       <p>© 2026 RealTek Developers. All Rights Reserved.</p>
@@ -173,12 +171,12 @@
       </form>
     </div>
     <button class="float-more" type="button" data-float-more aria-expanded="false" aria-label="Open contact options">
-      Contact <span aria-hidden="true">+</span>
+      <span aria-hidden="true">+</span>
     </button>
     <div class="float-fabs">
-      <a class="float-fab is-call" href="tel:03124455477">Call</a>
-      <a class="float-fab is-wa" href="https://wa.me/923124455477?text=Hi%2C%20I%27m%20interested%20in%20a%20RealTek%20project." target="_blank" rel="noopener noreferrer">WhatsApp</a>
-      <button class="float-fab is-chat" type="button" data-chat-open aria-expanded="false" aria-controls="chat-panel">Chat</button>
+      <a class="float-fab is-call" href="tel:03124455477" aria-label="Call RealTek"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></a>
+      <a class="float-fab is-wa" href="https://wa.me/923124455477?text=Hi%2C%20I%27m%20interested%20in%20a%20RealTek%20project." target="_blank" rel="noopener noreferrer" aria-label="WhatsApp RealTek"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+      <button class="float-fab is-chat" type="button" data-chat-open aria-expanded="false" aria-controls="chat-panel" aria-label="Open chat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></button>
     </div>
   </aside>
 
