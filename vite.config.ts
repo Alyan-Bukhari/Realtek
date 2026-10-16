@@ -8,6 +8,9 @@ import {
   SITE,
   STATIC_PAGES,
   SERIES_PAGES,
+  PROJECT_SLUGS,
+  projectPath,
+  pageJsonLd,
   absUrl,
   absImage,
   esc,
@@ -190,7 +193,8 @@ function copyStatic() {
           /<meta property="og:description" content="[^"]*">/,
           '<meta property="og:description" content="' + esc(page.description) + '">'
         );
-        const jsonLd = page.file === "index.html" ? orgJsonLd() : null;
+        const jsonLd =
+          page.file === "index.html" ? orgJsonLd() : pageJsonLd(page.jsonLd, page);
         html = injectSeo(html, page, jsonLd);
         fs.writeFileSync(filePath, html);
         sitemapUrls.push({
@@ -224,7 +228,9 @@ function copyStatic() {
           dataProject: sp.projectId || undefined
         };
         html = injectSeo(html, pageMeta, null);
-        fs.writeFileSync(path.join(dist, sp.file), html);
+        const outPath = path.join(dist, sp.file);
+        fs.mkdirSync(path.dirname(outPath), { recursive: true });
+        fs.writeFileSync(outPath, html);
         sitemapUrls.push({
           loc: absUrl(sp.path),
           priority: "0.9",
@@ -233,13 +239,14 @@ function copyStatic() {
       }
 
       const templatePath = path.join(dist, "project.html");
-      if (!fs.existsSync(templatePath)) return;
-      const template = fs.readFileSync(templatePath, "utf8");
+      if (fs.existsSync(templatePath)) {
+        const template = fs.readFileSync(templatePath, "utf8");
 
-      for (const p of PROJECT_PAGES) {
-        const pagePath = "/project-" + p.id + ".html";
-        const pageUrl = absUrl(pagePath);
-        let html = template;
+        for (const p of PROJECT_PAGES) {
+          const slug = PROJECT_SLUGS[String(p.id)] || String(p.id);
+          const pagePath = "/projects/" + slug + "/";
+          const pageUrl = absUrl(pagePath);
+          let html = template;
         html = html.replace(/<title>[\s\S]*?<\/title>/, "<title>" + esc(p.name) + " | RealTek Developers</title>");
         html = html.replace(
           /<meta name="description" content="[^"]*">/,
@@ -269,9 +276,12 @@ function copyStatic() {
         html = html.replace(/id="p-status">[^<]*/, 'id="p-status">' + esc(p.status));
         html = html.replace(/id="p-title">[^<]*/, 'id="p-title">' + esc(p.name));
         html = html.replace(/id="p-location">[^<]*/, 'id="p-location">' + esc(p.address || p.location));
+        const heroSrc = /^https?:\/\//i.test(p.image)
+          ? p.image
+          : "/" + String(p.image).replace(/^\//, "");
         html = html.replace(
           /<img id="p-hero-img"[^>]*>/,
-          '<img id="p-hero-img" src="' + p.image + '" alt="' + esc(p.name + ", " + p.location) + '">'
+          '<img id="p-hero-img" src="' + heroSrc + '" alt="' + esc(p.name + ", " + p.location) + '">'
         );
         html = html.replace(
           /<div id="p-overview">[\s\S]*?<\/div>/,
@@ -290,12 +300,19 @@ function copyStatic() {
             esc(p.status) +
             "</strong><span>Status</span></div></section>"
         );
-        fs.writeFileSync(path.join(dist, "project-" + p.id + ".html"), html);
+        const outDir = path.join(dist, "projects", slug);
+        fs.mkdirSync(outDir, { recursive: true });
+        fs.writeFileSync(path.join(outDir, "index.html"), html);
         sitemapUrls.push({
           loc: pageUrl,
           priority: p.id === "upcoming" || p.id === "5" || p.id === "6" ? "0.9" : "0.7",
           changefreq: "monthly"
         });
+      }
+
+        // The project.html template is build-time only — remove it so the
+        // bare /project.html URL never serves 200 (it 301s to /projects/).
+        fs.rmSync(templatePath, { force: true });
       }
 
       fs.writeFileSync(path.join(dist, "robots.txt"), robotsTxt());
@@ -319,9 +336,13 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, "index.html"),
-        ceo: path.resolve(__dirname, "ceo.html"),
+        about: path.resolve(__dirname, "about-us/index.html"),
         project: path.resolve(__dirname, "project.html"),
-        projects: path.resolve(__dirname, "projects.html")
+        projects: path.resolve(__dirname, "projects/index.html"),
+        blogs: path.resolve(__dirname, "blogs/index.html"),
+        contact: path.resolve(__dirname, "contact-us/index.html"),
+        tour: path.resolve(__dirname, "virtual-tour/index.html"),
+        models: path.resolve(__dirname, "3d-models/index.html")
       }
     }
   }

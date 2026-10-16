@@ -4,9 +4,9 @@
  */
 (function (global) {
   var MODELS = [
-    { id: "studio", name: "Studio Apartment", src: "images/models/studio-apartment.glb" },
-    { id: "1bed", name: "1 Bed Apartment", src: "images/models/1-bed-apartment.glb" },
-    { id: "2bed", name: "2 Bed Apartment", src: "images/models/2-bed-apartment.glb" }
+    { id: "studio", name: "Studio Apartment", src: "/images/models/studio-apartment.glb" },
+    { id: "1bed", name: "1 Bed Apartment", src: "/images/models/1-bed-apartment.glb" },
+    { id: "2bed", name: "2 Bed Apartment", src: "/images/models/2-bed-apartment.glb" }
   ];
 
   function $(sel, root) {

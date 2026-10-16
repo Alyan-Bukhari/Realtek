@@ -44,7 +44,7 @@
             description: series.lead,
             image: "images/madina-mall/videos/drone-poster.jpg"
           },
-          window.location.origin + "/madina-heights.html"
+          window.location.origin + "/projects/madina-heights/"
         );
       }
       cards.forEach((card) => {
@@ -110,17 +110,24 @@
       if (main) main.textContent = series.brandMain;
       if (sub) sub.textContent = series.brandSub;
       wordmark.setAttribute("aria-label", series.brandMain + " " + series.brandSub);
-      wordmark.setAttribute("href", "projects.html?series=" + encodeURIComponent(seriesKey));
+      wordmark.setAttribute("href", "/projects/madina-heights/");
     }
 
     document.querySelectorAll(".nav-link").forEach((link) => {
       const href = link.getAttribute("href") || "";
       const isSeries =
-        href.includes("series=" + seriesKey) ||
-        href.endsWith("?series=" + seriesKey);
-      const isProjectsAll = /projects\.html\/?$/.test(href.split("?")[0]) && !href.includes("series=");
+        href === "/projects/madina-heights/" ||
+        href.endsWith("/projects/madina-heights/");
+      const isProjectsAll = /\/projects\/?$/.test(href);
       link.classList.toggle("is-active", isSeries);
       if (isProjectsAll) link.classList.remove("is-active");
+    });
+    document.querySelectorAll(".nav-dropdown a").forEach((link) => {
+      const href = link.getAttribute("href") || "";
+      link.classList.toggle(
+        "is-active",
+        href === "/projects/madina-heights/" || href.endsWith("/projects/madina-heights/")
+      );
     });
 
     const eyebrow = document.querySelector(".folio-intro .eyebrow");

@@ -17,14 +17,14 @@
     "1": {
       main: "La Monte",
       sub: "Vista",
-      href: "project.html?id=1",
-      activeMatch: (href) => /project\.html\?id=1(?:$|&)/.test(href)
+      href: "/projects/la-monte-vista/",
+      activeMatch: (href) => /\/projects\/la-monte-vista\/?$/.test(href)
     },
     "8": {
       main: "Madina",
       sub: "Homes",
-      href: "project.html?id=8",
-      activeMatch: (href) => /project\.html\?id=8(?:$|&)/.test(href)
+      href: "/projects/madina-homes/",
+      activeMatch: (href) => /\/projects\/madina-homes\/?$/.test(href)
     }
   };
 
@@ -38,8 +38,8 @@
       brand = {
         main: "Madina",
         sub: "Heights",
-        href: "projects.html?series=madina-heights",
-        activeMatch: (href) => href.includes("series=madina-heights")
+        href: "/projects/madina-heights/",
+        activeMatch: (href) => /\/projects\/madina-heights\/?$/.test(href)
       };
     }
 
@@ -57,11 +57,13 @@
 
     document.querySelectorAll(".nav-link").forEach((link) => {
       const href = link.getAttribute("href") || "";
-      const isBrand = brand.activeMatch(href);
-      const isProjectsAll =
-        /projects\.html\/?$/.test(href.split("?")[0]) && !href.includes("series=");
-      link.classList.toggle("is-active", isBrand);
-      if (isProjectsAll) link.classList.remove("is-active");
+      // On project pages the "Projects" parent stays the active section.
+      const isProjectsSection = /^\/projects\/?$/.test(href);
+      link.classList.toggle("is-active", isProjectsSection);
+    });
+    document.querySelectorAll(".nav-dropdown a").forEach((link) => {
+      const href = link.getAttribute("href") || "";
+      link.classList.toggle("is-active", brand.activeMatch(href));
     });
   }
 
@@ -265,7 +267,7 @@
   }
 
   function cardHtml(p, featured) {
-    const href = RT.projectHref ? RT.projectHref(p.id) : "project.html?id=" + p.id;
+    const href = RT.projectHref ? RT.projectHref(p.id) : "/projects/";
     const live =
       /live/i.test(p.status) || p.filter === "upcoming"
         ? ' is-live"><i></i>'
@@ -313,7 +315,7 @@
       "</h2><p>" +
       escapeHtml(next.overview.split(". ")[0] + ".") +
       '</p><a class="btn btn-light" href="' +
-      (RT.projectHref ? RT.projectHref(next.id) : "project.html?id=upcoming") +
+      (RT.projectHref ? RT.projectHref(next.id) : "/projects/madina-mall-residency/") +
       '">See Madina Mall &amp; Residency</a>';
   }
 

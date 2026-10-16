@@ -14,11 +14,11 @@
     },
     "madinamallandresidency.com": {
       canonicalRoot: "https://madinamallandresidency.com/",
-      projectPath: "/madina-mall-and-residency.html"
+      projectPath: "/projects/madina-mall-residency/"
     },
     "www.madinamallandresidency.com": {
       canonicalRoot: "https://madinamallandresidency.com/",
-      projectPath: "/madina-mall-and-residency.html"
+      projectPath: "/projects/madina-mall-residency/"
     }
   };
 
@@ -27,7 +27,7 @@
       title: "Madina Heights | Real Estate in Lahore",
       description:
         "Madina Heights by RealTek Developers — commercial and residential towers across Bahria Town and Lahore. View every phase, location, and booking status.",
-      path: "/madina-heights.html",
+      path: "/projects/madina-heights/",
       image: "images/madina-heights-4/elevation/elevation-01.jpg"
     }
   };
@@ -107,7 +107,7 @@
       return;
     }
 
-    if (projectId === "upcoming" || location.pathname.includes("madina-mall-and-residency")) {
+    if (projectId === "upcoming" || location.pathname.includes("madina-mall-residency")) {
       const meta = {
         title: "Madina Mall & Residency | Bahria Town Lahore",
         description:
@@ -117,7 +117,7 @@
       const onMallDomain = h.includes("madinamallandresidency.com");
       const canonical = onMallDomain
         ? DOMAINS[h].canonicalRoot.replace(/\/$/, "") + "/"
-        : absPrimary("/madina-mall-and-residency.html");
+        : absPrimary("/projects/madina-mall-residency/");
       applyPageMeta(meta, canonical);
       return;
     }
