@@ -45,7 +45,6 @@
         }
       ],
       "source": "/",
-      "statusCode": 301,
       "permanent": true
     },
     {
@@ -57,7 +56,6 @@
         }
       ],
       "source": "/",
-      "statusCode": 301,
       "permanent": true
     },
     {
@@ -69,7 +67,6 @@
         }
       ],
       "source": "/",
-      "statusCode": 301,
       "permanent": true
     },
     {
@@ -81,91 +78,76 @@
         }
       ],
       "source": "/",
-      "statusCode": 301,
       "permanent": true
     },
     {
       "destination": "/",
       "source": "/index.html",
-      "statusCode": 301,
       "permanent": true
     },
     {
       "destination": "/about-us/",
       "source": "/ceo.html",
-      "statusCode": 301,
       "permanent": true
     },
     {
       "destination": "/projects/",
       "source": "/projects.html",
-      "statusCode": 301,
       "permanent": true
     },
     {
       "destination": "/projects/madina-heights/",
       "source": "/madina-heights.html",
-      "statusCode": 301,
       "permanent": true
     },
     {
       "destination": "/projects/madina-mall-residency/",
       "source": "/madina-mall-and-residency.html",
-      "statusCode": 301,
       "permanent": true
     },
     {
       "destination": "/projects/la-monte-vista/",
       "source": "/project-1.html",
-      "statusCode": 301,
       "permanent": true
     },
     {
       "destination": "/projects/madina-heights-1/",
       "source": "/project-2.html",
-      "statusCode": 301,
       "permanent": true
     },
     {
       "destination": "/projects/madina-heights-2/",
       "source": "/project-3.html",
-      "statusCode": 301,
       "permanent": true
     },
     {
       "destination": "/projects/madina-heights-3/",
       "source": "/project-4.html",
-      "statusCode": 301,
       "permanent": true
     },
     {
       "destination": "/projects/madina-heights-4/",
       "source": "/project-5.html",
-      "statusCode": 301,
       "permanent": true
     },
     {
       "destination": "/projects/madina-heights-5/",
       "source": "/project-6.html",
-      "statusCode": 301,
       "permanent": true
     },
     {
       "destination": "/projects/madina-silver-heights/",
       "source": "/project-7.html",
-      "statusCode": 301,
       "permanent": true
     },
     {
       "destination": "/projects/madina-homes/",
       "source": "/project-8.html",
-      "statusCode": 301,
       "permanent": true
     },
     {
       "destination": "/projects/madina-mall-residency/",
       "source": "/project-upcoming.html",
-      "statusCode": 301,
       "permanent": true
     },
     {
@@ -178,7 +160,6 @@
         }
       ],
       "source": "/projects.html",
-      "statusCode": 301,
       "permanent": true
     },
     {
@@ -191,7 +172,6 @@
         }
       ],
       "source": "/project.html",
-      "statusCode": 301,
       "permanent": true
     },
     {
@@ -204,7 +184,6 @@
         }
       ],
       "source": "/project.html",
-      "statusCode": 301,
       "permanent": true
     },
     {
@@ -217,7 +196,6 @@
         }
       ],
       "source": "/project.html",
-      "statusCode": 301,
       "permanent": true
     },
     {
@@ -230,7 +208,6 @@
         }
       ],
       "source": "/project.html",
-      "statusCode": 301,
       "permanent": true
     },
     {
@@ -243,7 +220,6 @@
         }
       ],
       "source": "/project.html",
-      "statusCode": 301,
       "permanent": true
     },
     {
@@ -256,7 +232,6 @@
         }
       ],
       "source": "/project.html",
-      "statusCode": 301,
       "permanent": true
     },
     {
@@ -269,7 +244,6 @@
         }
       ],
       "source": "/project.html",
-      "statusCode": 301,
       "permanent": true
     },
     {
@@ -282,7 +256,6 @@
         }
       ],
       "source": "/project.html",
-      "statusCode": 301,
       "permanent": true
     },
     {
@@ -295,13 +268,11 @@
         }
       ],
       "source": "/project.html",
-      "statusCode": 301,
       "permanent": true
     },
     {
       "destination": "/projects/",
       "source": "/project.html",
-      "statusCode": 301,
       "permanent": true
     }
   ]
