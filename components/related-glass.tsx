@@ -52,7 +52,7 @@ export function RelatedGlass({ currentId }: { currentId: string }) {
       {projects.map((p, i) => {
         const href = window.RT?.projectHref
           ? window.RT.projectHref(p.id)
-          : "project.html?id=" + encodeURIComponent(p.id);
+          : "/projects/" + ({"1":"la-monte-vista","2":"madina-heights-1","3":"madina-heights-2","4":"madina-heights-3","5":"madina-heights-4","6":"madina-heights-5","7":"madina-silver-heights","8":"madina-homes","upcoming":"madina-mall-residency"}[p.id] || p.id) + "/";
         const meta = [p.type, p.location].filter(Boolean).join(" · ");
         const description = ((p.overview || "").split(". ")[0] || "") + ".";
         return (

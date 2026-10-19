@@ -550,6 +550,15 @@
     initSlideMask();
     initRail();
 
+    /* Signal that all main.js pins exist so late-mounted components
+       (e.g. the React horizontal folio) can create their own pins in
+       the final layout. Without this, a pin created before these
+       spacers exist miscalculates its start on every refresh. */
+    if (typeof ScrollTrigger !== "undefined") {
+      ScrollTrigger.refresh();
+    }
+    window.dispatchEvent(new CustomEvent("rt:pins-ready"));
+
     const pageHeroImg = $(".page-hero img");
     if (pageHeroImg && motionOk() && !isMobile()) {
       gsap.fromTo(

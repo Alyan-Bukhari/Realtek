@@ -85,78 +85,99 @@ export default function HorizontalFolio({
       return () => scroller.removeEventListener("scroll", onScroll);
     }
 
-    root.classList.remove("is-hf-native");
-    gsap.registerPlugin(ScrollTrigger);
+    /* The pin MUST be created after main.js has inserted its own pin
+       spacers above this section. Creating it earlier bakes a stale
+       start position that no refresh can repair (blank gap where the
+       pin releases early). We wait for main.js's rt:pins-ready signal,
+       with load/timeout fallbacks so the section never stays unpinned. */
+    let ctx: { revert: () => void } | null = null;
+    let started = false;
 
-    const ctx = gsap.context(() => {
-      const slides = Array.from(root.querySelectorAll(".hf-slide")) as HTMLElement[];
-      const scrollerEl = root.querySelector(".hf-scroller") as HTMLElement | null;
-      const measureWidth = () =>
-        Math.max(1, Math.round(scrollerEl?.clientWidth || window.innerWidth));
+    const setup = () => {
+      if (started || !rootRef.current || !trackRef.current) return;
+      started = true;
+      const rootEl = rootRef.current;
+      const trackEl = trackRef.current;
+      rootEl.classList.remove("is-hf-native");
+      gsap.registerPlugin(ScrollTrigger);
 
-      const setSlideWidths = () => {
-        const w = measureWidth();
-        slides.forEach((slide) => {
-          slide.style.width = w + "px";
-          slide.style.minWidth = w + "px";
-          slide.style.maxWidth = w + "px";
-          slide.style.flex = "0 0 " + w + "px";
-        });
-        // Keep pin target clipped — GSAP pin often forces overflow:visible
-        root.style.overflow = "hidden";
-        if (scrollerEl) scrollerEl.style.overflow = "hidden";
-      };
-      setSlideWidths();
+      ctx = gsap.context(() => {
+        const slides = Array.from(rootEl.querySelectorAll(".hf-slide")) as HTMLElement[];
+        const scrollerEl = rootEl.querySelector(".hf-scroller") as HTMLElement | null;
+        const measureWidth = () =>
+          Math.max(1, Math.round(scrollerEl?.clientWidth || window.innerWidth));
 
-      const getX = () => -Math.max(0, (total - 1) * measureWidth());
-      const getEnd = () => "+=" + Math.max(0, (total - 1) * measureWidth());
-
-      gsap.set(track, { x: 0, force3D: true });
-      gsap.to(track, {
-        x: getX,
-        ease: "none",
-        scrollTrigger: {
-          trigger: root,
-          start: "top top",
-          end: getEnd,
-          pin: true,
-          scrub: 0.45,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onRefresh: setSlideWidths,
-          onUpdate: (self: { progress: number }) => {
-            const i = Math.min(
-              total - 1,
-              Math.max(0, Math.round(self.progress * (total - 1)))
-            );
-            setIndex((prev) => (prev === i ? prev : i));
-          },
-        },
-      });
-
-      // Second refresh after layout so end distance matches slide widths
-      requestAnimationFrame(() => {
-        const ST = (window as Window & { ScrollTrigger?: { refresh: () => void } }).ScrollTrigger;
+        const setSlideWidths = () => {
+          const w = measureWidth();
+          slides.forEach((slide) => {
+            slide.style.width = w + "px";
+            slide.style.minWidth = w + "px";
+            slide.style.maxWidth = w + "px";
+            slide.style.flex = "0 0 " + w + "px";
+          });
+          // Keep pin target clipped — GSAP pin often forces overflow:visible
+          rootEl.style.overflow = "hidden";
+          if (scrollerEl) scrollerEl.style.overflow = "hidden";
+        };
         setSlideWidths();
-        ST?.refresh();
-      });
-    }, root);
 
-    const onResize = () => {
-      const ST = (window as Window & { ScrollTrigger?: { refresh: () => void } }).ScrollTrigger;
-      ST?.refresh();
+        const getX = () => -Math.max(0, (total - 1) * measureWidth());
+        const getEnd = () => "+=" + Math.max(0, (total - 1) * measureWidth());
+
+        gsap.set(trackEl, { x: 0, force3D: true });
+        gsap.to(trackEl, {
+          x: getX,
+          ease: "none",
+          scrollTrigger: {
+            trigger: rootEl,
+            start: "top top",
+            end: getEnd,
+            pin: true,
+            scrub: 0.45,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+            onRefresh: setSlideWidths,
+            onUpdate: (self: { progress: number }) => {
+              const i = Math.min(
+                total - 1,
+                Math.max(0, Math.round(self.progress * (total - 1)))
+              );
+              setIndex((prev) => (prev === i ? prev : i));
+            },
+          },
+        });
+
+        // Single authoritative refresh after layout settles
+        requestAnimationFrame(() => {
+          const ST = (window as Window & { ScrollTrigger?: { refresh: () => void } }).ScrollTrigger;
+          setSlideWidths();
+          ST?.refresh();
+        });
+      }, rootEl);
+
+      const onResize = () => {
+        const ST = (window as Window & { ScrollTrigger?: { refresh: () => void } }).ScrollTrigger;
+        ST?.refresh();
+      };
+      window.addEventListener("resize", onResize);
+      (setup as unknown as { __onResize?: () => void }).__onResize = onResize;
     };
-    window.addEventListener("resize", onResize);
-    const onLoad = () => {
-      const ST = (window as Window & { ScrollTrigger?: { refresh: () => void } }).ScrollTrigger;
-      ST?.refresh();
-    };
-    window.addEventListener("load", onLoad);
+
+    const onPinsReady = () => setup();
+    window.addEventListener("rt:pins-ready", onPinsReady, { once: true });
+    // Fallbacks: never leave the section unpinned if the signal is missed
+    const fallbackTimer = window.setTimeout(setup, 7000);
+    const onLoadFallback = () => window.setTimeout(setup, 4000);
+    if (document.readyState === "complete") onLoadFallback();
+    else window.addEventListener("load", onLoadFallback, { once: true });
 
     return () => {
-      window.removeEventListener("resize", onResize);
-      window.removeEventListener("load", onLoad);
-      ctx.revert();
+      window.removeEventListener("rt:pins-ready", onPinsReady);
+      window.removeEventListener("load", onLoadFallback);
+      window.clearTimeout(fallbackTimer);
+      const onResize = (setup as unknown as { __onResize?: () => void }).__onResize;
+      if (onResize) window.removeEventListener("resize", onResize);
+      ctx?.revert();
     };
   }, [reduce, total]);
 
